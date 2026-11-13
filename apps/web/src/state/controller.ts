@@ -100,6 +100,7 @@ export function loadScenario(sc: ScenarioFile): void {
     appliedCommands: [],
     diagLog: [],
     reveal: false,
+    corrosionDays: false,
     workers: { sim: 'starting', diag: 'starting' }
   });
   const ch = new MessageChannel();
@@ -179,6 +180,7 @@ export function reset(): void {
 }
 
 export function setSpeed(v: number): void {
+  if (useApp.getState().corrosionDays && v !== 1) return;
   useApp.getState().set({ speed: v });
   postSim({ type: 'SET_PLAYBACK_SPEED', value: v });
 }

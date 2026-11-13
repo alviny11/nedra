@@ -57,7 +57,7 @@ export function TopBar({ onM1 }: { onM1: () => void }) {
         </button>
         <label className="small">
           ×
-          <select value={st.speed} onChange={(e) => setSpeed(Number(e.target.value))} aria-label="Скорость воспроизведения">
+          <select value={st.corrosionDays ? 1 : st.speed} disabled={st.corrosionDays} onChange={(e) => setSpeed(Number(e.target.value))} aria-label="Скорость воспроизведения" title={st.corrosionDays ? 'Суточный счёт: шаг 1 сутки, без ×30' : undefined}>
             {SPEEDS.map((s) => (
               <option key={s} value={s}>
                 {s}

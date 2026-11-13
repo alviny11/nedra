@@ -2,6 +2,8 @@ import { useMemo, useState } from 'react';
 import type { PipeConfig } from '@pipetwin/contracts';
 import { useApp } from '../../state/store';
 import { applyHiddenEvent } from '../../state/controller';
+import { CorrosionMode } from './CorrosionMode';
+import { LIVE_PIPELINE_ID } from './corrosion-clock';
 import { data, dateLabel, exportRows, fmt, getRows, rowKey } from './data';
 import type { Asset, Defect, Pipeline, Row } from './data';
 import './pipelines.css';
@@ -59,7 +61,7 @@ export function PipelineDetail({ group, onBack, onOpen }: { group: Pipeline; onB
       <div className="pipe-table-wrap"><div className="table-controls"><h2>Сегменты трубы</h2><input aria-label="Найти сегмент" placeholder="ID, сегмент или название участка" value={query} onChange={e => { setQuery(e.target.value); setPage(0); }}/><select aria-label="Фильтр сегментов" value={filter} onChange={e => { setFilter(e.target.value); setPage(0); }}><option value="all">Все сегменты</option><option value="observed">С измерениями ВТД</option><option value="priority">Нижние 10% по прогнозу</option></select></div>
       <table><thead><tr><th>Участок / сегмент</th><th>Расстояние от начала участка</th><th>ВТД, мм</th><th>Дата ВТД</th><th>Прогноз, мм<br/><small>{dateLabel(data.forecastDate)}</small></th><th>Основание</th></tr></thead><tbody>{filtered.slice(currentPage*40, (currentPage+1)*40).map(r => <tr key={rowKey(r)} className={rowKey(r) === rowKey(selected) ? 'chosen' : ''}><td><button onClick={() => pick(r)}>{r.asset.id} / <b>{r.sid}</b></button></td><td>{fmt(r.start, 1)}–{fmt(r.end, 1)} м</td><td>{r.measured == null ? '—' : fmt(r.measured)}</td><td>{r.measuredDate ? dateLabel(r.measuredDate) : '—'}</td><td>{fmt(r.pred)}</td><td>{r.source === 'nominal_assumption' ? 'Номинал · допущение' : 'Измерено ВТД'}</td></tr>)}</tbody></table>{!filtered.length && <p className="empty-state">Нет сегментов по выбранному фильтру.</p>}<div className="pagination"><span>{filtered.length} сегментов · страница {currentPage+1} из {pages}</span><button disabled={currentPage === 0} onClick={() => setPage(currentPage-1)}>← Назад</button><button disabled={currentPage+1 >= pages} onClick={() => setPage(currentPage+1)}>Далее →</button></div></div>
     </>}
-    {tab === 'simulation' && <Simulation row={selected} onBack={onBack}/>}
+    {tab === 'simulation' && (group.id === LIVE_PIPELINE_ID ? <LivePipeModes group={group} row={selected} onBack={onBack} /> : <Simulation row={selected} onBack={onBack} />)}
     {tab === 'passport' && <div className="passport-grid">{group.assets.map(a => <article key={a.id}><span className="eyebrow">УЧАСТОК {a.id}</span><h2>{a.name}</h2><dl><dt>Длина</dt><dd>{fmt(a.length, 1)} м</dd><dt>Наружный диаметр</dt><dd>{fmt(a.diameter)} мм</dd><dt>Номинальная стенка</dt><dd>{fmt(a.nominal)} мм</dd><dt>Марка стали</dt><dd>{a.steel ?? 'Не указана'}</dd><dt>Дата ввода по паспорту</dt><dd>{dateLabel(a.commissioned)}</dd><dt>Даты ВТД</dt><dd>{[...new Set(a.history.map(h => h[1]))].sort().map(dateLabel).join(', ') || 'Нет'}</dd><dt>Смещение в основной группе</dt><dd>{fmt(a.offset, 1)} м</dd></dl>{a.warning && <p className="pipe-notice">ВТД раньше ввода. История сохранена для просмотра, исключена из обучения.</p>}</article>)}<article className="passport-sources"><h2>Происхождение и ограничения</h2><p>Паспорт: pot_south.csv. Трасса: altitudes_south.csv. Дефекты: vtd_south_train.csv. Режим: tech_mode_for_embedings_with_length_with_temperatures_ids16.csv. Прогноз: локальный конвейер PipeTwin, constant_rate.</p><p>Обследования и режимы исторические. Онлайн-телеметрия не подключена. Ниже на общей карте работает отдельная синтетическая сеть. Неопределённость прогноза и дата отказа не оценены.</p></article></div>}
     </div>
   </section>;
@@ -103,6 +105,17 @@ function DefectCloud({ group, date, onPick }: { group: Pipeline; date: string; o
 function HistoryChart({ row }: { row: Row }) {
   const h = row.asset.history.filter(h => h[0] === row.sid).sort((a, b) => a[1].localeCompare(b[1]));
   return <div><h3>История сегмента № {row.sid}</h3>{h.length ? <div className="history-points">{h.map(v => <div key={v[1]}><span>{dateLabel(v[1])}</span><b>{fmt(v[2])} мм</b><small>{v[3] ? 'Измерено ВТД' : 'Исключено из обучения: дата'}</small></div>)}<div className="forecast-point"><span>{dateLabel(data.forecastDate)}</span><b>{fmt(row.pred)} мм</b><small>Прогноз</small></div></div> : <p>Истории измерений этого сегмента нет. Прогноз начинается от паспортного номинала.</p>}</div>;
+}
+
+function LivePipeModes({ group, row, onBack }: { group: Pipeline; row: Row; onBack: () => void }) {
+  const [mode, setMode] = useState<'manual' | 'corrosion'>('manual');
+  return <div>
+    <div className="pipe-modes" role="group" aria-label="Режим трубы">
+      <button type="button" aria-pressed={mode === 'manual'} onClick={() => setMode('manual')}>Ручная утечка</button>
+      <button type="button" aria-pressed={mode === 'corrosion'} onClick={() => setMode('corrosion')}>Коррозия</button>
+    </div>
+    {mode === 'manual' ? <Simulation row={row} onBack={onBack} /> : <CorrosionMode group={group} />}
+  </div>;
 }
 
 function Simulation({ row, onBack }: { row: Row; onBack: () => void }) {

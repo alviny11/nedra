@@ -50,6 +50,11 @@ test('navigation preserves live simulation and explicit teaching leak works', as
   await page.getByRole('tab', { name: 'Режим и утечки' }).click();
   await expect(page.getByRole('button', { name: 'Внести учебную утечку e4', exact: true })).toBeEnabled({ timeout: 45_000 });
   await page.getByRole('button', { name: /Пауза/ }).click();
+  await expect.poll(async () => {
+    const before = await page.locator('.clock .t').textContent();
+    await page.waitForTimeout(250);
+    return (await page.locator('.clock .t').textContent()) === before;
+  }).toBe(true);
   const time = await page.locator('.clock .t').textContent();
   await page.getByRole('button', { name: 'Внести учебную утечку e4', exact: true }).click();
   await expect(page.getByRole('status')).toContainText('Событие передано');
@@ -58,6 +63,49 @@ test('navigation preserves live simulation and explicit teaching leak works', as
   await expect(page.locator('.inspector h2')).toContainText('коллектор');
   await page.getByRole('button', { name: /Пуск/ }).click();
   await expect.poll(async () => page.locator('.truth-marker').count(), { timeout: 15_000 }).toBeGreaterThan(0);
+});
+
+test('live pipe switches modes, stubs stay closed, corrosion names the breach', async ({ page }) => {
+  test.setTimeout(150_000);
+  const errors: string[] = [];
+  page.on('pageerror', e => errors.push(e.message));
+  await page.goto('/');
+  await expect(page.getByRole('button', { name: 'Труба 1: открыть отчёт', exact: true })).toBeVisible();
+  await page.getByRole('button', { name: 'Труба С-1 → Н-1', exact: true }).click();
+  await expect(page.locator('.pipe-detail')).toHaveCount(0);
+  await page.getByRole('button', { name: 'Труба 1: открыть отчёт', exact: true }).click();
+  await expect(page.getByRole('heading', { name: 'Трубопровод MAIN-2', exact: true })).toBeVisible();
+  await page.getByRole('tab', { name: 'Режим и утечки' }).click();
+  await expect(page.getByRole('button', { name: 'Ручная утечка', exact: true })).toHaveAttribute('aria-pressed', 'true');
+  await expect(page.getByRole('button', { name: 'Внести учебную утечку e4', exact: true })).toBeVisible();
+  await page.getByRole('button', { name: 'Коррозия', exact: true }).click();
+  await expect(page.getByRole('button', { name: 'Внести учебную утечку e4', exact: true })).toHaveCount(0);
+  await expect(page.getByText('отбраковочная')).toBeVisible();
+  await page.getByRole('button', { name: 'Ручная утечка', exact: true }).click();
+  await expect(page.getByRole('button', { name: 'Внести учебную утечку e4', exact: true })).toBeVisible();
+  await page.getByRole('button', { name: '← На общую карту' }).click();
+  await page.getByRole('button', { name: 'Труба 2: открыть отчёт', exact: true }).click();
+  await page.getByRole('tab', { name: 'Режим и утечки' }).click();
+  await expect(page.getByRole('button', { name: 'Коррозия', exact: true })).toHaveCount(0);
+  await expect(page.getByRole('button', { name: 'Внести учебную утечку e4', exact: true })).toBeVisible();
+  await page.getByRole('button', { name: '← На общую карту' }).click();
+  await page.getByRole('button', { name: 'Труба 1: открыть отчёт', exact: true }).click();
+  await page.getByRole('tab', { name: 'Режим и утечки' }).click();
+  await page.getByRole('button', { name: 'Коррозия', exact: true }).click();
+  await page.getByRole('button', { name: 'Пуск суточного счёта', exact: true }).click();
+  await expect(page.getByLabel('Дата прорыва')).toHaveText('02.12.2067', { timeout: 120_000 });
+  await expect(page.getByTestId('corrosion-result')).toContainText('отбраковочн');
+  for (const id of ['D0', 'D1', 'D2']) {
+    await expect(page.getByLabel(`Секунды до утечки ${id}`)).not.toHaveText('—', { timeout: 90_000 });
+    const text = await page.getByLabel(`Секунды до утечки ${id}`).innerText();
+    const seconds = Number(text.replace(/[^\d]/g, ''));
+    const hole = Number(await page.getByTestId('corrosion-result').getAttribute('data-hole-start'));
+    expect(hole).toBeGreaterThanOrEqual(181);
+    expect(seconds).toBeGreaterThan(0);
+    expect(seconds).toBeLessThan(180);
+    expect(seconds).toBeLessThan(hole);
+  }
+  expect(errors).toEqual([]);
 });
 
 test('mobile detail keeps controls reachable without page overflow', async ({ page }) => {

@@ -263,8 +263,9 @@ input[type='number'] {
 .pipe-hit {
   fill: none;
   stroke: transparent;
-  stroke-width: 18;
+  stroke-width: 40;
   cursor: pointer;
+  scroll-margin-top: 120px;
 }
 .map.placing .pipe-hit {
   cursor: crosshair;

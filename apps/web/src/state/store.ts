@@ -55,6 +55,8 @@ export interface AppState {
   appliedCommands: PublicCommand[];
   diagLog: Diagnosis[];
   showTrials: boolean;
+  /** Daily corrosion clock is stepping. Playback ×30 must not apply. */
+  corrosionDays: boolean;
   set: (p: Partial<AppState>) => void;
   toast: (kind: Toast['kind'], text: string) => void;
 }
@@ -92,6 +94,7 @@ export const useApp = create<AppState>((set, get) => ({
   appliedCommands: [],
   diagLog: [],
   showTrials: false,
+  corrosionDays: false,
   set: (p) => set(p),
   toast: (kind, text) => {
     const id = ++toastId;

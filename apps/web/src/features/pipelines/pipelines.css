@@ -77,3 +77,10 @@
 @media (max-width: 650px) { .pipeline-hub { padding: 18px; margin: 10px; }.pipeline-cards, .passport-grid { grid-template-columns: 1fr; }.pipe-detail { padding: 16px 12px 30px; }.pipe-heading-actions { flex-direction: column; align-items: stretch; width: 100%; }.pipe-stats strong { font-size: 24px; }.pipe-stats > div { padding: 12px; }.plot-heading { flex-wrap: wrap; }.table-controls input { min-width: 0; width: 100%; }.pipe-charts { padding: 12px; }.pipe-heading h1 { font-size: 25px; }.card-metrics { gap: 12px; }.hub-heading h2 { font-size: 22px; } }
 
 .pipe-report-label { font-size: 14px !important; font-weight: 700; fill: #174c80 !important; paint-order: stroke; stroke: #ffffff; stroke-width: 3px; stroke-linejoin: round; pointer-events: none; }
+.pipe-modes { display: flex; gap: 8px; margin: 0 0 16px; }
+.pipe-modes button[aria-pressed="true"] { background: #48d4bd; color: #082a2b; border-color: #48d4bd; }
+.corrosion-panel { display: grid; gap: 12px; }
+.corrosion-readout { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; }
+.corrosion-readout div { background: #071e2b; border: 1px solid var(--pd-line); border-radius: 8px; padding: 14px; }
+.corrosion-readout span { display: block; color: var(--pd-muted); font-size: 11px; margin-bottom: 8px; }
+.corrosion-readout strong { font-size: 26px; font-weight: 500; }
