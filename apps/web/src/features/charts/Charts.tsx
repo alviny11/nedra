@@ -4,7 +4,12 @@ import 'uplot/dist/uPlot.min.css';
 import type { PipeConfig } from '@pipetwin/contracts';
 import { useApp, chartData } from '../../state/store';
 
-const COLORS = ['#2563eb', '#dc2626', '#059669', '#d97706', '#7c3aed'];
+const COLORS = ['#9b97f2', '#ff6b6b', '#3dce8a', '#f0b429', '#e0b3ff'];
+
+function cssVar(name: string, fallback: string): string {
+  const v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  return v || fallback;
+}
 
 function useWidth(ref: React.RefObject<HTMLDivElement | null>): number {
   const [w, setW] = useState(400);
@@ -24,14 +29,17 @@ function UChart({ title, data, series, yLabel, version, height = 170, xLabel = '
   const key = JSON.stringify(series.map((s) => (s as { label?: string }).label));
   useEffect(() => {
     if (!box.current) return;
+    const axis = cssVar('--ink-2', '#b7bdd0');
+    const grid = cssVar('--chart-grid', 'rgba(183, 189, 208, 0.16)');
+    const tick = cssVar('--chart-tick', 'rgba(183, 189, 208, 0.4)');
     const opts: Options = {
       width,
       height,
       series,
       scales: { x: { time: false } },
       axes: [
-        { label: xLabel, stroke: '#4b5868', grid: { stroke: 'rgba(120,130,150,0.18)' }, ticks: { stroke: 'rgba(120,130,150,0.3)' } },
-        { label: yLabel, stroke: '#4b5868', grid: { stroke: 'rgba(120,130,150,0.18)' }, ticks: { stroke: 'rgba(120,130,150,0.3)' }, size: 60 }
+        { label: xLabel, stroke: axis, grid: { stroke: grid }, ticks: { stroke: tick } },
+        { label: yLabel, stroke: axis, grid: { stroke: grid }, ticks: { stroke: tick }, size: 60 }
       ],
       legend: { live: true },
       cursor: cursorSync ? { sync: { key: 'pipetwin-t' } } : {}
@@ -151,11 +159,11 @@ function Profile() {
     const ser: Options['series'] = [{}];
     if (observer) {
       cols.push(xs.map((_, i) => observer.p[off + i]! / 1e5));
-      ser.push({ label: 'наблюдатель D1', stroke: '#2563eb', width: 1.5 });
+      ser.push({ label: 'наблюдатель D1', stroke: '#9b97f2', width: 1.5 });
     }
     if (view === 'operator' && truth) {
       cols.push(xs.map((_, i) => truth.p[off + i]! / 1e5));
-      ser.push({ label: 'истина', stroke: '#dc2626', width: 1.2, dash: [4, 3] });
+      ser.push({ label: 'истина', stroke: '#ff6b6b', width: 1.2, dash: [4, 3] });
     }
     return { data: [xs, ...cols] as AlignedData, series: ser };
     // eslint-disable-next-line react-hooks/exhaustive-deps

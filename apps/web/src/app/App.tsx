@@ -59,8 +59,8 @@ export function App() {
               setPlacingLeak(false);
             }}
           />
-          <DiagnosticsPanel />
         </div>
+        <DiagnosticsPanel />
         <Inspector leakDraft={leakDraft} setLeakDraft={setLeakDraft} placingLeak={placingLeak} setPlacingLeak={setPlacingLeak} />
         <div className="bottom">
           <Charts />
