@@ -1,0 +1,16 @@
+{
+  "points": 672,
+  "cells": 663,
+  "dtS": 0.01887117878333172,
+  "stepsPerSimSecond": 52.99086037398291,
+  "initMs": 73.100327,
+  "truthOnly": {
+    "simSecondsPerWallSecond": 175.84705165762412,
+    "samplesPerSimSecond": 711.0233333333333
+  },
+  "truthPlusDiagnostics": {
+    "simSecondsPerWallSecond": 60.820335341076934
+  },
+  "node": "v22.23.4",
+  "cpu": "Intel(R) Xeon(R) Processor @ 2.10GHz"
+}

@@ -1,0 +1,290 @@
+{
+  "protocol": {
+    "responseWindowS": 180,
+    "causeWindowS": 240,
+    "bootstrap": 500,
+    "seed": 7
+  },
+  "generatedAt": "2026-11-11T18:07:07.686Z",
+  "datasetSize": {
+    "runs": 20,
+    "totalSimulatedH": 4.999944022212179,
+    "normalExposureH": 3.4474479449471493,
+    "leakEvents": 4
+  },
+  "detectors": [
+    {
+      "detector": "D0",
+      "runs": 20,
+      "leakEvents": 4,
+      "detected": 1,
+      "missed": 3,
+      "recall": 0.25,
+      "recallCI95": [
+        0,
+        1
+      ],
+      "leakAlarms": 5,
+      "truePositiveAlarms": 1,
+      "precision": 0.2,
+      "falseAlarms": 4,
+      "lateAlarms": 0,
+      "normalExposureH": 3.4474479449471493,
+      "falseAlarmsPerHour": 1.160278578205282,
+      "falseAlarmsPerHourCI95": [
+        0.28023212952065835,
+        2.135942146060036
+      ],
+      "latencyMedianS": 51.007108555175364,
+      "latencyP95S": 51.007108555175364,
+      "localized": 1,
+      "edgeAccuracy": 0,
+      "distanceErrorMedianM": null,
+      "distanceErrorP95M": null,
+      "ambiguousShare": 0,
+      "causeConfusion": {
+        "leak": {
+          "normal": 3,
+          "leak": 1
+        },
+        "sensor_fault": {
+          "normal": 4,
+          "leak": 1
+        },
+        "operating_change": {
+          "leak": 2,
+          "normal": 3
+        },
+        "property_change": {
+          "normal": 5
+        },
+        "normal": {
+          "normal": 1
+        }
+      },
+      "causeMacroF1": 0.3055555555555555,
+      "perEvent": [
+        {
+          "runId": "ood-4000",
+          "scenarioId": "ood-4000",
+          "eventId": "leak-1",
+          "edgeId": "e7",
+          "detected": false
+        },
+        {
+          "runId": "ood-4001",
+          "scenarioId": "ood-4001",
+          "eventId": "leak-1",
+          "edgeId": "e4",
+          "detected": false
+        },
+        {
+          "runId": "ood-4016",
+          "scenarioId": "ood-4016",
+          "eventId": "leak-1",
+          "edgeId": "e3",
+          "detected": true,
+          "latencyS": 51.007108555175364,
+          "predictedEdge": "e2"
+        },
+        {
+          "runId": "ood-4018",
+          "scenarioId": "ood-4018",
+          "eventId": "leak-1",
+          "edgeId": "e7",
+          "detected": false
+        }
+      ]
+    },
+    {
+      "detector": "D1",
+      "runs": 20,
+      "leakEvents": 4,
+      "detected": 2,
+      "missed": 2,
+      "recall": 0.5,
+      "recallCI95": [
+        0,
+        1
+      ],
+      "leakAlarms": 2,
+      "truePositiveAlarms": 2,
+      "precision": 1,
+      "falseAlarms": 0,
+      "lateAlarms": 0,
+      "normalExposureH": 3.4474479449471493,
+      "falseAlarmsPerHour": 0,
+      "falseAlarmsPerHourCI95": [
+        0,
+        0
+      ],
+      "latencyMedianS": 50.92408901453018,
+      "latencyP95S": 60.89880660111085,
+      "localized": 2,
+      "edgeAccuracy": 1,
+      "distanceErrorMedianM": 111.43369175627241,
+      "distanceErrorP95M": 202.14336917562724,
+      "ambiguousShare": 0.2,
+      "causeConfusion": {
+        "leak": {
+          "normal": 1,
+          "leak": 2,
+          "sensor_fault": 1
+        },
+        "sensor_fault": {
+          "unknown": 1,
+          "normal": 3,
+          "sensor_fault": 1
+        },
+        "operating_change": {
+          "normal": 4,
+          "operating_change": 1
+        },
+        "property_change": {
+          "normal": 5
+        },
+        "normal": {
+          "normal": 1
+        }
+      },
+      "causeMacroF1": 0.5890652557319224,
+      "perEvent": [
+        {
+          "runId": "ood-4000",
+          "scenarioId": "ood-4000",
+          "eventId": "leak-1",
+          "edgeId": "e7",
+          "detected": false
+        },
+        {
+          "runId": "ood-4001",
+          "scenarioId": "ood-4001",
+          "eventId": "leak-1",
+          "edgeId": "e4",
+          "detected": true,
+          "latencyS": 39.841069473885,
+          "predictedEdge": "e4",
+          "distanceErrorM": 212.22222222222223
+        },
+        {
+          "runId": "ood-4016",
+          "scenarioId": "ood-4016",
+          "eventId": "leak-1",
+          "edgeId": "e3",
+          "detected": true,
+          "latencyS": 62.007108555175364,
+          "predictedEdge": "e3",
+          "distanceErrorM": 10.64516129032259
+        },
+        {
+          "runId": "ood-4018",
+          "scenarioId": "ood-4018",
+          "eventId": "leak-1",
+          "edgeId": "e7",
+          "detected": false
+        }
+      ]
+    },
+    {
+      "detector": "D2",
+      "runs": 20,
+      "leakEvents": 4,
+      "detected": 3,
+      "missed": 1,
+      "recall": 0.75,
+      "recallCI95": [
+        0,
+        1
+      ],
+      "leakAlarms": 5,
+      "truePositiveAlarms": 3,
+      "precision": 0.6,
+      "falseAlarms": 2,
+      "lateAlarms": 0,
+      "normalExposureH": 3.4474479449471493,
+      "falseAlarmsPerHour": 0.580139289102641,
+      "falseAlarmsPerHourCI95": [
+        0,
+        1.445622693434395
+      ],
+      "latencyMedianS": 11.841069473885,
+      "latencyP95S": 35.39050464704633,
+      "localized": 3,
+      "edgeAccuracy": 0.6666666666666666,
+      "distanceErrorMedianM": 111.43369175627241,
+      "distanceErrorP95M": 202.14336917562724,
+      "ambiguousShare": 0.1,
+      "causeConfusion": {
+        "leak": {
+          "normal": 1,
+          "leak": 3
+        },
+        "sensor_fault": {
+          "normal": 2,
+          "leak": 1,
+          "sensor_fault": 2
+        },
+        "operating_change": {
+          "normal": 4,
+          "operating_change": 1
+        },
+        "property_change": {
+          "normal": 5
+        },
+        "normal": {
+          "normal": 1
+        }
+      },
+      "causeMacroF1": 0.7338095238095238,
+      "perEvent": [
+        {
+          "runId": "ood-4000",
+          "scenarioId": "ood-4000",
+          "eventId": "leak-1",
+          "edgeId": "e7",
+          "detected": false
+        },
+        {
+          "runId": "ood-4001",
+          "scenarioId": "ood-4001",
+          "eventId": "leak-1",
+          "edgeId": "e4",
+          "detected": true,
+          "latencyS": 11.841069473885,
+          "predictedEdge": "e4",
+          "distanceErrorM": 212.22222222222223
+        },
+        {
+          "runId": "ood-4016",
+          "scenarioId": "ood-4016",
+          "eventId": "leak-1",
+          "edgeId": "e3",
+          "detected": true,
+          "latencyS": 38.007108555175364,
+          "predictedEdge": "e3",
+          "distanceErrorM": 10.64516129032259
+        },
+        {
+          "runId": "ood-4018",
+          "scenarioId": "ood-4018",
+          "eventId": "leak-1",
+          "edgeId": "e7",
+          "detected": true,
+          "latencyS": 6.5238622752949595,
+          "predictedEdge": "e6"
+        }
+      ]
+    }
+  ],
+  "notes": [
+    "Все результаты получены на синтетических сценариях одного условного объекта; не являются оценкой промышленной надёжности.",
+    "Доверительные интервалы — перцентильный бутстрап по независимым прогонам (runs), не по соседним окнам.",
+    "D0: доля событий с приемлемой реакцией по причинам 0.50 (политика: штатная команда и изменение свойств допускают ответ «норма»).",
+    "D1: доля событий с приемлемой реакцией по причинам 0.70 (политика: штатная команда и изменение свойств допускают ответ «норма»).",
+    "D2: доля событий с приемлемой реакцией по причинам 0.80 (политика: штатная команда и изменение свойств допускают ответ «норма»)."
+  ],
+  "suite": "ood-v1",
+  "model": {
+    "modelVersion": "logreg-logreg-v1"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "healthy_steady-101",
+  "scenarioId": "healthy_steady",
+  "tags": [
+    "normal"
+  ],
+  "durationS": 899.9853873563042,
+  "wallMs": 14081.594122,
+  "physicsCoreVersion": "0.1.0",
+  "detectorVersion": "pipetwin-diag-0.1.0",
+  "featureSchemaVersion": "features-1.0",
+  "modelVersion": "logreg-v2",
+  "commands": [],
+  "engineStatus": "running"
+}

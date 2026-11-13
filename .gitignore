@@ -1,0 +1,17 @@
+node_modules/
+dist/
+.vite/
+*.log
+__pycache__/
+.pytest_cache/
+backend/var/
+data/runs/
+# generated runs are reproducible from the manifests (see README); manifests stay
+data/datasets/*/runs/
+test-results/
+playwright-report/
+*.sqlite
+.venv/
+
+# EPANET scratch files
+backend/temp.*

@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "valve_ramp-103",
+  "scenarioId": "valve_ramp",
+  "tags": [
+    "operating_change"
+  ],
+  "durationS": 899.9853873563042,
+  "wallMs": 14082.716541999998,
+  "physicsCoreVersion": "0.1.0",
+  "detectorVersion": "pipetwin-diag-0.1.0",
+  "featureSchemaVersion": "features-1.0",
+  "modelVersion": "logreg-v2",
+  "commands": [
+    {
+      "t": 400,
+      "kind": "valve_opening"
+    }
+  ],
+  "engineStatus": "running"
+}

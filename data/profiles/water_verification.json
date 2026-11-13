@@ -1,0 +1,63 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "water_verification",
+  "name": "Вода (эталон, постоянные свойства)",
+  "provenance": "synthetic",
+  "description": "Accepted constants rho=1000 kg/m3, mu=1e-3 Pa s for analytic verification; K_s=2.19 GPa.",
+  "modelVersion": "1.0",
+  "validPressurePa": [
+    10000,
+    100000000
+  ],
+  "validTemperatureK": [
+    278.15,
+    353.15
+  ],
+  "compositionDefinition": "single-phase water (Y_w = 1)",
+  "compositionBounds": {
+    "waterMassFraction": [
+      1,
+      1
+    ]
+  },
+  "referencePressurePa": 100000,
+  "referenceTemperatureK": 293.15,
+  "referenceWaterMassFraction": 1,
+  "water": {
+    "densityModel": {
+      "kind": "linear",
+      "rhoRefKgM3": 1000,
+      "thermalExpansion1K": 0
+    },
+    "viscosityModel": {
+      "kind": "constant",
+      "muPaS": 0.001
+    },
+    "heatCapacityJkgK": 4180,
+    "conductivityWmK": 0.6,
+    "bulkModulusPa": 2190000000
+  },
+  "mixtureViscosityModel": {
+    "kind": "single_phase"
+  },
+  "phaseBoundaryModel": {
+    "kind": "min_pressure",
+    "minPressurePa": 10000,
+    "note": "Verification limit well above the vapour pressure of water at <= 45 C."
+  },
+  "uncertainty": {
+    "densityRel": 0,
+    "viscosityRel": 0,
+    "soundSpeedRel": 0
+  },
+  "standardConditions": {
+    "pressurePa": 101325,
+    "temperatureK": 293.15
+  },
+  "capabilities": [
+    "M0_liquid"
+  ],
+  "notes": [
+    "Constants are accepted for tests, not a property model of real water."
+  ]
+}

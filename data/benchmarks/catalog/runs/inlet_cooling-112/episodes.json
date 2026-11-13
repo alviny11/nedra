@@ -1,0 +1,172 @@
+[
+  {
+    "episodeId": "D1-1",
+    "detector": "D1",
+    "startS": 459,
+    "cause": "unknown",
+    "maxStatus": "ambiguous",
+    "candidateEdges": [],
+    "endS": 520
+  },
+  {
+    "episodeId": "D2-2",
+    "detector": "D2",
+    "startS": 459,
+    "cause": "unknown",
+    "maxStatus": "ambiguous",
+    "candidateEdges": [],
+    "endS": 520
+  },
+  {
+    "episodeId": "D0-3",
+    "detector": "D0",
+    "startS": 570,
+    "cause": "unknown",
+    "maxStatus": "suspected",
+    "candidateEdges": [],
+    "endS": 571
+  },
+  {
+    "episodeId": "D0-4",
+    "detector": "D0",
+    "startS": 631,
+    "cause": "unknown",
+    "maxStatus": "suspected",
+    "candidateEdges": [],
+    "endS": 632
+  },
+  {
+    "episodeId": "D0-5",
+    "detector": "D0",
+    "startS": 677,
+    "cause": "unknown",
+    "maxStatus": "suspected",
+    "candidateEdges": [],
+    "endS": 678
+  },
+  {
+    "episodeId": "D0-6",
+    "detector": "D0",
+    "startS": 710,
+    "cause": "unknown",
+    "maxStatus": "suspected",
+    "candidateEdges": [],
+    "endS": 712
+  },
+  {
+    "episodeId": "D0-7",
+    "detector": "D0",
+    "startS": 719,
+    "cause": "unknown",
+    "maxStatus": "suspected",
+    "candidateEdges": [],
+    "endS": 721
+  },
+  {
+    "episodeId": "D0-8",
+    "detector": "D0",
+    "startS": 722,
+    "cause": "unknown",
+    "maxStatus": "suspected",
+    "candidateEdges": [],
+    "endS": 728
+  },
+  {
+    "episodeId": "D0-9",
+    "detector": "D0",
+    "startS": 739,
+    "cause": "unknown",
+    "maxStatus": "suspected",
+    "candidateEdges": [],
+    "endS": 740
+  },
+  {
+    "episodeId": "D0-10",
+    "detector": "D0",
+    "startS": 742,
+    "cause": "unknown",
+    "maxStatus": "suspected",
+    "candidateEdges": [],
+    "endS": 747
+  },
+  {
+    "episodeId": "D0-11",
+    "detector": "D0",
+    "startS": 751,
+    "cause": "unknown",
+    "maxStatus": "suspected",
+    "candidateEdges": [],
+    "endS": 754
+  },
+  {
+    "episodeId": "D0-12",
+    "detector": "D0",
+    "startS": 755,
+    "cause": "unknown",
+    "maxStatus": "suspected",
+    "candidateEdges": [],
+    "endS": 762
+  },
+  {
+    "episodeId": "D0-13",
+    "detector": "D0",
+    "startS": 765,
+    "cause": "unknown",
+    "maxStatus": "suspected",
+    "candidateEdges": [],
+    "endS": 768
+  },
+  {
+    "episodeId": "D0-14",
+    "detector": "D0",
+    "startS": 770,
+    "cause": "unknown",
+    "maxStatus": "suspected",
+    "candidateEdges": [],
+    "endS": 775
+  },
+  {
+    "episodeId": "D0-15",
+    "detector": "D0",
+    "startS": 777,
+    "cause": "unknown",
+    "maxStatus": "suspected",
+    "candidateEdges": [],
+    "endS": 781
+  },
+  {
+    "episodeId": "D0-16",
+    "detector": "D0",
+    "startS": 782,
+    "cause": "unknown",
+    "maxStatus": "suspected",
+    "candidateEdges": [],
+    "endS": 787
+  },
+  {
+    "episodeId": "D0-17",
+    "detector": "D0",
+    "startS": 788,
+    "cause": "unknown",
+    "maxStatus": "suspected",
+    "candidateEdges": [],
+    "endS": 792
+  },
+  {
+    "episodeId": "D0-18",
+    "detector": "D0",
+    "startS": 793,
+    "cause": "leak",
+    "maxStatus": "confirmed",
+    "candidateEdges": [
+      {
+        "edgeId": "e2",
+        "misfit": 0,
+        "support": 1,
+        "estimatedDistanceM": 1600,
+        "method": "nearest_sensor"
+      }
+    ],
+    "alarmS": 803
+  }
+]

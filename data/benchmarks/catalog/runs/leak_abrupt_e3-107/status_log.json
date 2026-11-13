@@ -1,0 +1,160 @@
+[
+  {
+    "simTimeS": 0,
+    "detector": "D0",
+    "status": "unavailable",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": []
+  },
+  {
+    "simTimeS": 0,
+    "detector": "D1",
+    "status": "unavailable",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": []
+  },
+  {
+    "simTimeS": 0,
+    "detector": "D2",
+    "status": "unavailable",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": []
+  },
+  {
+    "simTimeS": 180.49590838044608,
+    "detector": "D0",
+    "status": "normal",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": []
+  },
+  {
+    "simTimeS": 180.49590838044608,
+    "detector": "D1",
+    "status": "normal",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": []
+  },
+  {
+    "simTimeS": 180.49590838044608,
+    "detector": "D2",
+    "status": "normal",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": []
+  },
+  {
+    "simTimeS": 441.48253280850287,
+    "detector": "D0",
+    "status": "suspected",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": [
+      "|невязка| > 6σ: PT-106 (-7.7σ)"
+    ]
+  },
+  {
+    "simTimeS": 442.4933108131725,
+    "detector": "D1",
+    "status": "suspected",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": [
+      "Давление ниже расчётного (CUSUM): PT-106",
+      "Баланс «Коллектор ДНС-1 → УПН» в норме (-0.1σ)"
+    ]
+  },
+  {
+    "simTimeS": 442.4933108131725,
+    "detector": "D2",
+    "status": "suspected",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": [
+      "Давление ниже расчётного (CUSUM): PT-106",
+      "Баланс «Коллектор ДНС-1 → УПН» в норме (-0.1σ)",
+      "Классификатор: normal 0.88, leak 0.01, operating_change 0.00, sensor_fault 0.11"
+    ]
+  },
+  {
+    "simTimeS": 445.4882086047863,
+    "detector": "D2",
+    "status": "confirmed",
+    "cause": "leak",
+    "edges": [
+      "e3"
+    ],
+    "evidence": [
+      "Давление ниже расчётного (CUSUM): PT-104, PT-105, PT-106, PT-111, PT-113",
+      "Баланс «Коллектор ДНС-1 → УПН» в норме (0.5σ)",
+      "Классификатор: normal 0.00, leak 1.00, operating_change 0.00, sensor_fault 0.00"
+    ]
+  },
+  {
+    "simTimeS": 446.4989866094559,
+    "detector": "D2",
+    "status": "confirmed",
+    "cause": "leak",
+    "edges": [
+      "e2",
+      "e3",
+      "e4",
+      "e8"
+    ],
+    "evidence": [
+      "Давление ниже расчётного (CUSUM): PT-103, PT-104, PT-105, PT-106, PT-107, PT-111, PT-113",
+      "Баланс «Коллектор ДНС-1 → УПН» в норме (0.6σ)",
+      "Классификатор: normal 0.00, leak 1.00, operating_change 0.00, sensor_fault 0.00"
+    ]
+  },
+  {
+    "simTimeS": 451.4967222992114,
+    "detector": "D0",
+    "status": "confirmed",
+    "cause": "leak",
+    "edges": [
+      "e2",
+      "e3",
+      "e4",
+      "e8"
+    ],
+    "evidence": [
+      "|невязка| > 6σ: PT-103 (-16.4σ), PT-104 (-14.1σ), PT-105 (-17.5σ), PT-106 (-11.4σ), PT-111 (-9.4σ), PT-113 (-14.3σ)"
+    ]
+  },
+  {
+    "simTimeS": 453.4995601973531,
+    "detector": "D2",
+    "status": "confirmed",
+    "cause": "leak",
+    "edges": [
+      "e3"
+    ],
+    "evidence": [
+      "Давление ниже расчётного (CUSUM): PT-103, PT-104, PT-105, PT-106, PT-107, PT-109, PT-111, PT-112, PT-113",
+      "Баланс «Коллектор ДНС-1 → УПН» не объясняется оценённым накоплением: дефицит 0.51 кг/с (6.7σ)",
+      "Расходомеры: приток выше/отток ниже расчётного (5.7σ)",
+      "Фронты волны: PT-106 440.75 с, PT-105 440.99 с, PT-113 441.68 с, PT-104 442.35 с, PT-103 443.73 с. Времена прихода согласуются с одним ребром e3. Исключены несогласованные приходы: PT-111, PT-107, PT-112.",
+      "Классификатор: normal 0.00, leak 1.00, operating_change 0.00, sensor_fault 0.00"
+    ]
+  },
+  {
+    "simTimeS": 456.4944579889669,
+    "detector": "D1",
+    "status": "confirmed",
+    "cause": "leak",
+    "edges": [
+      "e3"
+    ],
+    "evidence": [
+      "Давление ниже расчётного (CUSUM): PT-103, PT-104, PT-105, PT-106, PT-107, PT-109, PT-111, PT-112, PT-113",
+      "Баланс «Коллектор ДНС-1 → УПН» не объясняется оценённым накоплением: дефицит 0.68 кг/с (8.9σ)",
+      "Расходомеры: приток выше/отток ниже расчётного (7.4σ)",
+      "Фронты волны: PT-106 440.75 с, PT-105 440.99 с, PT-113 441.68 с, PT-104 442.35 с, PT-103 443.73 с. Времена прихода согласуются с одним ребром e3. Исключены несогласованные приходы: PT-111, PT-107, PT-112."
+    ]
+  }
+]

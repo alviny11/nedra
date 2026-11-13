@@ -1,0 +1,15 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "lib": ["ES2022", "DOM", "DOM.Iterable", "WebWorker"],
+    "jsx": "react-jsx",
+    "types": ["node", "vite/client"]
+  },
+  "include": [
+    "packages/*/src/**/*.ts",
+    "packages/*/test/**/*.ts",
+    "tools/headless-runner/src/**/*.ts",
+    "apps/web/src/**/*.ts",
+    "apps/web/src/**/*.tsx"
+  ]
+}

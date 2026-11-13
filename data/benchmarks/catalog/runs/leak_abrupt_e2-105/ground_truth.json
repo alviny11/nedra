@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "leak_abrupt_e2-105",
+  "scenarioId": "leak_abrupt_e2_public",
+  "seed": 105,
+  "durationS": 899.9853873563042,
+  "events": [
+    {
+      "eventId": "leak-1",
+      "kind": "leak",
+      "startTimeS": 450,
+      "edgeId": "e2",
+      "requestedDistanceM": 2300,
+      "appliedDistanceM": 2311.111111111111,
+      "snapErrorM": 11.111111111110858,
+      "holeDiameterM": 0.015,
+      "openingDurationS": 0,
+      "detail": {
+        "gridDxM": 22.22222222222222
+      },
+      "peakLeakMassFlowKgS": 4.295541848207492,
+      "totalLeakMassKg": 1921.9724019434047
+    }
+  ],
+  "normalExposureS": 450,
+  "propertyDeviation": {
+    "viscosityFactor": 1.05,
+    "bulkModulusFactor": 0.98,
+    "roughnessFactor": 1.1
+  }
+}

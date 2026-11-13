@@ -1,0 +1,87 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "water_tabulated",
+  "name": "Пластовая вода (табл. вязкость чистой воды)",
+  "provenance": "correlation",
+  "sourceUrl": "https://iapws.org/technical-guidance/release/viscosity",
+  "description": "Viscosity: log-interpolated pure-water values at 0.1 MPa (IAPWS 2008 as commonly tabulated, rounded). Density: linear around 20 C (error up to ~1.5% at the range ends). Salinity is NOT modelled: this is not a brine model.",
+  "modelVersion": "1.0",
+  "validPressurePa": [
+    100000,
+    100000000
+  ],
+  "validTemperatureK": [
+    273.15,
+    363.15
+  ],
+  "compositionDefinition": "single-phase water (Y_w = 1)",
+  "compositionBounds": {
+    "waterMassFraction": [
+      1,
+      1
+    ]
+  },
+  "referencePressurePa": 100000,
+  "referenceTemperatureK": 293.15,
+  "referenceWaterMassFraction": 1,
+  "water": {
+    "densityModel": {
+      "kind": "linear",
+      "rhoRefKgM3": 998.2,
+      "thermalExpansion1K": 0.00021
+    },
+    "viscosityModel": {
+      "kind": "table_log",
+      "temperatureK": [
+        273.15,
+        283.15,
+        293.15,
+        303.15,
+        313.15,
+        323.15,
+        333.15,
+        343.15,
+        353.15,
+        363.15
+      ],
+      "viscosityPaS": [
+        0.0017914,
+        0.0013059,
+        0.0010016,
+        0.0007972,
+        0.0006527,
+        0.0005465,
+        0.000466,
+        0.0004035,
+        0.000354,
+        0.0003142
+      ]
+    },
+    "heatCapacityJkgK": 4180,
+    "conductivityWmK": 0.6,
+    "bulkModulusPa": 2200000000
+  },
+  "mixtureViscosityModel": {
+    "kind": "single_phase"
+  },
+  "phaseBoundaryModel": {
+    "kind": "min_pressure",
+    "minPressurePa": 150000,
+    "note": "Synthetic limit for produced water with residual dissolved gas: below 1.5 bar a gas release is assumed possible."
+  },
+  "uncertainty": {
+    "densityRel": 0.015,
+    "viscosityRel": 0.01,
+    "soundSpeedRel": 0.02
+  },
+  "standardConditions": {
+    "pressurePa": 101325,
+    "temperatureK": 293.15
+  },
+  "capabilities": [
+    "M0_liquid"
+  ],
+  "notes": [
+    "Table bounds are enforced: no extrapolation outside 0..90 C."
+  ]
+}

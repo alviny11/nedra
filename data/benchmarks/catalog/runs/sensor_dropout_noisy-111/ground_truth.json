@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "sensor_dropout_noisy-111",
+  "scenarioId": "sensor_dropout_noisy_public",
+  "seed": 111,
+  "durationS": 899.9853873563042,
+  "events": [
+    {
+      "eventId": "fault-1",
+      "kind": "sensor_fault",
+      "startTimeS": 300,
+      "sensorId": "PT-104",
+      "detail": {
+        "type": "noise_increase",
+        "factor": 4
+      }
+    },
+    {
+      "eventId": "fault-2",
+      "kind": "sensor_fault",
+      "startTimeS": 300,
+      "sensorId": "FT-104",
+      "detail": {
+        "type": "dropout",
+        "probability": 0.3
+      }
+    }
+  ],
+  "normalExposureS": 899.9853873563042,
+  "propertyDeviation": {
+    "viscosityFactor": 1.05,
+    "bulkModulusFactor": 0.98,
+    "roughnessFactor": 1.1
+  }
+}

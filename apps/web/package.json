@@ -1,0 +1,29 @@
+{
+  "name": "@pipetwin/web",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "build:single": "vite build --mode single",
+    "preview": "vite preview",
+    "gen:api": "openapi-typescript ../../packages/contracts/schemas/openapi.json -o src/api/schema.d.ts"
+  },
+  "dependencies": {
+    "@pipetwin/contracts": "0.1.0",
+    "@pipetwin/diagnostics-core": "0.1.0",
+    "@pipetwin/physics-core": "0.1.0",
+    "react": "19.2.9",
+    "react-dom": "19.2.9",
+    "uplot": "1.6.32",
+    "zustand": "5.0.16"
+  },
+  "devDependencies": {
+    "@types/react": "19.2.18",
+    "@types/react-dom": "19.2.7",
+    "@vitejs/plugin-react": "5.2.0",
+    "openapi-typescript": "7.10.1",
+    "vite": "7.3.8"
+  }
+}

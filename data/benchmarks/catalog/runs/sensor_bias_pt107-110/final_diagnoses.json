@@ -1,0 +1,88 @@
+{
+  "D0": {
+    "schemaVersion": "1.0.0",
+    "id": "D0-899.5",
+    "detector": "D0",
+    "detectorVersion": "pipetwin-diag-0.1.0/D0",
+    "simTimeS": 899.481285314227,
+    "status": "normal",
+    "cause": "unknown",
+    "affectedSensorIds": [],
+    "candidateEdges": [],
+    "evidence": [],
+    "limitations": [
+      "D0: наблюдатель с фиксированными свойствами среды (паспорт при опорных T, Y_w); без учёта измеренной температуры и обводнённости.",
+      "D0 не различает причины: любая устойчивая тревога трактуется как утечка."
+    ],
+    "inputTimeRange": [
+      839.481285314227,
+      899.481285314227
+    ],
+    "score": 1.5331757899133633
+  },
+  "D1": {
+    "schemaVersion": "1.0.0",
+    "id": "D1-899.5",
+    "detector": "D1",
+    "detectorVersion": "pipetwin-diag-0.1.0/D1",
+    "simTimeS": 899.481285314227,
+    "status": "normal",
+    "cause": "unknown",
+    "affectedSensorIds": [],
+    "candidateEdges": [],
+    "evidence": [
+      {
+        "code": "MASS_BALANCE",
+        "text": "Баланс «Водовод С-1 → КНС» в норме (0.1σ)",
+        "value": 0.002661130749957153
+      }
+    ],
+    "limitations": [
+      "Исключены как неисправные: PT-107",
+      "Score и поддержка кандидатов — не откалиброванные вероятности."
+    ],
+    "inputTimeRange": [
+      839.481285314227,
+      899.481285314227
+    ],
+    "score": 0.12357410743904391
+  },
+  "D2": {
+    "schemaVersion": "1.0.0",
+    "id": "D2-899.5",
+    "detector": "D2",
+    "detectorVersion": "pipetwin-diag-0.1.0/D2",
+    "simTimeS": 899.481285314227,
+    "status": "normal",
+    "cause": "unknown",
+    "affectedSensorIds": [],
+    "candidateEdges": [],
+    "evidence": [
+      {
+        "code": "MASS_BALANCE",
+        "text": "Баланс «Водовод С-1 → КНС» в норме (0.1σ)",
+        "value": 0.002661130749957153
+      },
+      {
+        "code": "ML",
+        "text": "Классификатор: normal 0.90, leak 0.00, operating_change 0.00, sensor_fault 0.10"
+      }
+    ],
+    "limitations": [
+      "Исключены как неисправные: PT-107",
+      "Score и поддержка кандидатов — не откалиброванные вероятности.",
+      "Модель logreg-v2; калибровка проверена на валидации."
+    ],
+    "inputTimeRange": [
+      839.481285314227,
+      899.481285314227
+    ],
+    "score": 0.12357410743904391,
+    "causeScores": {
+      "normal": 0.9008597079268481,
+      "leak": 0.003270328454822946,
+      "operating_change": 0.0000848596021601314,
+      "sensor_fault": 0.0957851040161688
+    }
+  }
+}

@@ -1,0 +1,2296 @@
+{
+  "$defs": {
+    "AmbientChangeEvent": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "ambient_change",
+          "title": "Kind",
+          "type": "string"
+        },
+        "eventId": {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.\\-]+$",
+          "title": "Eventid",
+          "type": "string"
+        },
+        "edgeIds": {
+          "items": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.\\-]+$",
+            "type": "string"
+          },
+          "title": "Edgeids",
+          "type": "array"
+        },
+        "startTimeS": {
+          "minimum": 0,
+          "title": "Starttimes",
+          "type": "number"
+        },
+        "rampDurationS": {
+          "minimum": 0,
+          "title": "Rampdurations",
+          "type": "number"
+        },
+        "ambientTemperatureK": {
+          "exclusiveMinimum": 0,
+          "title": "Ambienttemperaturek",
+          "type": "number"
+        }
+      },
+      "required": [
+        "kind",
+        "eventId",
+        "edgeIds",
+        "startTimeS",
+        "rampDurationS",
+        "ambientTemperatureK"
+      ],
+      "title": "AmbientChangeEvent",
+      "type": "object"
+    },
+    "CmdFlow": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "source_mass_flow",
+          "title": "Kind",
+          "type": "string"
+        },
+        "id": {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.\\-]+$",
+          "title": "Id",
+          "type": "string"
+        },
+        "simTimeS": {
+          "minimum": 0,
+          "title": "Simtimes",
+          "type": "number"
+        },
+        "targetId": {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.\\-]+$",
+          "title": "Targetid",
+          "type": "string"
+        },
+        "massFlowKgS": {
+          "minimum": 0,
+          "title": "Massflowkgs",
+          "type": "number"
+        }
+      },
+      "required": [
+        "kind",
+        "id",
+        "simTimeS",
+        "targetId",
+        "massFlowKgS"
+      ],
+      "title": "CmdFlow",
+      "type": "object"
+    },
+    "CmdPressure": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "boundary_pressure",
+          "title": "Kind",
+          "type": "string"
+        },
+        "id": {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.\\-]+$",
+          "title": "Id",
+          "type": "string"
+        },
+        "simTimeS": {
+          "minimum": 0,
+          "title": "Simtimes",
+          "type": "number"
+        },
+        "targetId": {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.\\-]+$",
+          "title": "Targetid",
+          "type": "string"
+        },
+        "pressurePa": {
+          "exclusiveMinimum": 0,
+          "title": "Pressurepa",
+          "type": "number"
+        }
+      },
+      "required": [
+        "kind",
+        "id",
+        "simTimeS",
+        "targetId",
+        "pressurePa"
+      ],
+      "title": "CmdPressure",
+      "type": "object"
+    },
+    "CmdPump": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "pump_speed",
+          "title": "Kind",
+          "type": "string"
+        },
+        "id": {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.\\-]+$",
+          "title": "Id",
+          "type": "string"
+        },
+        "simTimeS": {
+          "minimum": 0,
+          "title": "Simtimes",
+          "type": "number"
+        },
+        "targetId": {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.\\-]+$",
+          "title": "Targetid",
+          "type": "string"
+        },
+        "speedRatio": {
+          "maximum": 1.2,
+          "minimum": 0,
+          "title": "Speedratio",
+          "type": "number"
+        }
+      },
+      "required": [
+        "kind",
+        "id",
+        "simTimeS",
+        "targetId",
+        "speedRatio"
+      ],
+      "title": "CmdPump",
+      "type": "object"
+    },
+    "CmdValve": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "valve_opening",
+          "title": "Kind",
+          "type": "string"
+        },
+        "id": {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.\\-]+$",
+          "title": "Id",
+          "type": "string"
+        },
+        "simTimeS": {
+          "minimum": 0,
+          "title": "Simtimes",
+          "type": "number"
+        },
+        "targetId": {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.\\-]+$",
+          "title": "Targetid",
+          "type": "string"
+        },
+        "opening": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Opening",
+          "type": "number"
+        }
+      },
+      "required": [
+        "kind",
+        "id",
+        "simTimeS",
+        "targetId",
+        "opening"
+      ],
+      "title": "CmdValve",
+      "type": "object"
+    },
+    "CompositionBounds": {
+      "additionalProperties": false,
+      "properties": {
+        "waterMassFraction": {
+          "maxItems": 2,
+          "minItems": 2,
+          "prefixItems": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            }
+          ],
+          "title": "Watermassfraction",
+          "type": "array"
+        }
+      },
+      "required": [
+        "waterMassFraction"
+      ],
+      "title": "CompositionBounds",
+      "type": "object"
+    },
+    "ContextElement": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.\\-]+$",
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "well_pad",
+            "gas_liquid_line",
+            "gas_line",
+            "separator",
+            "gas_outlet",
+            "treatment",
+            "water_injection"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "polyline": {
+          "anyOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/XY"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Polyline"
+        },
+        "position": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/XY"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "note": {
+          "title": "Note",
+          "type": "string"
+        },
+        "modelLevel": {
+          "enum": [
+            "context_only",
+            "M1_acoustic_experiment"
+          ],
+          "title": "Modellevel",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "name",
+        "note",
+        "modelLevel"
+      ],
+      "title": "ContextElement",
+      "type": "object"
+    },
+    "ElevationPoint": {
+      "additionalProperties": false,
+      "properties": {
+        "distanceM": {
+          "minimum": 0,
+          "title": "Distancem",
+          "type": "number"
+        },
+        "elevationM": {
+          "title": "Elevationm",
+          "type": "number"
+        }
+      },
+      "required": [
+        "distanceM",
+        "elevationM"
+      ],
+      "title": "ElevationPoint",
+      "type": "object"
+    },
+    "FaultBias": {
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "bias_step",
+          "title": "Type",
+          "type": "string"
+        },
+        "biasSI": {
+          "title": "Biassi",
+          "type": "number"
+        }
+      },
+      "required": [
+        "type",
+        "biasSI"
+      ],
+      "title": "FaultBias",
+      "type": "object"
+    },
+    "FaultDrift": {
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "drift",
+          "title": "Type",
+          "type": "string"
+        },
+        "rateSIPerS": {
+          "title": "Ratesipers",
+          "type": "number"
+        }
+      },
+      "required": [
+        "type",
+        "rateSIPerS"
+      ],
+      "title": "FaultDrift",
+      "type": "object"
+    },
+    "FaultDropout": {
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "dropout",
+          "title": "Type",
+          "type": "string"
+        },
+        "probability": {
+          "exclusiveMaximum": 1,
+          "minimum": 0,
+          "title": "Probability",
+          "type": "number"
+        }
+      },
+      "required": [
+        "type",
+        "probability"
+      ],
+      "title": "FaultDropout",
+      "type": "object"
+    },
+    "FaultNoise": {
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "noise_increase",
+          "title": "Type",
+          "type": "string"
+        },
+        "factor": {
+          "exclusiveMinimum": 0,
+          "title": "Factor",
+          "type": "number"
+        }
+      },
+      "required": [
+        "type",
+        "factor"
+      ],
+      "title": "FaultNoise",
+      "type": "object"
+    },
+    "FaultStuck": {
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "stuck",
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "title": "FaultStuck",
+      "type": "object"
+    },
+    "FluidProfile": {
+      "additionalProperties": false,
+      "properties": {
+        "schemaVersion": {
+          "title": "Schemaversion",
+          "type": "string"
+        },
+        "id": {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.\\-]+$",
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "provenance": {
+          "enum": [
+            "measured",
+            "correlation",
+            "synthetic"
+          ],
+          "title": "Provenance",
+          "type": "string"
+        },
+        "sourceUrl": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sourceurl"
+        },
+        "description": {
+          "title": "Description",
+          "type": "string"
+        },
+        "modelVersion": {
+          "title": "Modelversion",
+          "type": "string"
+        },
+        "validPressurePa": {
+          "maxItems": 2,
+          "minItems": 2,
+          "prefixItems": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            }
+          ],
+          "title": "Validpressurepa",
+          "type": "array"
+        },
+        "validTemperatureK": {
+          "maxItems": 2,
+          "minItems": 2,
+          "prefixItems": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            }
+          ],
+          "title": "Validtemperaturek",
+          "type": "array"
+        },
+        "compositionDefinition": {
+          "title": "Compositiondefinition",
+          "type": "string"
+        },
+        "compositionBounds": {
+          "$ref": "#/$defs/CompositionBounds"
+        },
+        "referencePressurePa": {
+          "exclusiveMinimum": 0,
+          "title": "Referencepressurepa",
+          "type": "number"
+        },
+        "referenceTemperatureK": {
+          "exclusiveMinimum": 0,
+          "title": "Referencetemperaturek",
+          "type": "number"
+        },
+        "referenceWaterMassFraction": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Referencewatermassfraction",
+          "type": "number"
+        },
+        "oil": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/PhaseProperties"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "water": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/PhaseProperties"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "mixtureViscosityModel": {
+          "discriminator": {
+            "mapping": {
+              "single_phase": "#/$defs/MixtureSinglePhase",
+              "wo_emulsion_power": "#/$defs/MixtureWoEmulsion"
+            },
+            "propertyName": "kind"
+          },
+          "oneOf": [
+            {
+              "$ref": "#/$defs/MixtureSinglePhase"
+            },
+            {
+              "$ref": "#/$defs/MixtureWoEmulsion"
+            }
+          ],
+          "title": "Mixtureviscositymodel"
+        },
+        "phaseBoundaryModel": {
+          "$ref": "#/$defs/PhaseBoundary"
+        },
+        "uncertainty": {
+          "$ref": "#/$defs/Uncertainty"
+        },
+        "standardConditions": {
+          "$ref": "#/$defs/StandardConditions"
+        },
+        "capabilities": {
+          "items": {
+            "enum": [
+              "M0_liquid",
+              "M1_acoustic_experiment"
+            ],
+            "type": "string"
+          },
+          "title": "Capabilities",
+          "type": "array"
+        },
+        "notes": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Notes",
+          "type": "array"
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "id",
+        "name",
+        "provenance",
+        "description",
+        "modelVersion",
+        "validPressurePa",
+        "validTemperatureK",
+        "compositionDefinition",
+        "compositionBounds",
+        "referencePressurePa",
+        "referenceTemperatureK",
+        "referenceWaterMassFraction",
+        "mixtureViscosityModel",
+        "phaseBoundaryModel",
+        "uncertainty",
+        "standardConditions",
+        "capabilities",
+        "notes"
+      ],
+      "title": "FluidProfile",
+      "type": "object"
+    },
+    "InletChangeEvent": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "inlet_change",
+          "title": "Kind",
+          "type": "string"
+        },
+        "eventId": {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.\\-]+$",
+          "title": "Eventid",
+          "type": "string"
+        },
+        "nodeId": {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.\\-]+$",
+          "title": "Nodeid",
+          "type": "string"
+        },
+        "startTimeS": {
+          "minimum": 0,
+          "title": "Starttimes",
+          "type": "number"
+        },
+        "rampDurationS": {
+          "minimum": 0,
+          "title": "Rampdurations",
+          "type": "number"
+        },
+        "temperatureK": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Temperaturek"
+        },
+        "waterMassFraction": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Watermassfraction"
+        }
+      },
+      "required": [
+        "kind",
+        "eventId",
+        "nodeId",
+        "startTimeS",
+        "rampDurationS"
+      ],
+      "title": "InletChangeEvent",
+      "type": "object"
+    },
+    "LeakEvent": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "leak",
+          "title": "Kind",
+          "type": "string"
+        },
+        "eventId": {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.\\-]+$",
+          "title": "Eventid",
+          "type": "string"
+        },
+        "edgeId": {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.\\-]+$",
+          "title": "Edgeid",
+          "type": "string"
+        },
+        "distanceM": {
+          "exclusiveMinimum": 0,
+          "title": "Distancem",
+          "type": "number"
+        },
+        "startTimeS": {
+          "minimum": 0,
+          "title": "Starttimes",
+          "type": "number"
+        },
+        "holeDiameterM": {
+          "exclusiveMinimum": 0,
+          "title": "Holediameterm",
+          "type": "number"
+        },
+        "openingDurationS": {
+          "minimum": 0,
+          "title": "Openingdurations",
+          "type": "number"
+        },
+        "dischargeCoefficient": {
+          "exclusiveMinimum": 0,
+          "maximum": 1,
+          "title": "Dischargecoefficient",
+          "type": "number"
+        },
+        "externalPressurePa": {
+          "exclusiveMinimum": 0,
+          "title": "Externalpressurepa",
+          "type": "number"
+        },
+        "outflowModel": {
+          "const": "liquid_orifice",
+          "title": "Outflowmodel",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "eventId",
+        "edgeId",
+        "distanceM",
+        "startTimeS",
+        "holeDiameterM",
+        "openingDurationS",
+        "dischargeCoefficient",
+        "externalPressurePa",
+        "outflowModel"
+      ],
+      "title": "LeakEvent",
+      "type": "object"
+    },
+    "LinearDensityModel": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "linear",
+          "title": "Kind",
+          "type": "string"
+        },
+        "rhoRefKgM3": {
+          "exclusiveMinimum": 0,
+          "title": "Rhorefkgm3",
+          "type": "number"
+        },
+        "thermalExpansion1K": {
+          "title": "Thermalexpansion1K",
+          "type": "number"
+        }
+      },
+      "required": [
+        "kind",
+        "rhoRefKgM3",
+        "thermalExpansion1K"
+      ],
+      "title": "LinearDensityModel",
+      "type": "object"
+    },
+    "MapSize": {
+      "additionalProperties": false,
+      "properties": {
+        "width": {
+          "exclusiveMinimum": 0,
+          "title": "Width",
+          "type": "number"
+        },
+        "height": {
+          "exclusiveMinimum": 0,
+          "title": "Height",
+          "type": "number"
+        }
+      },
+      "required": [
+        "width",
+        "height"
+      ],
+      "title": "MapSize",
+      "type": "object"
+    },
+    "MixtureSinglePhase": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "single_phase",
+          "title": "Kind",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind"
+      ],
+      "title": "MixtureSinglePhase",
+      "type": "object"
+    },
+    "MixtureWoEmulsion": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "wo_emulsion_power",
+          "title": "Kind",
+          "type": "string"
+        },
+        "exponent": {
+          "exclusiveMinimum": 0,
+          "title": "Exponent",
+          "type": "number"
+        },
+        "maxWaterVolumeFraction": {
+          "exclusiveMinimum": 0,
+          "maximum": 1,
+          "title": "Maxwatervolumefraction",
+          "type": "number"
+        },
+        "calibrated": {
+          "title": "Calibrated",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "kind",
+        "exponent",
+        "maxWaterVolumeFraction",
+        "calibrated"
+      ],
+      "title": "MixtureWoEmulsion",
+      "type": "object"
+    },
+    "NodeBoundary": {
+      "additionalProperties": false,
+      "properties": {
+        "pressurePa": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Pressurepa"
+        },
+        "massFlowKgS": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Massflowkgs"
+        },
+        "temperatureK": {
+          "exclusiveMinimum": 0,
+          "title": "Temperaturek",
+          "type": "number"
+        },
+        "waterMassFraction": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Watermassfraction",
+          "type": "number"
+        }
+      },
+      "required": [
+        "temperatureK",
+        "waterMassFraction"
+      ],
+      "title": "NodeBoundary",
+      "type": "object"
+    },
+    "NodeConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.\\-]+$",
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "junction",
+            "pressure_boundary",
+            "mass_flow_source",
+            "closed_end"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "role": {
+          "enum": [
+            "junction",
+            "separator_liquid",
+            "separator_water",
+            "treatment_inlet",
+            "water_outlet",
+            "tank",
+            "well_pad_liquid",
+            "pump_suction",
+            "pump_discharge",
+            "valve_port"
+          ],
+          "title": "Role",
+          "type": "string"
+        },
+        "elevationM": {
+          "title": "Elevationm",
+          "type": "number"
+        },
+        "display": {
+          "$ref": "#/$defs/XY"
+        },
+        "boundary": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/NodeBoundary"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "kind",
+        "role",
+        "elevationM",
+        "display"
+      ],
+      "title": "NodeConfig",
+      "type": "object"
+    },
+    "PhaseBoundary": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "min_pressure",
+          "title": "Kind",
+          "type": "string"
+        },
+        "minPressurePa": {
+          "exclusiveMinimum": 0,
+          "title": "Minpressurepa",
+          "type": "number"
+        },
+        "note": {
+          "title": "Note",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "minPressurePa",
+        "note"
+      ],
+      "title": "PhaseBoundary",
+      "type": "object"
+    },
+    "PhaseProperties": {
+      "additionalProperties": false,
+      "properties": {
+        "densityModel": {
+          "$ref": "#/$defs/LinearDensityModel"
+        },
+        "viscosityModel": {
+          "discriminator": {
+            "mapping": {
+              "arrhenius": "#/$defs/ViscosityArrhenius",
+              "constant": "#/$defs/ViscosityConstant",
+              "table_log": "#/$defs/ViscosityTableLog"
+            },
+            "propertyName": "kind"
+          },
+          "oneOf": [
+            {
+              "$ref": "#/$defs/ViscosityConstant"
+            },
+            {
+              "$ref": "#/$defs/ViscosityArrhenius"
+            },
+            {
+              "$ref": "#/$defs/ViscosityTableLog"
+            }
+          ],
+          "title": "Viscositymodel"
+        },
+        "heatCapacityJkgK": {
+          "exclusiveMinimum": 0,
+          "title": "Heatcapacityjkgk",
+          "type": "number"
+        },
+        "conductivityWmK": {
+          "exclusiveMinimum": 0,
+          "title": "Conductivitywmk",
+          "type": "number"
+        },
+        "bulkModulusPa": {
+          "exclusiveMinimum": 0,
+          "title": "Bulkmoduluspa",
+          "type": "number"
+        }
+      },
+      "required": [
+        "densityModel",
+        "viscosityModel",
+        "heatCapacityJkgK",
+        "conductivityWmK",
+        "bulkModulusPa"
+      ],
+      "title": "PhaseProperties",
+      "type": "object"
+    },
+    "PipeConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "pipe",
+          "title": "Kind",
+          "type": "string"
+        },
+        "id": {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.\\-]+$",
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "fromNodeId": {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.\\-]+$",
+          "title": "Fromnodeid",
+          "type": "string"
+        },
+        "toNodeId": {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.\\-]+$",
+          "title": "Tonodeid",
+          "type": "string"
+        },
+        "lengthM": {
+          "exclusiveMinimum": 0,
+          "title": "Lengthm",
+          "type": "number"
+        },
+        "innerDiameterM": {
+          "exclusiveMinimum": 0,
+          "title": "Innerdiameterm",
+          "type": "number"
+        },
+        "wallThicknessM": {
+          "exclusiveMinimum": 0,
+          "title": "Wallthicknessm",
+          "type": "number"
+        },
+        "roughnessM": {
+          "minimum": 0,
+          "title": "Roughnessm",
+          "type": "number"
+        },
+        "youngModulusPa": {
+          "exclusiveMinimum": 0,
+          "title": "Youngmoduluspa",
+          "type": "number"
+        },
+        "poissonRatio": {
+          "exclusiveMaximum": 0.5,
+          "exclusiveMinimum": 0,
+          "title": "Poissonratio",
+          "type": "number"
+        },
+        "restraintModel": {
+          "enum": [
+            "expansion_joints",
+            "anchored_upstream",
+            "anchored_throughout"
+          ],
+          "title": "Restraintmodel",
+          "type": "string"
+        },
+        "elevationProfile": {
+          "items": {
+            "$ref": "#/$defs/ElevationPoint"
+          },
+          "minItems": 2,
+          "title": "Elevationprofile",
+          "type": "array"
+        },
+        "displayPolyline": {
+          "items": {
+            "$ref": "#/$defs/XY"
+          },
+          "minItems": 2,
+          "title": "Displaypolyline",
+          "type": "array"
+        },
+        "thermal": {
+          "$ref": "#/$defs/PipeThermal"
+        },
+        "fluidProfileId": {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.\\-]+$",
+          "title": "Fluidprofileid",
+          "type": "string"
+        },
+        "solverModel": {
+          "const": "M0_liquid_moc",
+          "title": "Solvermodel",
+          "type": "string"
+        },
+        "localLossK": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Locallossk"
+        }
+      },
+      "required": [
+        "kind",
+        "id",
+        "name",
+        "fromNodeId",
+        "toNodeId",
+        "lengthM",
+        "innerDiameterM",
+        "wallThicknessM",
+        "roughnessM",
+        "youngModulusPa",
+        "poissonRatio",
+        "restraintModel",
+        "elevationProfile",
+        "displayPolyline",
+        "thermal",
+        "fluidProfileId",
+        "solverModel"
+      ],
+      "title": "PipeConfig",
+      "type": "object"
+    },
+    "PipeThermal": {
+      "additionalProperties": false,
+      "properties": {
+        "overallHeatTransferWm2K": {
+          "minimum": 0,
+          "title": "Overallheattransferwm2K",
+          "type": "number"
+        },
+        "referenceOuterDiameterM": {
+          "exclusiveMinimum": 0,
+          "title": "Referenceouterdiameterm",
+          "type": "number"
+        },
+        "ambientTemperatureK": {
+          "exclusiveMinimum": 0,
+          "title": "Ambienttemperaturek",
+          "type": "number"
+        },
+        "insulation": {
+          "title": "Insulation",
+          "type": "string"
+        }
+      },
+      "required": [
+        "overallHeatTransferWm2K",
+        "referenceOuterDiameterM",
+        "ambientTemperatureK",
+        "insulation"
+      ],
+      "title": "PipeThermal",
+      "type": "object"
+    },
+    "ProcessNoise": {
+      "additionalProperties": false,
+      "properties": {
+        "boundaryPressureStdPa": {
+          "minimum": 0,
+          "title": "Boundarypressurestdpa",
+          "type": "number"
+        },
+        "boundaryPressureTimeConstantS": {
+          "minimum": 0,
+          "title": "Boundarypressuretimeconstants",
+          "type": "number"
+        },
+        "sourceFlowRelStd": {
+          "minimum": 0,
+          "title": "Sourceflowrelstd",
+          "type": "number"
+        },
+        "sourceFlowTimeConstantS": {
+          "minimum": 0,
+          "title": "Sourceflowtimeconstants",
+          "type": "number"
+        }
+      },
+      "required": [
+        "boundaryPressureStdPa",
+        "boundaryPressureTimeConstantS",
+        "sourceFlowRelStd",
+        "sourceFlowTimeConstantS"
+      ],
+      "title": "ProcessNoise",
+      "type": "object"
+    },
+    "PropertyDeviation": {
+      "additionalProperties": false,
+      "properties": {
+        "viscosityFactor": {
+          "exclusiveMinimum": 0,
+          "title": "Viscosityfactor",
+          "type": "number"
+        },
+        "bulkModulusFactor": {
+          "exclusiveMinimum": 0,
+          "title": "Bulkmodulusfactor",
+          "type": "number"
+        },
+        "roughnessFactor": {
+          "exclusiveMinimum": 0,
+          "title": "Roughnessfactor",
+          "type": "number"
+        }
+      },
+      "required": [
+        "viscosityFactor",
+        "bulkModulusFactor",
+        "roughnessFactor"
+      ],
+      "title": "PropertyDeviation",
+      "type": "object"
+    },
+    "PublicScenarioConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "schemaVersion": {
+          "title": "Schemaversion",
+          "type": "string"
+        },
+        "id": {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.\\-]+$",
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "description": {
+          "title": "Description",
+          "type": "string"
+        },
+        "fluidProfiles": {
+          "items": {
+            "$ref": "#/$defs/FluidProfile"
+          },
+          "maxItems": 16,
+          "minItems": 1,
+          "title": "Fluidprofiles",
+          "type": "array"
+        },
+        "nodes": {
+          "items": {
+            "$ref": "#/$defs/NodeConfig"
+          },
+          "maxItems": 200,
+          "minItems": 2,
+          "title": "Nodes",
+          "type": "array"
+        },
+        "links": {
+          "items": {
+            "discriminator": {
+              "mapping": {
+                "pipe": "#/$defs/PipeConfig",
+                "pump": "#/$defs/PumpConfig",
+                "valve": "#/$defs/ValveConfig"
+              },
+              "propertyName": "kind"
+            },
+            "oneOf": [
+              {
+                "$ref": "#/$defs/PipeConfig"
+              },
+              {
+                "$ref": "#/$defs/PumpConfig"
+              },
+              {
+                "$ref": "#/$defs/ValveConfig"
+              }
+            ]
+          },
+          "maxItems": 200,
+          "minItems": 1,
+          "title": "Links",
+          "type": "array"
+        },
+        "sensors": {
+          "items": {
+            "$ref": "#/$defs/SensorConfig"
+          },
+          "maxItems": 500,
+          "title": "Sensors",
+          "type": "array"
+        },
+        "commands": {
+          "items": {
+            "discriminator": {
+              "mapping": {
+                "boundary_pressure": "#/$defs/CmdPressure",
+                "pump_speed": "#/$defs/CmdPump",
+                "source_mass_flow": "#/$defs/CmdFlow",
+                "valve_opening": "#/$defs/CmdValve"
+              },
+              "propertyName": "kind"
+            },
+            "oneOf": [
+              {
+                "$ref": "#/$defs/CmdPump"
+              },
+              {
+                "$ref": "#/$defs/CmdValve"
+              },
+              {
+                "$ref": "#/$defs/CmdPressure"
+              },
+              {
+                "$ref": "#/$defs/CmdFlow"
+              }
+            ]
+          },
+          "maxItems": 2000,
+          "title": "Commands",
+          "type": "array"
+        },
+        "simulation": {
+          "$ref": "#/$defs/SimulationSettings"
+        },
+        "contextElements": {
+          "items": {
+            "$ref": "#/$defs/ContextElement"
+          },
+          "maxItems": 200,
+          "title": "Contextelements",
+          "type": "array"
+        },
+        "map": {
+          "$ref": "#/$defs/MapSize"
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "id",
+        "name",
+        "description",
+        "fluidProfiles",
+        "nodes",
+        "links",
+        "sensors",
+        "commands",
+        "simulation",
+        "contextElements",
+        "map"
+      ],
+      "title": "PublicScenarioConfig",
+      "type": "object"
+    },
+    "PumpConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "pump",
+          "title": "Kind",
+          "type": "string"
+        },
+        "id": {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.\\-]+$",
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "fromNodeId": {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.\\-]+$",
+          "title": "Fromnodeid",
+          "type": "string"
+        },
+        "toNodeId": {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.\\-]+$",
+          "title": "Tonodeid",
+          "type": "string"
+        },
+        "curve": {
+          "$ref": "#/$defs/PumpCurve"
+        },
+        "referenceSpeedRpm": {
+          "exclusiveMinimum": 0,
+          "title": "Referencespeedrpm",
+          "type": "number"
+        },
+        "initialSpeedRatio": {
+          "maximum": 1.2,
+          "minimum": 0,
+          "title": "Initialspeedratio",
+          "type": "number"
+        },
+        "speedTimeConstantS": {
+          "minimum": 0,
+          "title": "Speedtimeconstants",
+          "type": "number"
+        },
+        "checkValve": {
+          "title": "Checkvalve",
+          "type": "boolean"
+        },
+        "allowedFlowM3S": {
+          "maxItems": 2,
+          "minItems": 2,
+          "prefixItems": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            }
+          ],
+          "title": "Allowedflowm3S",
+          "type": "array"
+        },
+        "efficiency": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/PumpEfficiency"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "display": {
+          "$ref": "#/$defs/XY"
+        }
+      },
+      "required": [
+        "kind",
+        "id",
+        "name",
+        "fromNodeId",
+        "toNodeId",
+        "curve",
+        "referenceSpeedRpm",
+        "initialSpeedRatio",
+        "speedTimeConstantS",
+        "checkValve",
+        "allowedFlowM3S",
+        "display"
+      ],
+      "title": "PumpConfig",
+      "type": "object"
+    },
+    "PumpCurve": {
+      "additionalProperties": false,
+      "properties": {
+        "flowM3S": {
+          "items": {
+            "minimum": 0,
+            "type": "number"
+          },
+          "minItems": 3,
+          "title": "Flowm3S",
+          "type": "array"
+        },
+        "headM": {
+          "items": {
+            "type": "number"
+          },
+          "minItems": 3,
+          "title": "Headm",
+          "type": "array"
+        }
+      },
+      "required": [
+        "flowM3S",
+        "headM"
+      ],
+      "title": "PumpCurve",
+      "type": "object"
+    },
+    "PumpEfficiency": {
+      "additionalProperties": false,
+      "properties": {
+        "flowM3S": {
+          "items": {
+            "minimum": 0,
+            "type": "number"
+          },
+          "title": "Flowm3S",
+          "type": "array"
+        },
+        "eta": {
+          "items": {
+            "exclusiveMinimum": 0,
+            "maximum": 1,
+            "type": "number"
+          },
+          "title": "Eta",
+          "type": "array"
+        }
+      },
+      "required": [
+        "flowM3S",
+        "eta"
+      ],
+      "title": "PumpEfficiency",
+      "type": "object"
+    },
+    "SensorConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.\\-]+$",
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "pressure",
+            "temperature",
+            "massFlow",
+            "volumeFlow",
+            "waterFraction"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "edgeId": {
+          "anyOf": [
+            {
+              "maxLength": 64,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9_.\\-]+$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Edgeid"
+        },
+        "distanceM": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Distancem"
+        },
+        "nodeId": {
+          "anyOf": [
+            {
+              "maxLength": 64,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9_.\\-]+$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Nodeid"
+        },
+        "sampleRateHz": {
+          "exclusiveMinimum": 0,
+          "maximum": 1000,
+          "title": "Sampleratehz",
+          "type": "number"
+        },
+        "timeConstantS": {
+          "minimum": 0,
+          "title": "Timeconstants",
+          "type": "number"
+        },
+        "delayS": {
+          "minimum": 0,
+          "title": "Delays",
+          "type": "number"
+        },
+        "noiseStdSI": {
+          "minimum": 0,
+          "title": "Noisestdsi",
+          "type": "number"
+        },
+        "biasSI": {
+          "title": "Biassi",
+          "type": "number"
+        },
+        "quantizationStepSI": {
+          "minimum": 0,
+          "title": "Quantizationstepsi",
+          "type": "number"
+        },
+        "dropoutProbability": {
+          "exclusiveMaximum": 1,
+          "minimum": 0,
+          "title": "Dropoutprobability",
+          "type": "number"
+        },
+        "timestampJitterS": {
+          "minimum": 0,
+          "title": "Timestampjitters",
+          "type": "number"
+        },
+        "rangeSI": {
+          "maxItems": 2,
+          "minItems": 2,
+          "prefixItems": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "title": "Rangesi",
+          "type": "array"
+        },
+        "role": {
+          "enum": [
+            "boundary_input",
+            "residual",
+            "state_assimilation"
+          ],
+          "title": "Role",
+          "type": "string"
+        },
+        "availability": {
+          "enum": [
+            "online",
+            "offline"
+          ],
+          "title": "Availability",
+          "type": "string"
+        },
+        "boundaryNodeId": {
+          "anyOf": [
+            {
+              "maxLength": 64,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9_.\\-]+$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Boundarynodeid"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "kind",
+        "sampleRateHz",
+        "timeConstantS",
+        "delayS",
+        "noiseStdSI",
+        "biasSI",
+        "quantizationStepSI",
+        "dropoutProbability",
+        "timestampJitterS",
+        "rangeSI",
+        "role",
+        "availability"
+      ],
+      "title": "SensorConfig",
+      "type": "object"
+    },
+    "SensorFaultEvent": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "sensor_fault",
+          "title": "Kind",
+          "type": "string"
+        },
+        "eventId": {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.\\-]+$",
+          "title": "Eventid",
+          "type": "string"
+        },
+        "sensorId": {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.\\-]+$",
+          "title": "Sensorid",
+          "type": "string"
+        },
+        "startTimeS": {
+          "minimum": 0,
+          "title": "Starttimes",
+          "type": "number"
+        },
+        "endTimeS": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Endtimes"
+        },
+        "fault": {
+          "discriminator": {
+            "mapping": {
+              "bias_step": "#/$defs/FaultBias",
+              "drift": "#/$defs/FaultDrift",
+              "dropout": "#/$defs/FaultDropout",
+              "noise_increase": "#/$defs/FaultNoise",
+              "stuck": "#/$defs/FaultStuck"
+            },
+            "propertyName": "type"
+          },
+          "oneOf": [
+            {
+              "$ref": "#/$defs/FaultBias"
+            },
+            {
+              "$ref": "#/$defs/FaultDrift"
+            },
+            {
+              "$ref": "#/$defs/FaultStuck"
+            },
+            {
+              "$ref": "#/$defs/FaultNoise"
+            },
+            {
+              "$ref": "#/$defs/FaultDropout"
+            }
+          ],
+          "title": "Fault"
+        }
+      },
+      "required": [
+        "kind",
+        "eventId",
+        "sensorId",
+        "startTimeS",
+        "fault"
+      ],
+      "title": "SensorFaultEvent",
+      "type": "object"
+    },
+    "SimulationSettings": {
+      "additionalProperties": false,
+      "properties": {
+        "targetReachLengthM": {
+          "exclusiveMinimum": 0,
+          "title": "Targetreachlengthm",
+          "type": "number"
+        },
+        "minReachesPerPipe": {
+          "maximum": 1000,
+          "minimum": 2,
+          "title": "Minreachesperpipe",
+          "type": "integer"
+        },
+        "transportCourant": {
+          "exclusiveMinimum": 0,
+          "maximum": 1,
+          "title": "Transportcourant",
+          "type": "number"
+        },
+        "maxTransportIntervalS": {
+          "exclusiveMinimum": 0,
+          "title": "Maxtransportintervals",
+          "type": "number"
+        },
+        "frictionModel": {
+          "enum": [
+            "colebrook",
+            "haaland"
+          ],
+          "title": "Frictionmodel",
+          "type": "string"
+        },
+        "propertyMode": {
+          "enum": [
+            "fixed_acoustic_variable_viscosity",
+            "fixed_all"
+          ],
+          "title": "Propertymode",
+          "type": "string"
+        },
+        "durationS": {
+          "exclusiveMinimum": 0,
+          "maximum": 86400,
+          "title": "Durations",
+          "type": "number"
+        }
+      },
+      "required": [
+        "targetReachLengthM",
+        "minReachesPerPipe",
+        "transportCourant",
+        "maxTransportIntervalS",
+        "frictionModel",
+        "propertyMode",
+        "durationS"
+      ],
+      "title": "SimulationSettings",
+      "type": "object"
+    },
+    "StandardConditions": {
+      "additionalProperties": false,
+      "properties": {
+        "pressurePa": {
+          "exclusiveMinimum": 0,
+          "title": "Pressurepa",
+          "type": "number"
+        },
+        "temperatureK": {
+          "exclusiveMinimum": 0,
+          "title": "Temperaturek",
+          "type": "number"
+        }
+      },
+      "required": [
+        "pressurePa",
+        "temperatureK"
+      ],
+      "title": "StandardConditions",
+      "type": "object"
+    },
+    "TruthConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "schemaVersion": {
+          "title": "Schemaversion",
+          "type": "string"
+        },
+        "seed": {
+          "maximum": 4294967295,
+          "minimum": 0,
+          "title": "Seed",
+          "type": "integer"
+        },
+        "events": {
+          "items": {
+            "discriminator": {
+              "mapping": {
+                "ambient_change": "#/$defs/AmbientChangeEvent",
+                "inlet_change": "#/$defs/InletChangeEvent",
+                "leak": "#/$defs/LeakEvent",
+                "sensor_fault": "#/$defs/SensorFaultEvent"
+              },
+              "propertyName": "kind"
+            },
+            "oneOf": [
+              {
+                "$ref": "#/$defs/LeakEvent"
+              },
+              {
+                "$ref": "#/$defs/SensorFaultEvent"
+              },
+              {
+                "$ref": "#/$defs/InletChangeEvent"
+              },
+              {
+                "$ref": "#/$defs/AmbientChangeEvent"
+              }
+            ]
+          },
+          "maxItems": 100,
+          "title": "Events",
+          "type": "array"
+        },
+        "processNoise": {
+          "$ref": "#/$defs/ProcessNoise"
+        },
+        "propertyDeviation": {
+          "$ref": "#/$defs/PropertyDeviation"
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "seed",
+        "events",
+        "processNoise",
+        "propertyDeviation"
+      ],
+      "title": "TruthConfig",
+      "type": "object"
+    },
+    "Uncertainty": {
+      "additionalProperties": false,
+      "properties": {
+        "densityRel": {
+          "minimum": 0,
+          "title": "Densityrel",
+          "type": "number"
+        },
+        "viscosityRel": {
+          "minimum": 0,
+          "title": "Viscosityrel",
+          "type": "number"
+        },
+        "soundSpeedRel": {
+          "minimum": 0,
+          "title": "Soundspeedrel",
+          "type": "number"
+        }
+      },
+      "required": [
+        "densityRel",
+        "viscosityRel",
+        "soundSpeedRel"
+      ],
+      "title": "Uncertainty",
+      "type": "object"
+    },
+    "ValveCharacteristic": {
+      "additionalProperties": false,
+      "properties": {
+        "opening": {
+          "items": {
+            "exclusiveMinimum": 0,
+            "maximum": 1,
+            "type": "number"
+          },
+          "minItems": 2,
+          "title": "Opening",
+          "type": "array"
+        },
+        "lossCoefficientK": {
+          "items": {
+            "exclusiveMinimum": 0,
+            "type": "number"
+          },
+          "minItems": 2,
+          "title": "Losscoefficientk",
+          "type": "array"
+        }
+      },
+      "required": [
+        "opening",
+        "lossCoefficientK"
+      ],
+      "title": "ValveCharacteristic",
+      "type": "object"
+    },
+    "ValveConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "valve",
+          "title": "Kind",
+          "type": "string"
+        },
+        "id": {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.\\-]+$",
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "fromNodeId": {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.\\-]+$",
+          "title": "Fromnodeid",
+          "type": "string"
+        },
+        "toNodeId": {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.\\-]+$",
+          "title": "Tonodeid",
+          "type": "string"
+        },
+        "diameterM": {
+          "exclusiveMinimum": 0,
+          "title": "Diameterm",
+          "type": "number"
+        },
+        "characteristic": {
+          "$ref": "#/$defs/ValveCharacteristic"
+        },
+        "initialOpening": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Initialopening",
+          "type": "number"
+        },
+        "strokeTimeS": {
+          "minimum": 0,
+          "title": "Stroketimes",
+          "type": "number"
+        },
+        "display": {
+          "$ref": "#/$defs/XY"
+        }
+      },
+      "required": [
+        "kind",
+        "id",
+        "name",
+        "fromNodeId",
+        "toNodeId",
+        "diameterM",
+        "characteristic",
+        "initialOpening",
+        "strokeTimeS",
+        "display"
+      ],
+      "title": "ValveConfig",
+      "type": "object"
+    },
+    "ViscosityArrhenius": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "arrhenius",
+          "title": "Kind",
+          "type": "string"
+        },
+        "a": {
+          "title": "A",
+          "type": "number"
+        },
+        "bK": {
+          "title": "Bk",
+          "type": "number"
+        }
+      },
+      "required": [
+        "kind",
+        "a",
+        "bK"
+      ],
+      "title": "ViscosityArrhenius",
+      "type": "object"
+    },
+    "ViscosityConstant": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "constant",
+          "title": "Kind",
+          "type": "string"
+        },
+        "muPaS": {
+          "exclusiveMinimum": 0,
+          "title": "Mupas",
+          "type": "number"
+        }
+      },
+      "required": [
+        "kind",
+        "muPaS"
+      ],
+      "title": "ViscosityConstant",
+      "type": "object"
+    },
+    "ViscosityTableLog": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "table_log",
+          "title": "Kind",
+          "type": "string"
+        },
+        "temperatureK": {
+          "items": {
+            "exclusiveMinimum": 0,
+            "type": "number"
+          },
+          "minItems": 2,
+          "title": "Temperaturek",
+          "type": "array"
+        },
+        "viscosityPaS": {
+          "items": {
+            "exclusiveMinimum": 0,
+            "type": "number"
+          },
+          "minItems": 2,
+          "title": "Viscositypas",
+          "type": "array"
+        }
+      },
+      "required": [
+        "kind",
+        "temperatureK",
+        "viscosityPaS"
+      ],
+      "title": "ViscosityTableLog",
+      "type": "object"
+    },
+    "XY": {
+      "additionalProperties": false,
+      "properties": {
+        "x": {
+          "title": "X",
+          "type": "number"
+        },
+        "y": {
+          "title": "Y",
+          "type": "number"
+        }
+      },
+      "required": [
+        "x",
+        "y"
+      ],
+      "title": "XY",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": {
+      "title": "Schemaversion",
+      "type": "string"
+    },
+    "id": {
+      "maxLength": 64,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9_.\\-]+$",
+      "title": "Id",
+      "type": "string"
+    },
+    "name": {
+      "title": "Name",
+      "type": "string"
+    },
+    "description": {
+      "title": "Description",
+      "type": "string"
+    },
+    "expectedBehavior": {
+      "title": "Expectedbehavior",
+      "type": "string"
+    },
+    "limitations": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Limitations",
+      "type": "array"
+    },
+    "tags": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Tags",
+      "type": "array"
+    },
+    "public": {
+      "$ref": "#/$defs/PublicScenarioConfig"
+    },
+    "truth": {
+      "$ref": "#/$defs/TruthConfig"
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "id",
+    "name",
+    "description",
+    "expectedBehavior",
+    "limitations",
+    "tags",
+    "public",
+    "truth"
+  ],
+  "title": "ScenarioFile",
+  "type": "object"
+}

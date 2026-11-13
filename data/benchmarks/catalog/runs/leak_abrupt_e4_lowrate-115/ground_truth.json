@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "leak_abrupt_e4_lowrate-115",
+  "scenarioId": "leak_abrupt_e4_lowrate_public",
+  "seed": 115,
+  "durationS": 899.9853873563042,
+  "events": [
+    {
+      "eventId": "leak-1",
+      "kind": "leak",
+      "startTimeS": 420,
+      "edgeId": "e4",
+      "requestedDistanceM": 1100,
+      "appliedDistanceM": 1111.111111111111,
+      "snapErrorM": 11.111111111111086,
+      "holeDiameterM": 0.02,
+      "openingDurationS": 0,
+      "detail": {
+        "gridDxM": 22.22222222222222
+      },
+      "peakLeakMassFlowKgS": 7.408394762718354,
+      "totalLeakMassKg": 3502.900869021216
+    }
+  ],
+  "normalExposureS": 420,
+  "propertyDeviation": {
+    "viscosityFactor": 1.05,
+    "bulkModulusFactor": 0.98,
+    "roughnessFactor": 1.1
+  }
+}

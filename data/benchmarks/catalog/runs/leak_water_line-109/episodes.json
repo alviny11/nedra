@@ -1,0 +1,126 @@
+[
+  {
+    "episodeId": "D0-1",
+    "detector": "D0",
+    "startS": 421,
+    "cause": "unknown",
+    "maxStatus": "suspected",
+    "candidateEdges": [],
+    "endS": 426
+  },
+  {
+    "episodeId": "D1-2",
+    "detector": "D1",
+    "startS": 421,
+    "cause": "leak",
+    "maxStatus": "confirmed",
+    "candidateEdges": [
+      {
+        "edgeId": "e9",
+        "misfit": 0.00030035323853500463,
+        "support": 1,
+        "estimatedDistanceM": 1100,
+        "intervalM": [
+          1070,
+          1130
+        ],
+        "method": "wave_arrival"
+      }
+    ],
+    "alarmS": 431,
+    "estimatedLeakMassFlowKgs": 3.26585963720098
+  },
+  {
+    "episodeId": "D2-3",
+    "detector": "D2",
+    "startS": 421,
+    "cause": "leak",
+    "maxStatus": "confirmed",
+    "candidateEdges": [
+      {
+        "edgeId": "e9",
+        "misfit": 0.00030035323853500463,
+        "support": 1,
+        "estimatedDistanceM": 1100,
+        "intervalM": [
+          1070,
+          1130
+        ],
+        "method": "wave_arrival"
+      }
+    ],
+    "alarmS": 430,
+    "estimatedLeakMassFlowKgs": 3.26585963720098
+  },
+  {
+    "episodeId": "D0-4",
+    "detector": "D0",
+    "startS": 427,
+    "cause": "unknown",
+    "maxStatus": "suspected",
+    "candidateEdges": [],
+    "endS": 431
+  },
+  {
+    "episodeId": "D0-5",
+    "detector": "D0",
+    "startS": 432,
+    "cause": "unknown",
+    "maxStatus": "suspected",
+    "candidateEdges": [],
+    "endS": 434
+  },
+  {
+    "episodeId": "D0-6",
+    "detector": "D0",
+    "startS": 435,
+    "cause": "unknown",
+    "maxStatus": "suspected",
+    "candidateEdges": [],
+    "endS": 442
+  },
+  {
+    "episodeId": "D0-7",
+    "detector": "D0",
+    "startS": 443,
+    "cause": "unknown",
+    "maxStatus": "suspected",
+    "candidateEdges": [],
+    "endS": 445
+  },
+  {
+    "episodeId": "D0-8",
+    "detector": "D0",
+    "startS": 446,
+    "cause": "unknown",
+    "maxStatus": "suspected",
+    "candidateEdges": [],
+    "endS": 450
+  },
+  {
+    "episodeId": "D0-9",
+    "detector": "D0",
+    "startS": 451,
+    "cause": "unknown",
+    "maxStatus": "suspected",
+    "candidateEdges": [],
+    "endS": 453
+  },
+  {
+    "episodeId": "D0-10",
+    "detector": "D0",
+    "startS": 454,
+    "cause": "leak",
+    "maxStatus": "confirmed",
+    "candidateEdges": [
+      {
+        "edgeId": "e9",
+        "misfit": 0,
+        "support": 1,
+        "estimatedDistanceM": 1350,
+        "method": "nearest_sensor"
+      }
+    ],
+    "alarmS": 464
+  }
+]

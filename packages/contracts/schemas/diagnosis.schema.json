@@ -1,0 +1,352 @@
+{
+  "$defs": {
+    "CandidateEdge": {
+      "additionalProperties": false,
+      "properties": {
+        "edgeId": {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.\\-]+$",
+          "title": "Edgeid",
+          "type": "string"
+        },
+        "misfit": {
+          "title": "Misfit",
+          "type": "number"
+        },
+        "support": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Support",
+          "type": "number"
+        },
+        "estimatedDistanceM": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Estimateddistancem"
+        },
+        "intervalM": {
+          "anyOf": [
+            {
+              "maxItems": 2,
+              "minItems": 2,
+              "prefixItems": [
+                {
+                  "minimum": 0,
+                  "type": "number"
+                },
+                {
+                  "minimum": 0,
+                  "type": "number"
+                }
+              ],
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Intervalm"
+        },
+        "method": {
+          "enum": [
+            "wave_arrival",
+            "steady_residual_fit",
+            "nearest_sensor",
+            "mass_balance_zone"
+          ],
+          "title": "Method",
+          "type": "string"
+        }
+      },
+      "required": [
+        "edgeId",
+        "misfit",
+        "support",
+        "method"
+      ],
+      "title": "CandidateEdge",
+      "type": "object"
+    },
+    "EvidenceItem": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "title": "Code",
+          "type": "string"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "sensorIds": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sensorids"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Value"
+        }
+      },
+      "required": [
+        "code",
+        "text"
+      ],
+      "title": "EvidenceItem",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": {
+      "title": "Schemaversion",
+      "type": "string"
+    },
+    "id": {
+      "title": "Id",
+      "type": "string"
+    },
+    "detector": {
+      "enum": [
+        "D0",
+        "D1",
+        "D2"
+      ],
+      "title": "Detector",
+      "type": "string"
+    },
+    "detectorVersion": {
+      "title": "Detectorversion",
+      "type": "string"
+    },
+    "simTimeS": {
+      "minimum": 0,
+      "title": "Simtimes",
+      "type": "number"
+    },
+    "status": {
+      "enum": [
+        "normal",
+        "suspected",
+        "confirmed",
+        "ambiguous",
+        "recovering",
+        "unavailable"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "cause": {
+      "enum": [
+        "leak",
+        "operating_change",
+        "sensor_fault",
+        "composition_change",
+        "unknown"
+      ],
+      "title": "Cause",
+      "type": "string"
+    },
+    "affectedSensorIds": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Affectedsensorids",
+      "type": "array"
+    },
+    "candidateEdges": {
+      "items": {
+        "$ref": "#/$defs/CandidateEdge"
+      },
+      "title": "Candidateedges",
+      "type": "array"
+    },
+    "estimatedDistanceM": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Estimateddistancem"
+    },
+    "intervalM": {
+      "anyOf": [
+        {
+          "maxItems": 2,
+          "minItems": 2,
+          "prefixItems": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "minimum": 0,
+              "type": "number"
+            }
+          ],
+          "type": "array"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Intervalm"
+    },
+    "estimatedLeakMassFlowKgs": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Estimatedleakmassflowkgs"
+    },
+    "score": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Score"
+    },
+    "calibratedProbability": {
+      "anyOf": [
+        {
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Calibratedprobability"
+    },
+    "causeScores": {
+      "anyOf": [
+        {
+          "additionalProperties": {
+            "type": "number"
+          },
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Causescores"
+    },
+    "evidence": {
+      "items": {
+        "$ref": "#/$defs/EvidenceItem"
+      },
+      "title": "Evidence",
+      "type": "array"
+    },
+    "limitations": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Limitations",
+      "type": "array"
+    },
+    "inputTimeRange": {
+      "maxItems": 2,
+      "minItems": 2,
+      "prefixItems": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "number"
+        }
+      ],
+      "title": "Inputtimerange",
+      "type": "array"
+    },
+    "firstAlarmTimeS": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Firstalarmtimes"
+    },
+    "episodeId": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Episodeid"
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "id",
+    "detector",
+    "detectorVersion",
+    "simTimeS",
+    "status",
+    "cause",
+    "affectedSensorIds",
+    "candidateEdges",
+    "evidence",
+    "limitations",
+    "inputTimeRange"
+  ],
+  "title": "Diagnosis",
+  "type": "object"
+}

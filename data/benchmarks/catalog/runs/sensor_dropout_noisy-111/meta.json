@@ -1,0 +1,17 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "sensor_dropout_noisy-111",
+  "scenarioId": "sensor_dropout_noisy",
+  "tags": [
+    "sensor_fault",
+    "data_quality"
+  ],
+  "durationS": 899.9853873563042,
+  "wallMs": 13954.032179999998,
+  "physicsCoreVersion": "0.1.0",
+  "detectorVersion": "pipetwin-diag-0.1.0",
+  "featureSchemaVersion": "features-1.0",
+  "modelVersion": "logreg-v2",
+  "commands": [],
+  "engineStatus": "running"
+}

@@ -1,0 +1,17 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "leak_abrupt_e2-105",
+  "scenarioId": "leak_abrupt_e2",
+  "tags": [
+    "leak",
+    "abrupt"
+  ],
+  "durationS": 899.9853873563042,
+  "wallMs": 17241.37513200001,
+  "physicsCoreVersion": "0.1.0",
+  "detectorVersion": "pipetwin-diag-0.1.0",
+  "featureSchemaVersion": "features-1.0",
+  "modelVersion": "logreg-v2",
+  "commands": [],
+  "engineStatus": "running"
+}

@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "leak_slow_e4-108",
+  "scenarioId": "leak_slow_e4_public",
+  "seed": 108,
+  "durationS": 899.9853873563042,
+  "events": [
+    {
+      "eventId": "leak-1",
+      "kind": "leak",
+      "startTimeS": 360,
+      "edgeId": "e4",
+      "requestedDistanceM": 1900,
+      "appliedDistanceM": 1911.111111111111,
+      "snapErrorM": 11.111111111111086,
+      "holeDiameterM": 0.02,
+      "openingDurationS": 240,
+      "detail": {
+        "gridDxM": 22.22222222222222
+      },
+      "peakLeakMassFlowKgS": 7.0499891936463674,
+      "totalLeakMassKg": 2955.956034067544
+    }
+  ],
+  "normalExposureS": 360,
+  "propertyDeviation": {
+    "viscosityFactor": 1.05,
+    "bulkModulusFactor": 0.98,
+    "roughnessFactor": 1.1
+  }
+}

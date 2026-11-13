@@ -1,0 +1,39 @@
+{
+  "name": "pipetwin",
+  "private": true,
+  "version": "0.1.0",
+  "description": "PipeTwin: browser digital twin of a field liquid pipeline network with physics-based leak diagnostics",
+  "type": "module",
+  "workspaces": [
+    "packages/contracts",
+    "packages/physics-core",
+    "packages/diagnostics-core",
+    "packages/evaluation",
+    "tools/headless-runner",
+    "apps/web"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "npm run dev -w @pipetwin/web",
+    "build": "npm run build:runner && npm run build:web",
+    "build:runner": "npm run build -w @pipetwin/headless-runner",
+    "build:web": "npm run build -w @pipetwin/web",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "test:physics": "vitest run packages/physics-core",
+    "test:diagnostics": "vitest run packages/diagnostics-core",
+    "runner": "node tools/headless-runner/dist/pipetwin-runner.mjs",
+    "e2e": "npm run build:web && playwright test -c tests/e2e/playwright.config.ts"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.56.1",
+    "@types/node": "22.20.5",
+    "ajv": "8.17.1",
+    "esbuild": "0.25.12",
+    "tsx": "4.20.6",
+    "typescript": "5.9.3",
+    "vitest": "3.2.7"
+  }
+}

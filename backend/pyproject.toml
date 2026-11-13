@@ -1,0 +1,10 @@
+[project]
+name = "pipetwin-backend"
+version = "0.1.0"
+description = "PipeTwin local API, ML pipeline and independent reference checks"
+requires-python = ">=3.11"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+filterwarnings = ["ignore::UserWarning:wntr.*", "ignore::DeprecationWarning"]

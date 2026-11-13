@@ -1,0 +1,63 @@
+[
+  {
+    "episodeId": "D0-1",
+    "detector": "D0",
+    "startS": 431,
+    "cause": "leak",
+    "maxStatus": "confirmed",
+    "candidateEdges": [
+      {
+        "edgeId": "e6",
+        "misfit": 0,
+        "support": 1,
+        "estimatedDistanceM": 1200,
+        "method": "nearest_sensor"
+      }
+    ],
+    "alarmS": 441
+  },
+  {
+    "episodeId": "D1-2",
+    "detector": "D1",
+    "startS": 432,
+    "cause": "leak",
+    "maxStatus": "confirmed",
+    "candidateEdges": [
+      {
+        "edgeId": "e6",
+        "misfit": 0.6209663709705986,
+        "support": 1,
+        "estimatedDistanceM": 610,
+        "intervalM": [
+          580,
+          630
+        ],
+        "method": "wave_arrival"
+      }
+    ],
+    "alarmS": 440,
+    "estimatedLeakMassFlowKgs": 9.539857822838874
+  },
+  {
+    "episodeId": "D2-3",
+    "detector": "D2",
+    "startS": 432,
+    "cause": "leak",
+    "maxStatus": "confirmed",
+    "candidateEdges": [
+      {
+        "edgeId": "e6",
+        "misfit": 0.6209663709705986,
+        "support": 1,
+        "estimatedDistanceM": 610,
+        "intervalM": [
+          580,
+          630
+        ],
+        "method": "wave_arrival"
+      }
+    ],
+    "alarmS": 435,
+    "estimatedLeakMassFlowKgs": 9.539857822838874
+  }
+]

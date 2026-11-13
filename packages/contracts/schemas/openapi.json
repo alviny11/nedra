@@ -1,0 +1,4555 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "PipeTwin API",
+    "description": "Local API of the PipeTwin prototype (synthetic data, single user).",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/api/health": {
+      "get": {
+        "summary": "Health",
+        "operationId": "health_api_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Health"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/capabilities": {
+      "get": {
+        "summary": "Capabilities",
+        "operationId": "capabilities_api_capabilities_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Capabilities Api Capabilities Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/fluid-profiles": {
+      "get": {
+        "summary": "Fluid Profiles",
+        "operationId": "fluid_profiles_api_fluid_profiles_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/FluidProfile"
+                  },
+                  "type": "array",
+                  "title": "Response Fluid Profiles Api Fluid Profiles Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/scenarios": {
+      "get": {
+        "summary": "Scenarios",
+        "operationId": "scenarios_api_scenarios_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ScenarioMeta"
+                  },
+                  "type": "array",
+                  "title": "Response Scenarios Api Scenarios Get"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Save Scenario",
+        "operationId": "save_scenario_api_scenarios_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ScenarioFile"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScenarioMeta"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/scenarios/validate": {
+      "post": {
+        "summary": "Validate",
+        "operationId": "validate_api_scenarios_validate_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/ScenarioFile"
+                  },
+                  {
+                    "$ref": "#/components/schemas/PublicScenarioConfig"
+                  }
+                ],
+                "title": "Body"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/scenarios/{sid}": {
+      "get": {
+        "summary": "Get Scenario",
+        "description": "Operator configuration (contains hidden truth) — for the experiment loader only.",
+        "operationId": "get_scenario_api_scenarios__sid__get",
+        "parameters": [
+          {
+            "name": "sid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Sid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScenarioFile"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/scenarios/{sid}/public": {
+      "get": {
+        "summary": "Get Scenario Public",
+        "description": "Only the configuration a diagnostician may see (no truth block).",
+        "operationId": "get_scenario_public_api_scenarios__sid__public_get",
+        "parameters": [
+          {
+            "name": "sid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Sid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicScenarioConfig"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/runs": {
+      "post": {
+        "summary": "Create Run",
+        "operationId": "create_run_api_runs_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RunCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/runs/{rid}/measurements": {
+      "post": {
+        "summary": "Post Measurements",
+        "operationId": "post_measurements_api_runs__rid__measurements_post",
+        "parameters": [
+          {
+            "name": "rid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Rid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MeasurementPacket"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BatchAck"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/runs/{rid}/ground-truth": {
+      "post": {
+        "summary": "Post Truth",
+        "description": "Evaluator channel only: never read by inference endpoints.",
+        "operationId": "post_truth_api_runs__rid__ground_truth_post",
+        "parameters": [
+          {
+            "name": "rid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Rid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GroundTruthRecord"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Post Truth Api Runs  Rid  Ground Truth Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/runs/{rid}/diagnoses": {
+      "post": {
+        "summary": "Post Diagnoses",
+        "operationId": "post_diagnoses_api_runs__rid__diagnoses_post",
+        "parameters": [
+          {
+            "name": "rid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Rid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Diagnosis"
+                },
+                "title": "Body"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Post Diagnoses Api Runs  Rid  Diagnoses Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/runs/{rid}/report": {
+      "get": {
+        "summary": "Run Report",
+        "operationId": "run_report_api_runs__rid__report_get",
+        "parameters": [
+          {
+            "name": "rid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Rid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Run Report Api Runs  Rid  Report Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/jobs/dataset": {
+      "post": {
+        "summary": "Job Dataset",
+        "operationId": "job_dataset_api_jobs_dataset_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DatasetJobRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/jobs/train": {
+      "post": {
+        "summary": "Job Train",
+        "operationId": "job_train_api_jobs_train_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TrainJobRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/jobs/evaluate": {
+      "post": {
+        "summary": "Job Evaluate",
+        "operationId": "job_evaluate_api_jobs_evaluate_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EvaluateJobRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/jobs/{jid}": {
+      "get": {
+        "summary": "Job Get",
+        "operationId": "job_get_api_jobs__jid__get",
+        "parameters": [
+          {
+            "name": "jid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Jid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/jobs/{jid}/cancel": {
+      "post": {
+        "summary": "Job Cancel",
+        "operationId": "job_cancel_api_jobs__jid__cancel_post",
+        "parameters": [
+          {
+            "name": "jid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Jid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/models": {
+      "get": {
+        "summary": "Models",
+        "operationId": "models_api_models_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ModelOut"
+                  },
+                  "type": "array",
+                  "title": "Response Models Api Models Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/models/{mid}/artifact": {
+      "get": {
+        "summary": "Model Artifact",
+        "operationId": "model_artifact_api_models__mid__artifact_get",
+        "parameters": [
+          {
+            "name": "mid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Mid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LogisticModelArtifact"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AmbientChangeEvent": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "const": "ambient_change",
+            "title": "Kind"
+          },
+          "eventId": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.\\-]+$",
+            "title": "Eventid"
+          },
+          "edgeIds": {
+            "items": {
+              "type": "string",
+              "maxLength": 64,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9_.\\-]+$"
+            },
+            "type": "array",
+            "title": "Edgeids"
+          },
+          "startTimeS": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Starttimes"
+          },
+          "rampDurationS": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Rampdurations"
+          },
+          "ambientTemperatureK": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Ambienttemperaturek"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "kind",
+          "eventId",
+          "edgeIds",
+          "startTimeS",
+          "rampDurationS",
+          "ambientTemperatureK"
+        ],
+        "title": "AmbientChangeEvent"
+      },
+      "BatchAck": {
+        "properties": {
+          "runId": {
+            "type": "string",
+            "title": "Runid"
+          },
+          "batchKey": {
+            "type": "string",
+            "title": "Batchkey"
+          },
+          "accepted": {
+            "type": "integer",
+            "title": "Accepted"
+          },
+          "duplicate": {
+            "type": "boolean",
+            "title": "Duplicate"
+          }
+        },
+        "type": "object",
+        "required": [
+          "runId",
+          "batchKey",
+          "accepted",
+          "duplicate"
+        ],
+        "title": "BatchAck"
+      },
+      "Calibration": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "validated",
+              "not_validated"
+            ],
+            "title": "Status"
+          },
+          "method": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Method"
+          },
+          "brierValidation": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Briervalidation"
+          },
+          "note": {
+            "type": "string",
+            "title": "Note"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "status",
+          "note"
+        ],
+        "title": "Calibration"
+      },
+      "CandidateEdge": {
+        "properties": {
+          "edgeId": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.\\-]+$",
+            "title": "Edgeid"
+          },
+          "misfit": {
+            "type": "number",
+            "title": "Misfit"
+          },
+          "support": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Support"
+          },
+          "estimatedDistanceM": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Estimateddistancem"
+          },
+          "intervalM": {
+            "anyOf": [
+              {
+                "prefixItems": [
+                  {
+                    "type": "number",
+                    "minimum": 0.0
+                  },
+                  {
+                    "type": "number",
+                    "minimum": 0.0
+                  }
+                ],
+                "type": "array",
+                "maxItems": 2,
+                "minItems": 2
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Intervalm"
+          },
+          "method": {
+            "type": "string",
+            "enum": [
+              "wave_arrival",
+              "steady_residual_fit",
+              "nearest_sensor",
+              "mass_balance_zone"
+            ],
+            "title": "Method"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "edgeId",
+          "misfit",
+          "support",
+          "method"
+        ],
+        "title": "CandidateEdge"
+      },
+      "CmdFlow": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "const": "source_mass_flow",
+            "title": "Kind"
+          },
+          "id": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.\\-]+$",
+            "title": "Id"
+          },
+          "simTimeS": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Simtimes"
+          },
+          "targetId": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.\\-]+$",
+            "title": "Targetid"
+          },
+          "massFlowKgS": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Massflowkgs"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "kind",
+          "id",
+          "simTimeS",
+          "targetId",
+          "massFlowKgS"
+        ],
+        "title": "CmdFlow"
+      },
+      "CmdPressure": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "const": "boundary_pressure",
+            "title": "Kind"
+          },
+          "id": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.\\-]+$",
+            "title": "Id"
+          },
+          "simTimeS": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Simtimes"
+          },
+          "targetId": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.\\-]+$",
+            "title": "Targetid"
+          },
+          "pressurePa": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Pressurepa"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "kind",
+          "id",
+          "simTimeS",
+          "targetId",
+          "pressurePa"
+        ],
+        "title": "CmdPressure"
+      },
+      "CmdPump": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "const": "pump_speed",
+            "title": "Kind"
+          },
+          "id": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.\\-]+$",
+            "title": "Id"
+          },
+          "simTimeS": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Simtimes"
+          },
+          "targetId": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.\\-]+$",
+            "title": "Targetid"
+          },
+          "speedRatio": {
+            "type": "number",
+            "maximum": 1.2,
+            "minimum": 0.0,
+            "title": "Speedratio"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "kind",
+          "id",
+          "simTimeS",
+          "targetId",
+          "speedRatio"
+        ],
+        "title": "CmdPump"
+      },
+      "CmdValve": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "const": "valve_opening",
+            "title": "Kind"
+          },
+          "id": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.\\-]+$",
+            "title": "Id"
+          },
+          "simTimeS": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Simtimes"
+          },
+          "targetId": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.\\-]+$",
+            "title": "Targetid"
+          },
+          "opening": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Opening"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "kind",
+          "id",
+          "simTimeS",
+          "targetId",
+          "opening"
+        ],
+        "title": "CmdValve"
+      },
+      "CompositionBounds": {
+        "properties": {
+          "waterMassFraction": {
+            "prefixItems": [
+              {
+                "type": "number",
+                "maximum": 1.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "number",
+                "maximum": 1.0,
+                "minimum": 0.0
+              }
+            ],
+            "type": "array",
+            "maxItems": 2,
+            "minItems": 2,
+            "title": "Watermassfraction"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "waterMassFraction"
+        ],
+        "title": "CompositionBounds"
+      },
+      "ContextElement": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.\\-]+$",
+            "title": "Id"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "well_pad",
+              "gas_liquid_line",
+              "gas_line",
+              "separator",
+              "gas_outlet",
+              "treatment",
+              "water_injection"
+            ],
+            "title": "Kind"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "polyline": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/XY"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Polyline"
+          },
+          "position": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/XY"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "note": {
+            "type": "string",
+            "title": "Note"
+          },
+          "modelLevel": {
+            "type": "string",
+            "enum": [
+              "context_only",
+              "M1_acoustic_experiment"
+            ],
+            "title": "Modellevel"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "kind",
+          "name",
+          "note",
+          "modelLevel"
+        ],
+        "title": "ContextElement"
+      },
+      "DatasetJobRequest": {
+        "properties": {
+          "datasetId": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.\\-]+$",
+            "title": "Datasetid"
+          },
+          "count": {
+            "type": "integer",
+            "maximum": 2000.0,
+            "minimum": 1.0,
+            "title": "Count"
+          },
+          "seed": {
+            "type": "integer",
+            "maximum": 2147483647.0,
+            "minimum": 0.0,
+            "title": "Seed"
+          },
+          "spec": {
+            "type": "string",
+            "enum": [
+              "default",
+              "ood",
+              "heldout",
+              "lowrate"
+            ],
+            "title": "Spec",
+            "default": "default"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "datasetId",
+          "count",
+          "seed"
+        ],
+        "title": "DatasetJobRequest"
+      },
+      "DecisionThresholds": {
+        "properties": {
+          "minTopScore": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Mintopscore"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "minTopScore"
+        ],
+        "title": "DecisionThresholds"
+      },
+      "Diagnosis": {
+        "properties": {
+          "schemaVersion": {
+            "type": "string",
+            "title": "Schemaversion"
+          },
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "detector": {
+            "type": "string",
+            "enum": [
+              "D0",
+              "D1",
+              "D2"
+            ],
+            "title": "Detector"
+          },
+          "detectorVersion": {
+            "type": "string",
+            "title": "Detectorversion"
+          },
+          "simTimeS": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Simtimes"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "normal",
+              "suspected",
+              "confirmed",
+              "ambiguous",
+              "recovering",
+              "unavailable"
+            ],
+            "title": "Status"
+          },
+          "cause": {
+            "type": "string",
+            "enum": [
+              "leak",
+              "operating_change",
+              "sensor_fault",
+              "composition_change",
+              "unknown"
+            ],
+            "title": "Cause"
+          },
+          "affectedSensorIds": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Affectedsensorids"
+          },
+          "candidateEdges": {
+            "items": {
+              "$ref": "#/components/schemas/CandidateEdge"
+            },
+            "type": "array",
+            "title": "Candidateedges"
+          },
+          "estimatedDistanceM": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Estimateddistancem"
+          },
+          "intervalM": {
+            "anyOf": [
+              {
+                "prefixItems": [
+                  {
+                    "type": "number",
+                    "minimum": 0.0
+                  },
+                  {
+                    "type": "number",
+                    "minimum": 0.0
+                  }
+                ],
+                "type": "array",
+                "maxItems": 2,
+                "minItems": 2
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Intervalm"
+          },
+          "estimatedLeakMassFlowKgs": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Estimatedleakmassflowkgs"
+          },
+          "score": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Score"
+          },
+          "calibratedProbability": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 1.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Calibratedprobability"
+          },
+          "causeScores": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "number"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Causescores"
+          },
+          "evidence": {
+            "items": {
+              "$ref": "#/components/schemas/EvidenceItem"
+            },
+            "type": "array",
+            "title": "Evidence"
+          },
+          "limitations": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Limitations"
+          },
+          "inputTimeRange": {
+            "prefixItems": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "type": "array",
+            "maxItems": 2,
+            "minItems": 2,
+            "title": "Inputtimerange"
+          },
+          "firstAlarmTimeS": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Firstalarmtimes"
+          },
+          "episodeId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Episodeid"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "schemaVersion",
+          "id",
+          "detector",
+          "detectorVersion",
+          "simTimeS",
+          "status",
+          "cause",
+          "affectedSensorIds",
+          "candidateEdges",
+          "evidence",
+          "limitations",
+          "inputTimeRange"
+        ],
+        "title": "Diagnosis"
+      },
+      "ElevationPoint": {
+        "properties": {
+          "distanceM": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Distancem"
+          },
+          "elevationM": {
+            "type": "number",
+            "title": "Elevationm"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "distanceM",
+          "elevationM"
+        ],
+        "title": "ElevationPoint"
+      },
+      "EvaluateJobRequest": {
+        "properties": {
+          "datasetId": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.\\-]+$",
+            "title": "Datasetid"
+          },
+          "modelId": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.\\-]+$",
+            "title": "Modelid"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "datasetId",
+          "modelId"
+        ],
+        "title": "EvaluateJobRequest"
+      },
+      "EvidenceItem": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "text": {
+            "type": "string",
+            "title": "Text"
+          },
+          "sensorIds": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sensorids"
+          },
+          "value": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "code",
+          "text"
+        ],
+        "title": "EvidenceItem"
+      },
+      "FaultBias": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "const": "bias_step",
+            "title": "Type"
+          },
+          "biasSI": {
+            "type": "number",
+            "title": "Biassi"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "type",
+          "biasSI"
+        ],
+        "title": "FaultBias"
+      },
+      "FaultDrift": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "const": "drift",
+            "title": "Type"
+          },
+          "rateSIPerS": {
+            "type": "number",
+            "title": "Ratesipers"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "type",
+          "rateSIPerS"
+        ],
+        "title": "FaultDrift"
+      },
+      "FaultDropout": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "const": "dropout",
+            "title": "Type"
+          },
+          "probability": {
+            "type": "number",
+            "exclusiveMaximum": 1.0,
+            "minimum": 0.0,
+            "title": "Probability"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "type",
+          "probability"
+        ],
+        "title": "FaultDropout"
+      },
+      "FaultNoise": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "const": "noise_increase",
+            "title": "Type"
+          },
+          "factor": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Factor"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "type",
+          "factor"
+        ],
+        "title": "FaultNoise"
+      },
+      "FaultStuck": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "const": "stuck",
+            "title": "Type"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "type"
+        ],
+        "title": "FaultStuck"
+      },
+      "FluidProfile": {
+        "properties": {
+          "schemaVersion": {
+            "type": "string",
+            "title": "Schemaversion"
+          },
+          "id": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.\\-]+$",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "provenance": {
+            "type": "string",
+            "enum": [
+              "measured",
+              "correlation",
+              "synthetic"
+            ],
+            "title": "Provenance"
+          },
+          "sourceUrl": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sourceurl"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "modelVersion": {
+            "type": "string",
+            "title": "Modelversion"
+          },
+          "validPressurePa": {
+            "prefixItems": [
+              {
+                "type": "number",
+                "exclusiveMinimum": 0.0
+              },
+              {
+                "type": "number",
+                "exclusiveMinimum": 0.0
+              }
+            ],
+            "type": "array",
+            "maxItems": 2,
+            "minItems": 2,
+            "title": "Validpressurepa"
+          },
+          "validTemperatureK": {
+            "prefixItems": [
+              {
+                "type": "number",
+                "exclusiveMinimum": 0.0
+              },
+              {
+                "type": "number",
+                "exclusiveMinimum": 0.0
+              }
+            ],
+            "type": "array",
+            "maxItems": 2,
+            "minItems": 2,
+            "title": "Validtemperaturek"
+          },
+          "compositionDefinition": {
+            "type": "string",
+            "title": "Compositiondefinition"
+          },
+          "compositionBounds": {
+            "$ref": "#/components/schemas/CompositionBounds"
+          },
+          "referencePressurePa": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Referencepressurepa"
+          },
+          "referenceTemperatureK": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Referencetemperaturek"
+          },
+          "referenceWaterMassFraction": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Referencewatermassfraction"
+          },
+          "oil": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PhaseProperties"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "water": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PhaseProperties"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "mixtureViscosityModel": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MixtureSinglePhase"
+              },
+              {
+                "$ref": "#/components/schemas/MixtureWoEmulsion"
+              }
+            ],
+            "title": "Mixtureviscositymodel",
+            "discriminator": {
+              "propertyName": "kind",
+              "mapping": {
+                "single_phase": "#/components/schemas/MixtureSinglePhase",
+                "wo_emulsion_power": "#/components/schemas/MixtureWoEmulsion"
+              }
+            }
+          },
+          "phaseBoundaryModel": {
+            "$ref": "#/components/schemas/PhaseBoundary"
+          },
+          "uncertainty": {
+            "$ref": "#/components/schemas/Uncertainty"
+          },
+          "standardConditions": {
+            "$ref": "#/components/schemas/StandardConditions"
+          },
+          "capabilities": {
+            "items": {
+              "type": "string",
+              "enum": [
+                "M0_liquid",
+                "M1_acoustic_experiment"
+              ]
+            },
+            "type": "array",
+            "title": "Capabilities"
+          },
+          "notes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Notes"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "schemaVersion",
+          "id",
+          "name",
+          "provenance",
+          "description",
+          "modelVersion",
+          "validPressurePa",
+          "validTemperatureK",
+          "compositionDefinition",
+          "compositionBounds",
+          "referencePressurePa",
+          "referenceTemperatureK",
+          "referenceWaterMassFraction",
+          "mixtureViscosityModel",
+          "phaseBoundaryModel",
+          "uncertainty",
+          "standardConditions",
+          "capabilities",
+          "notes"
+        ],
+        "title": "FluidProfile"
+      },
+      "GroundTruthRecord": {
+        "properties": {
+          "schemaVersion": {
+            "type": "string",
+            "title": "Schemaversion"
+          },
+          "runId": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.\\-]+$",
+            "title": "Runid"
+          },
+          "scenarioId": {
+            "type": "string",
+            "title": "Scenarioid"
+          },
+          "seed": {
+            "type": "integer",
+            "title": "Seed"
+          },
+          "durationS": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Durations"
+          },
+          "events": {
+            "items": {
+              "$ref": "#/components/schemas/TruthEventRealization"
+            },
+            "type": "array",
+            "title": "Events"
+          },
+          "normalExposureS": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Normalexposures"
+          },
+          "propertyDeviation": {
+            "$ref": "#/components/schemas/PropertyDeviation"
+          },
+          "terminatedEarly": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TerminatedEarly"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "schemaVersion",
+          "runId",
+          "scenarioId",
+          "seed",
+          "durationS",
+          "events",
+          "normalExposureS",
+          "propertyDeviation"
+        ],
+        "title": "GroundTruthRecord"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "Health": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "const": "ok",
+            "title": "Status"
+          },
+          "version": {
+            "type": "string",
+            "title": "Version"
+          },
+          "storage": {
+            "type": "boolean",
+            "title": "Storage"
+          },
+          "runner": {
+            "type": "boolean",
+            "title": "Runner"
+          },
+          "modelRegistry": {
+            "type": "boolean",
+            "title": "Modelregistry"
+          },
+          "schemaVersion": {
+            "type": "string",
+            "title": "Schemaversion"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status",
+          "version",
+          "storage",
+          "runner",
+          "modelRegistry",
+          "schemaVersion"
+        ],
+        "title": "Health"
+      },
+      "InletChangeEvent": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "const": "inlet_change",
+            "title": "Kind"
+          },
+          "eventId": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.\\-]+$",
+            "title": "Eventid"
+          },
+          "nodeId": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.\\-]+$",
+            "title": "Nodeid"
+          },
+          "startTimeS": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Starttimes"
+          },
+          "rampDurationS": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Rampdurations"
+          },
+          "temperatureK": {
+            "anyOf": [
+              {
+                "type": "number",
+                "exclusiveMinimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Temperaturek"
+          },
+          "waterMassFraction": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 1.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Watermassfraction"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "kind",
+          "eventId",
+          "nodeId",
+          "startTimeS",
+          "rampDurationS"
+        ],
+        "title": "InletChangeEvent"
+      },
+      "JobOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "kind": {
+            "type": "string",
+            "title": "Kind"
+          },
+          "params": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Params"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "queued",
+              "running",
+              "succeeded",
+              "failed",
+              "cancelled"
+            ],
+            "title": "Status"
+          },
+          "progress": {
+            "type": "number",
+            "title": "Progress"
+          },
+          "message": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Message"
+          },
+          "result": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Result"
+          },
+          "createdAt": {
+            "type": "number",
+            "title": "Createdat"
+          },
+          "updatedAt": {
+            "type": "number",
+            "title": "Updatedat"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "kind",
+          "params",
+          "status",
+          "progress",
+          "createdAt",
+          "updatedAt"
+        ],
+        "title": "JobOut"
+      },
+      "LeakEvent": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "const": "leak",
+            "title": "Kind"
+          },
+          "eventId": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.\\-]+$",
+            "title": "Eventid"
+          },
+          "edgeId": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.\\-]+$",
+            "title": "Edgeid"
+          },
+          "distanceM": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Distancem"
+          },
+          "startTimeS": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Starttimes"
+          },
+          "holeDiameterM": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Holediameterm"
+          },
+          "openingDurationS": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Openingdurations"
+          },
+          "dischargeCoefficient": {
+            "type": "number",
+            "maximum": 1.0,
+            "exclusiveMinimum": 0.0,
+            "title": "Dischargecoefficient"
+          },
+          "externalPressurePa": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Externalpressurepa"
+          },
+          "outflowModel": {
+            "type": "string",
+            "const": "liquid_orifice",
+            "title": "Outflowmodel"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "kind",
+          "eventId",
+          "edgeId",
+          "distanceM",
+          "startTimeS",
+          "holeDiameterM",
+          "openingDurationS",
+          "dischargeCoefficient",
+          "externalPressurePa",
+          "outflowModel"
+        ],
+        "title": "LeakEvent"
+      },
+      "LinearDensityModel": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "const": "linear",
+            "title": "Kind"
+          },
+          "rhoRefKgM3": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Rhorefkgm3"
+          },
+          "thermalExpansion1K": {
+            "type": "number",
+            "title": "Thermalexpansion1K"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "kind",
+          "rhoRefKgM3",
+          "thermalExpansion1K"
+        ],
+        "title": "LinearDensityModel"
+      },
+      "LogisticModelArtifact": {
+        "properties": {
+          "schemaVersion": {
+            "type": "string",
+            "title": "Schemaversion"
+          },
+          "modelVersion": {
+            "type": "string",
+            "title": "Modelversion"
+          },
+          "featureSchemaVersion": {
+            "type": "string",
+            "title": "Featureschemaversion"
+          },
+          "kind": {
+            "type": "string",
+            "const": "multinomial_logistic",
+            "title": "Kind"
+          },
+          "classes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "minItems": 2,
+            "title": "Classes"
+          },
+          "featureNames": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Featurenames"
+          },
+          "scalerMean": {
+            "items": {
+              "type": "number"
+            },
+            "type": "array",
+            "title": "Scalermean"
+          },
+          "scalerScale": {
+            "items": {
+              "type": "number",
+              "exclusiveMinimum": 0.0
+            },
+            "type": "array",
+            "title": "Scalerscale"
+          },
+          "coefficients": {
+            "items": {
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            },
+            "type": "array",
+            "title": "Coefficients"
+          },
+          "intercepts": {
+            "items": {
+              "type": "number"
+            },
+            "type": "array",
+            "title": "Intercepts"
+          },
+          "classMapping": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object",
+            "title": "Classmapping"
+          },
+          "missingFeaturePolicy": {
+            "type": "string",
+            "const": "impute_scaler_mean",
+            "title": "Missingfeaturepolicy"
+          },
+          "decisionThresholds": {
+            "$ref": "#/components/schemas/DecisionThresholds"
+          },
+          "calibration": {
+            "$ref": "#/components/schemas/Calibration"
+          },
+          "trainingMetadata": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Trainingmetadata"
+          },
+          "evaluationSummary": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Evaluationsummary"
+          },
+          "parity": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Parity"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "schemaVersion",
+          "modelVersion",
+          "featureSchemaVersion",
+          "kind",
+          "classes",
+          "featureNames",
+          "scalerMean",
+          "scalerScale",
+          "coefficients",
+          "intercepts",
+          "classMapping",
+          "missingFeaturePolicy",
+          "decisionThresholds",
+          "calibration",
+          "trainingMetadata",
+          "evaluationSummary"
+        ],
+        "title": "LogisticModelArtifact"
+      },
+      "MapSize": {
+        "properties": {
+          "width": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Width"
+          },
+          "height": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Height"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "width",
+          "height"
+        ],
+        "title": "MapSize"
+      },
+      "MeasurementPacket": {
+        "properties": {
+          "schemaVersion": {
+            "type": "string",
+            "title": "Schemaversion"
+          },
+          "runId": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.\\-]+$",
+            "title": "Runid"
+          },
+          "samples": {
+            "items": {
+              "$ref": "#/components/schemas/MeasurementSample"
+            },
+            "type": "array",
+            "maxItems": 200000,
+            "title": "Samples"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "schemaVersion",
+          "runId",
+          "samples"
+        ],
+        "title": "MeasurementPacket"
+      },
+      "MeasurementSample": {
+        "properties": {
+          "runId": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.\\-]+$",
+            "title": "Runid"
+          },
+          "sequence": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Sequence"
+          },
+          "sensorId": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.\\-]+$",
+            "title": "Sensorid"
+          },
+          "simTimeS": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Simtimes"
+          },
+          "receivedAt": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Receivedat"
+          },
+          "valueSI": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Valuesi"
+          },
+          "quality": {
+            "type": "string",
+            "enum": [
+              "good",
+              "missing",
+              "stale",
+              "saturated",
+              "invalid"
+            ],
+            "title": "Quality"
+          },
+          "unit": {
+            "type": "string",
+            "title": "Unit"
+          },
+          "measurementKind": {
+            "type": "string",
+            "enum": [
+              "pressure",
+              "temperature",
+              "massFlow",
+              "volumeFlow",
+              "waterFraction"
+            ],
+            "title": "Measurementkind"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "runId",
+          "sequence",
+          "sensorId",
+          "simTimeS",
+          "quality",
+          "unit",
+          "measurementKind"
+        ],
+        "title": "MeasurementSample"
+      },
+      "MixtureSinglePhase": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "const": "single_phase",
+            "title": "Kind"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "kind"
+        ],
+        "title": "MixtureSinglePhase"
+      },
+      "MixtureWoEmulsion": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "const": "wo_emulsion_power",
+            "title": "Kind"
+          },
+          "exponent": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Exponent"
+          },
+          "maxWaterVolumeFraction": {
+            "type": "number",
+            "maximum": 1.0,
+            "exclusiveMinimum": 0.0,
+            "title": "Maxwatervolumefraction"
+          },
+          "calibrated": {
+            "type": "boolean",
+            "title": "Calibrated"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "kind",
+          "exponent",
+          "maxWaterVolumeFraction",
+          "calibrated"
+        ],
+        "title": "MixtureWoEmulsion"
+      },
+      "ModelOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "modelVersion": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Modelversion"
+          },
+          "featureSchemaVersion": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Featureschemaversion"
+          },
+          "classes": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Classes"
+          },
+          "calibration": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Calibration"
+          },
+          "parityMaxAbsDiff": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Paritymaxabsdiff"
+          },
+          "validationStatus": {
+            "type": "string",
+            "title": "Validationstatus"
+          },
+          "evaluationSummary": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Evaluationsummary"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "modelVersion",
+          "featureSchemaVersion",
+          "classes",
+          "calibration",
+          "parityMaxAbsDiff",
+          "validationStatus",
+          "evaluationSummary"
+        ],
+        "title": "ModelOut"
+      },
+      "NodeBoundary": {
+        "properties": {
+          "pressurePa": {
+            "anyOf": [
+              {
+                "type": "number",
+                "exclusiveMinimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pressurepa"
+          },
+          "massFlowKgS": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Massflowkgs"
+          },
+          "temperatureK": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Temperaturek"
+          },
+          "waterMassFraction": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Watermassfraction"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "temperatureK",
+          "waterMassFraction"
+        ],
+        "title": "NodeBoundary"
+      },
+      "NodeConfig": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.\\-]+$",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "junction",
+              "pressure_boundary",
+              "mass_flow_source",
+              "closed_end"
+            ],
+            "title": "Kind"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "junction",
+              "separator_liquid",
+              "separator_water",
+              "treatment_inlet",
+              "water_outlet",
+              "tank",
+              "well_pad_liquid",
+              "pump_suction",
+              "pump_discharge",
+              "valve_port"
+            ],
+            "title": "Role"
+          },
+          "elevationM": {
+            "type": "number",
+            "title": "Elevationm"
+          },
+          "display": {
+            "$ref": "#/components/schemas/XY"
+          },
+          "boundary": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/NodeBoundary"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "kind",
+          "role",
+          "elevationM",
+          "display"
+        ],
+        "title": "NodeConfig"
+      },
+      "Parity": {
+        "properties": {
+          "goldenFile": {
+            "type": "string",
+            "title": "Goldenfile"
+          },
+          "maxAbsDiff": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Maxabsdiff"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "goldenFile",
+          "maxAbsDiff"
+        ],
+        "title": "Parity"
+      },
+      "PhaseBoundary": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "const": "min_pressure",
+            "title": "Kind"
+          },
+          "minPressurePa": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Minpressurepa"
+          },
+          "note": {
+            "type": "string",
+            "title": "Note"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "kind",
+          "minPressurePa",
+          "note"
+        ],
+        "title": "PhaseBoundary"
+      },
+      "PhaseProperties": {
+        "properties": {
+          "densityModel": {
+            "$ref": "#/components/schemas/LinearDensityModel"
+          },
+          "viscosityModel": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ViscosityConstant"
+              },
+              {
+                "$ref": "#/components/schemas/ViscosityArrhenius"
+              },
+              {
+                "$ref": "#/components/schemas/ViscosityTableLog"
+              }
+            ],
+            "title": "Viscositymodel",
+            "discriminator": {
+              "propertyName": "kind",
+              "mapping": {
+                "arrhenius": "#/components/schemas/ViscosityArrhenius",
+                "constant": "#/components/schemas/ViscosityConstant",
+                "table_log": "#/components/schemas/ViscosityTableLog"
+              }
+            }
+          },
+          "heatCapacityJkgK": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Heatcapacityjkgk"
+          },
+          "conductivityWmK": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Conductivitywmk"
+          },
+          "bulkModulusPa": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Bulkmoduluspa"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "densityModel",
+          "viscosityModel",
+          "heatCapacityJkgK",
+          "conductivityWmK",
+          "bulkModulusPa"
+        ],
+        "title": "PhaseProperties"
+      },
+      "PipeConfig": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "const": "pipe",
+            "title": "Kind"
+          },
+          "id": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.\\-]+$",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "fromNodeId": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.\\-]+$",
+            "title": "Fromnodeid"
+          },
+          "toNodeId": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.\\-]+$",
+            "title": "Tonodeid"
+          },
+          "lengthM": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Lengthm"
+          },
+          "innerDiameterM": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Innerdiameterm"
+          },
+          "wallThicknessM": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Wallthicknessm"
+          },
+          "roughnessM": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Roughnessm"
+          },
+          "youngModulusPa": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Youngmoduluspa"
+          },
+          "poissonRatio": {
+            "type": "number",
+            "exclusiveMaximum": 0.5,
+            "exclusiveMinimum": 0.0,
+            "title": "Poissonratio"
+          },
+          "restraintModel": {
+            "type": "string",
+            "enum": [
+              "expansion_joints",
+              "anchored_upstream",
+              "anchored_throughout"
+            ],
+            "title": "Restraintmodel"
+          },
+          "elevationProfile": {
+            "items": {
+              "$ref": "#/components/schemas/ElevationPoint"
+            },
+            "type": "array",
+            "minItems": 2,
+            "title": "Elevationprofile"
+          },
+          "displayPolyline": {
+            "items": {
+              "$ref": "#/components/schemas/XY"
+            },
+            "type": "array",
+            "minItems": 2,
+            "title": "Displaypolyline"
+          },
+          "thermal": {
+            "$ref": "#/components/schemas/PipeThermal"
+          },
+          "fluidProfileId": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.\\-]+$",
+            "title": "Fluidprofileid"
+          },
+          "solverModel": {
+            "type": "string",
+            "const": "M0_liquid_moc",
+            "title": "Solvermodel"
+          },
+          "localLossK": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Locallossk"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "kind",
+          "id",
+          "name",
+          "fromNodeId",
+          "toNodeId",
+          "lengthM",
+          "innerDiameterM",
+          "wallThicknessM",
+          "roughnessM",
+          "youngModulusPa",
+          "poissonRatio",
+          "restraintModel",
+          "elevationProfile",
+          "displayPolyline",
+          "thermal",
+          "fluidProfileId",
+          "solverModel"
+        ],
+        "title": "PipeConfig"
+      },
+      "PipeThermal": {
+        "properties": {
+          "overallHeatTransferWm2K": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Overallheattransferwm2K"
+          },
+          "referenceOuterDiameterM": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Referenceouterdiameterm"
+          },
+          "ambientTemperatureK": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Ambienttemperaturek"
+          },
+          "insulation": {
+            "type": "string",
+            "title": "Insulation"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "overallHeatTransferWm2K",
+          "referenceOuterDiameterM",
+          "ambientTemperatureK",
+          "insulation"
+        ],
+        "title": "PipeThermal"
+      },
+      "ProcessNoise": {
+        "properties": {
+          "boundaryPressureStdPa": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Boundarypressurestdpa"
+          },
+          "boundaryPressureTimeConstantS": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Boundarypressuretimeconstants"
+          },
+          "sourceFlowRelStd": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Sourceflowrelstd"
+          },
+          "sourceFlowTimeConstantS": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Sourceflowtimeconstants"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "boundaryPressureStdPa",
+          "boundaryPressureTimeConstantS",
+          "sourceFlowRelStd",
+          "sourceFlowTimeConstantS"
+        ],
+        "title": "ProcessNoise"
+      },
+      "PropertyDeviation": {
+        "properties": {
+          "viscosityFactor": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Viscosityfactor"
+          },
+          "bulkModulusFactor": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Bulkmodulusfactor"
+          },
+          "roughnessFactor": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Roughnessfactor"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "viscosityFactor",
+          "bulkModulusFactor",
+          "roughnessFactor"
+        ],
+        "title": "PropertyDeviation"
+      },
+      "PublicScenarioConfig": {
+        "properties": {
+          "schemaVersion": {
+            "type": "string",
+            "title": "Schemaversion"
+          },
+          "id": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.\\-]+$",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "fluidProfiles": {
+            "items": {
+              "$ref": "#/components/schemas/FluidProfile"
+            },
+            "type": "array",
+            "maxItems": 16,
+            "minItems": 1,
+            "title": "Fluidprofiles"
+          },
+          "nodes": {
+            "items": {
+              "$ref": "#/components/schemas/NodeConfig"
+            },
+            "type": "array",
+            "maxItems": 200,
+            "minItems": 2,
+            "title": "Nodes"
+          },
+          "links": {
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/PipeConfig"
+                },
+                {
+                  "$ref": "#/components/schemas/PumpConfig"
+                },
+                {
+                  "$ref": "#/components/schemas/ValveConfig"
+                }
+              ],
+              "discriminator": {
+                "propertyName": "kind",
+                "mapping": {
+                  "pipe": "#/components/schemas/PipeConfig",
+                  "pump": "#/components/schemas/PumpConfig",
+                  "valve": "#/components/schemas/ValveConfig"
+                }
+              }
+            },
+            "type": "array",
+            "maxItems": 200,
+            "minItems": 1,
+            "title": "Links"
+          },
+          "sensors": {
+            "items": {
+              "$ref": "#/components/schemas/SensorConfig"
+            },
+            "type": "array",
+            "maxItems": 500,
+            "title": "Sensors"
+          },
+          "commands": {
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/CmdPump"
+                },
+                {
+                  "$ref": "#/components/schemas/CmdValve"
+                },
+                {
+                  "$ref": "#/components/schemas/CmdPressure"
+                },
+                {
+                  "$ref": "#/components/schemas/CmdFlow"
+                }
+              ],
+              "discriminator": {
+                "propertyName": "kind",
+                "mapping": {
+                  "boundary_pressure": "#/components/schemas/CmdPressure",
+                  "pump_speed": "#/components/schemas/CmdPump",
+                  "source_mass_flow": "#/components/schemas/CmdFlow",
+                  "valve_opening": "#/components/schemas/CmdValve"
+                }
+              }
+            },
+            "type": "array",
+            "maxItems": 2000,
+            "title": "Commands"
+          },
+          "simulation": {
+            "$ref": "#/components/schemas/SimulationSettings"
+          },
+          "contextElements": {
+            "items": {
+              "$ref": "#/components/schemas/ContextElement"
+            },
+            "type": "array",
+            "maxItems": 200,
+            "title": "Contextelements"
+          },
+          "map": {
+            "$ref": "#/components/schemas/MapSize"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "schemaVersion",
+          "id",
+          "name",
+          "description",
+          "fluidProfiles",
+          "nodes",
+          "links",
+          "sensors",
+          "commands",
+          "simulation",
+          "contextElements",
+          "map"
+        ],
+        "title": "PublicScenarioConfig"
+      },
+      "PumpConfig": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "const": "pump",
+            "title": "Kind"
+          },
+          "id": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.\\-]+$",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "fromNodeId": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.\\-]+$",
+            "title": "Fromnodeid"
+          },
+          "toNodeId": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.\\-]+$",
+            "title": "Tonodeid"
+          },
+          "curve": {
+            "$ref": "#/components/schemas/PumpCurve"
+          },
+          "referenceSpeedRpm": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Referencespeedrpm"
+          },
+          "initialSpeedRatio": {
+            "type": "number",
+            "maximum": 1.2,
+            "minimum": 0.0,
+            "title": "Initialspeedratio"
+          },
+          "speedTimeConstantS": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Speedtimeconstants"
+          },
+          "checkValve": {
+            "type": "boolean",
+            "title": "Checkvalve"
+          },
+          "allowedFlowM3S": {
+            "prefixItems": [
+              {
+                "type": "number",
+                "minimum": 0.0
+              },
+              {
+                "type": "number",
+                "exclusiveMinimum": 0.0
+              }
+            ],
+            "type": "array",
+            "maxItems": 2,
+            "minItems": 2,
+            "title": "Allowedflowm3S"
+          },
+          "efficiency": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PumpEfficiency"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "display": {
+            "$ref": "#/components/schemas/XY"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "kind",
+          "id",
+          "name",
+          "fromNodeId",
+          "toNodeId",
+          "curve",
+          "referenceSpeedRpm",
+          "initialSpeedRatio",
+          "speedTimeConstantS",
+          "checkValve",
+          "allowedFlowM3S",
+          "display"
+        ],
+        "title": "PumpConfig"
+      },
+      "PumpCurve": {
+        "properties": {
+          "flowM3S": {
+            "items": {
+              "type": "number",
+              "minimum": 0.0
+            },
+            "type": "array",
+            "minItems": 3,
+            "title": "Flowm3S"
+          },
+          "headM": {
+            "items": {
+              "type": "number"
+            },
+            "type": "array",
+            "minItems": 3,
+            "title": "Headm"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "flowM3S",
+          "headM"
+        ],
+        "title": "PumpCurve"
+      },
+      "PumpEfficiency": {
+        "properties": {
+          "flowM3S": {
+            "items": {
+              "type": "number",
+              "minimum": 0.0
+            },
+            "type": "array",
+            "title": "Flowm3S"
+          },
+          "eta": {
+            "items": {
+              "type": "number",
+              "maximum": 1.0,
+              "exclusiveMinimum": 0.0
+            },
+            "type": "array",
+            "title": "Eta"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "flowM3S",
+          "eta"
+        ],
+        "title": "PumpEfficiency"
+      },
+      "RunCreate": {
+        "properties": {
+          "runId": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.\\-]+$",
+            "title": "Runid"
+          },
+          "scenarioId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 64,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9_.\\-]+$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scenarioid"
+          },
+          "configHash": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 128
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Confighash"
+          },
+          "versions": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object",
+            "title": "Versions"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "runId"
+        ],
+        "title": "RunCreate"
+      },
+      "RunOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "scenarioId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scenarioid"
+          },
+          "configHash": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Confighash"
+          },
+          "versions": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Versions"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "createdAt": {
+            "type": "number",
+            "title": "Createdat"
+          },
+          "finishedAt": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Finishedat"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "scenarioId",
+          "configHash",
+          "versions",
+          "status",
+          "createdAt"
+        ],
+        "title": "RunOut"
+      },
+      "ScenarioFile": {
+        "properties": {
+          "schemaVersion": {
+            "type": "string",
+            "title": "Schemaversion"
+          },
+          "id": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.\\-]+$",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "expectedBehavior": {
+            "type": "string",
+            "title": "Expectedbehavior"
+          },
+          "limitations": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Limitations"
+          },
+          "tags": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Tags"
+          },
+          "public": {
+            "$ref": "#/components/schemas/PublicScenarioConfig"
+          },
+          "truth": {
+            "$ref": "#/components/schemas/TruthConfig"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "schemaVersion",
+          "id",
+          "name",
+          "description",
+          "expectedBehavior",
+          "limitations",
+          "tags",
+          "public",
+          "truth"
+        ],
+        "title": "ScenarioFile"
+      },
+      "ScenarioMeta": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "tags": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Tags"
+          },
+          "configHash": {
+            "type": "string",
+            "title": "Confighash"
+          },
+          "createdAt": {
+            "type": "number",
+            "title": "Createdat"
+          },
+          "source": {
+            "type": "string",
+            "enum": [
+              "bundled",
+              "saved"
+            ],
+            "title": "Source"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "tags",
+          "configHash",
+          "createdAt",
+          "source"
+        ],
+        "title": "ScenarioMeta"
+      },
+      "SensorConfig": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.\\-]+$",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "pressure",
+              "temperature",
+              "massFlow",
+              "volumeFlow",
+              "waterFraction"
+            ],
+            "title": "Kind"
+          },
+          "edgeId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 64,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9_.\\-]+$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Edgeid"
+          },
+          "distanceM": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Distancem"
+          },
+          "nodeId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 64,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9_.\\-]+$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Nodeid"
+          },
+          "sampleRateHz": {
+            "type": "number",
+            "maximum": 1000.0,
+            "exclusiveMinimum": 0.0,
+            "title": "Sampleratehz"
+          },
+          "timeConstantS": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Timeconstants"
+          },
+          "delayS": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Delays"
+          },
+          "noiseStdSI": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Noisestdsi"
+          },
+          "biasSI": {
+            "type": "number",
+            "title": "Biassi"
+          },
+          "quantizationStepSI": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Quantizationstepsi"
+          },
+          "dropoutProbability": {
+            "type": "number",
+            "exclusiveMaximum": 1.0,
+            "minimum": 0.0,
+            "title": "Dropoutprobability"
+          },
+          "timestampJitterS": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Timestampjitters"
+          },
+          "rangeSI": {
+            "prefixItems": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "type": "array",
+            "maxItems": 2,
+            "minItems": 2,
+            "title": "Rangesi"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "boundary_input",
+              "residual",
+              "state_assimilation"
+            ],
+            "title": "Role"
+          },
+          "availability": {
+            "type": "string",
+            "enum": [
+              "online",
+              "offline"
+            ],
+            "title": "Availability"
+          },
+          "boundaryNodeId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 64,
+                "minLength": 1,
+                "pattern": "^[A-Za-z0-9_.\\-]+$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Boundarynodeid"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "kind",
+          "sampleRateHz",
+          "timeConstantS",
+          "delayS",
+          "noiseStdSI",
+          "biasSI",
+          "quantizationStepSI",
+          "dropoutProbability",
+          "timestampJitterS",
+          "rangeSI",
+          "role",
+          "availability"
+        ],
+        "title": "SensorConfig"
+      },
+      "SensorFaultEvent": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "const": "sensor_fault",
+            "title": "Kind"
+          },
+          "eventId": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.\\-]+$",
+            "title": "Eventid"
+          },
+          "sensorId": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.\\-]+$",
+            "title": "Sensorid"
+          },
+          "startTimeS": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Starttimes"
+          },
+          "endTimeS": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Endtimes"
+          },
+          "fault": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/FaultBias"
+              },
+              {
+                "$ref": "#/components/schemas/FaultDrift"
+              },
+              {
+                "$ref": "#/components/schemas/FaultStuck"
+              },
+              {
+                "$ref": "#/components/schemas/FaultNoise"
+              },
+              {
+                "$ref": "#/components/schemas/FaultDropout"
+              }
+            ],
+            "title": "Fault",
+            "discriminator": {
+              "propertyName": "type",
+              "mapping": {
+                "bias_step": "#/components/schemas/FaultBias",
+                "drift": "#/components/schemas/FaultDrift",
+                "dropout": "#/components/schemas/FaultDropout",
+                "noise_increase": "#/components/schemas/FaultNoise",
+                "stuck": "#/components/schemas/FaultStuck"
+              }
+            }
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "kind",
+          "eventId",
+          "sensorId",
+          "startTimeS",
+          "fault"
+        ],
+        "title": "SensorFaultEvent"
+      },
+      "SimulationSettings": {
+        "properties": {
+          "targetReachLengthM": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Targetreachlengthm"
+          },
+          "minReachesPerPipe": {
+            "type": "integer",
+            "maximum": 1000.0,
+            "minimum": 2.0,
+            "title": "Minreachesperpipe"
+          },
+          "transportCourant": {
+            "type": "number",
+            "maximum": 1.0,
+            "exclusiveMinimum": 0.0,
+            "title": "Transportcourant"
+          },
+          "maxTransportIntervalS": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Maxtransportintervals"
+          },
+          "frictionModel": {
+            "type": "string",
+            "enum": [
+              "colebrook",
+              "haaland"
+            ],
+            "title": "Frictionmodel"
+          },
+          "propertyMode": {
+            "type": "string",
+            "enum": [
+              "fixed_acoustic_variable_viscosity",
+              "fixed_all"
+            ],
+            "title": "Propertymode"
+          },
+          "durationS": {
+            "type": "number",
+            "maximum": 86400.0,
+            "exclusiveMinimum": 0.0,
+            "title": "Durations"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "targetReachLengthM",
+          "minReachesPerPipe",
+          "transportCourant",
+          "maxTransportIntervalS",
+          "frictionModel",
+          "propertyMode",
+          "durationS"
+        ],
+        "title": "SimulationSettings"
+      },
+      "StandardConditions": {
+        "properties": {
+          "pressurePa": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Pressurepa"
+          },
+          "temperatureK": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Temperaturek"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "pressurePa",
+          "temperatureK"
+        ],
+        "title": "StandardConditions"
+      },
+      "TerminatedEarly": {
+        "properties": {
+          "simTimeS": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Simtimes"
+          },
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "simTimeS",
+          "code",
+          "message"
+        ],
+        "title": "TerminatedEarly"
+      },
+      "TrainJobRequest": {
+        "properties": {
+          "trainDatasetId": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.\\-]+$",
+            "title": "Traindatasetid"
+          },
+          "validationDatasetId": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.\\-]+$",
+            "title": "Validationdatasetid"
+          },
+          "modelId": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.\\-]+$",
+            "title": "Modelid"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "trainDatasetId",
+          "validationDatasetId",
+          "modelId"
+        ],
+        "title": "TrainJobRequest"
+      },
+      "TruthConfig": {
+        "properties": {
+          "schemaVersion": {
+            "type": "string",
+            "title": "Schemaversion"
+          },
+          "seed": {
+            "type": "integer",
+            "maximum": 4294967295.0,
+            "minimum": 0.0,
+            "title": "Seed"
+          },
+          "events": {
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/LeakEvent"
+                },
+                {
+                  "$ref": "#/components/schemas/SensorFaultEvent"
+                },
+                {
+                  "$ref": "#/components/schemas/InletChangeEvent"
+                },
+                {
+                  "$ref": "#/components/schemas/AmbientChangeEvent"
+                }
+              ],
+              "discriminator": {
+                "propertyName": "kind",
+                "mapping": {
+                  "ambient_change": "#/components/schemas/AmbientChangeEvent",
+                  "inlet_change": "#/components/schemas/InletChangeEvent",
+                  "leak": "#/components/schemas/LeakEvent",
+                  "sensor_fault": "#/components/schemas/SensorFaultEvent"
+                }
+              }
+            },
+            "type": "array",
+            "maxItems": 100,
+            "title": "Events"
+          },
+          "processNoise": {
+            "$ref": "#/components/schemas/ProcessNoise"
+          },
+          "propertyDeviation": {
+            "$ref": "#/components/schemas/PropertyDeviation"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "schemaVersion",
+          "seed",
+          "events",
+          "processNoise",
+          "propertyDeviation"
+        ],
+        "title": "TruthConfig"
+      },
+      "TruthEventRealization": {
+        "properties": {
+          "eventId": {
+            "type": "string",
+            "title": "Eventid"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "leak",
+              "sensor_fault",
+              "inlet_change",
+              "ambient_change"
+            ],
+            "title": "Kind"
+          },
+          "startTimeS": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Starttimes"
+          },
+          "endTimeS": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Endtimes"
+          },
+          "edgeId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Edgeid"
+          },
+          "requestedDistanceM": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Requesteddistancem"
+          },
+          "appliedDistanceM": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Applieddistancem"
+          },
+          "snapErrorM": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Snaperrorm"
+          },
+          "holeDiameterM": {
+            "anyOf": [
+              {
+                "type": "number",
+                "exclusiveMinimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Holediameterm"
+          },
+          "openingDurationS": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Openingdurations"
+          },
+          "peakLeakMassFlowKgS": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Peakleakmassflowkgs"
+          },
+          "totalLeakMassKg": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Totalleakmasskg"
+          },
+          "sensorId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sensorid"
+          },
+          "nodeId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Nodeid"
+          },
+          "detail": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Detail"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "eventId",
+          "kind",
+          "startTimeS"
+        ],
+        "title": "TruthEventRealization"
+      },
+      "Uncertainty": {
+        "properties": {
+          "densityRel": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Densityrel"
+          },
+          "viscosityRel": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Viscosityrel"
+          },
+          "soundSpeedRel": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Soundspeedrel"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "densityRel",
+          "viscosityRel",
+          "soundSpeedRel"
+        ],
+        "title": "Uncertainty"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      },
+      "ValidationIssueOut": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          },
+          "fieldPath": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fieldpath"
+          }
+        },
+        "type": "object",
+        "required": [
+          "code",
+          "message"
+        ],
+        "title": "ValidationIssueOut"
+      },
+      "ValidationResponse": {
+        "properties": {
+          "ok": {
+            "type": "boolean",
+            "title": "Ok"
+          },
+          "errors": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationIssueOut"
+            },
+            "type": "array",
+            "title": "Errors"
+          },
+          "warnings": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationIssueOut"
+            },
+            "type": "array",
+            "title": "Warnings"
+          }
+        },
+        "type": "object",
+        "required": [
+          "ok",
+          "errors",
+          "warnings"
+        ],
+        "title": "ValidationResponse"
+      },
+      "ValveCharacteristic": {
+        "properties": {
+          "opening": {
+            "items": {
+              "type": "number",
+              "maximum": 1.0,
+              "exclusiveMinimum": 0.0
+            },
+            "type": "array",
+            "minItems": 2,
+            "title": "Opening"
+          },
+          "lossCoefficientK": {
+            "items": {
+              "type": "number",
+              "exclusiveMinimum": 0.0
+            },
+            "type": "array",
+            "minItems": 2,
+            "title": "Losscoefficientk"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "opening",
+          "lossCoefficientK"
+        ],
+        "title": "ValveCharacteristic"
+      },
+      "ValveConfig": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "const": "valve",
+            "title": "Kind"
+          },
+          "id": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.\\-]+$",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "fromNodeId": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.\\-]+$",
+            "title": "Fromnodeid"
+          },
+          "toNodeId": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.\\-]+$",
+            "title": "Tonodeid"
+          },
+          "diameterM": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Diameterm"
+          },
+          "characteristic": {
+            "$ref": "#/components/schemas/ValveCharacteristic"
+          },
+          "initialOpening": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Initialopening"
+          },
+          "strokeTimeS": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Stroketimes"
+          },
+          "display": {
+            "$ref": "#/components/schemas/XY"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "kind",
+          "id",
+          "name",
+          "fromNodeId",
+          "toNodeId",
+          "diameterM",
+          "characteristic",
+          "initialOpening",
+          "strokeTimeS",
+          "display"
+        ],
+        "title": "ValveConfig"
+      },
+      "ViscosityArrhenius": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "const": "arrhenius",
+            "title": "Kind"
+          },
+          "a": {
+            "type": "number",
+            "title": "A"
+          },
+          "bK": {
+            "type": "number",
+            "title": "Bk"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "kind",
+          "a",
+          "bK"
+        ],
+        "title": "ViscosityArrhenius"
+      },
+      "ViscosityConstant": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "const": "constant",
+            "title": "Kind"
+          },
+          "muPaS": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Mupas"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "kind",
+          "muPaS"
+        ],
+        "title": "ViscosityConstant"
+      },
+      "ViscosityTableLog": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "const": "table_log",
+            "title": "Kind"
+          },
+          "temperatureK": {
+            "items": {
+              "type": "number",
+              "exclusiveMinimum": 0.0
+            },
+            "type": "array",
+            "minItems": 2,
+            "title": "Temperaturek"
+          },
+          "viscosityPaS": {
+            "items": {
+              "type": "number",
+              "exclusiveMinimum": 0.0
+            },
+            "type": "array",
+            "minItems": 2,
+            "title": "Viscositypas"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "kind",
+          "temperatureK",
+          "viscosityPaS"
+        ],
+        "title": "ViscosityTableLog"
+      },
+      "XY": {
+        "properties": {
+          "x": {
+            "type": "number",
+            "title": "X"
+          },
+          "y": {
+            "type": "number",
+            "title": "Y"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "x",
+          "y"
+        ],
+        "title": "XY"
+      }
+    }
+  }
+}

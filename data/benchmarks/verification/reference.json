@@ -1,0 +1,58 @@
+{
+  "waterHammer": {
+    "case": "single pipe, instantaneous valve closure",
+    "L_m": 1200,
+    "c_mps": 1283.666275845549,
+    "rho": 1000.4106184758546,
+    "u0_mps": 0.18889761896448845,
+    "joukowskyPa": 242581.0704374427,
+    "simulatedJumpPa": 242593.49606922665,
+    "joukowskyRelErr": 5.1222594415811784e-05,
+    "arrivalS": 0.7089069932919954,
+    "arrivalRefS": 0.7011168065525218,
+    "arrivalRelErr": 0.011111111111112626,
+    "independentMocRmseValveRel": 0.0006657559555205617,
+    "independentMocRmseSensorRel": 0.0002400057328003485,
+    "acceptance": "|rel err| < 0.02 each"
+  },
+  "steadyVsEpanet": {
+    "case": "6-pipe loop network between two reservoirs (30 m head difference), water, Darcy-Weisbach",
+    "headDiffM": {
+      "J1": 0.021353293711406707,
+      "J2": 0.024215816172116433,
+      "J3": 0.023102404027667944,
+      "S": 0.03507026681867842
+    },
+    "maxAbsHeadDiffM": 0.03507026681867842,
+    "flowRelDiff": {
+      "P1": 0.003675101370632353,
+      "P2": 0.0031510973688461713,
+      "P3": 0.0029396021169942536,
+      "P4": 0.0061422753486007585,
+      "P5": 0.002417903527937126,
+      "P6": -0.00023541924406906046
+    },
+    "maxAbsFlowRelDiff": 0.0061422753486007585,
+    "acceptance": "|dH| < 0.3 m (1 % of 30 m); |dQ| <= 1 % + 1e-5 m3/s"
+  },
+  "wood": {
+    "case": "Wood speed, 2 % gas by volume in oil",
+    "rows": [
+      {
+        "pBar": 1,
+        "researchNoteMps": 88,
+        "computedMps": 88.13940866082768
+      },
+      {
+        "pBar": 10,
+        "researchNoteMps": 273,
+        "computedMps": 273.3252975376092
+      },
+      {
+        "pBar": 50,
+        "researchNoteMps": 565,
+        "computedMps": 564.8986931614241
+      }
+    ]
+  }
+}

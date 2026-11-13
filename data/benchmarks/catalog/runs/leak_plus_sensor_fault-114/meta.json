@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "leak_plus_sensor_fault-114",
+  "scenarioId": "leak_plus_sensor_fault",
+  "tags": [
+    "leak",
+    "sensor_fault",
+    "held_out"
+  ],
+  "durationS": 899.9853873563042,
+  "wallMs": 17130.873202999996,
+  "physicsCoreVersion": "0.1.0",
+  "detectorVersion": "pipetwin-diag-0.1.0",
+  "featureSchemaVersion": "features-1.0",
+  "modelVersion": "logreg-v2",
+  "commands": [],
+  "engineStatus": "running"
+}

@@ -1,0 +1,154 @@
+{
+  "schemaVersion": "1.0.0",
+  "datasetId": "val-v1",
+  "createdAt": "2026-11-11T17:45:52.855Z",
+  "count": 30,
+  "seedStart": 2000,
+  "spec": "default",
+  "distributions": {
+    "durationS": 900,
+    "sensorProfile": "high_rate",
+    "kinds": {
+      "normal": 0.14,
+      "pump_change": 0.12,
+      "valve_change": 0.1,
+      "leak_abrupt": 0.2,
+      "leak_slow": 0.14,
+      "sensor_fault": 0.15,
+      "inlet_change": 0.15
+    },
+    "holeDiameterMM": [
+      6,
+      30
+    ],
+    "separatorTempC": [
+      42,
+      55
+    ],
+    "viscosityFactor": [
+      0.95,
+      1.12
+    ],
+    "roughnessFactor": [
+      0.9,
+      1.3
+    ],
+    "allowCombination": false
+  },
+  "featureSchema": {
+    "featureSchemaVersion": "features-1.0",
+    "windowS": 60,
+    "strideS": 5,
+    "features": [
+      {
+        "name": "p_neg_max_z",
+        "description": "strongest pressure deficit: max over pressure residual sensors of -mean z (10 s)",
+        "unit": "z"
+      },
+      {
+        "name": "p_pos_max_z",
+        "description": "strongest pressure excess: max of +mean z (10 s)",
+        "unit": "z"
+      },
+      {
+        "name": "p_n_dev",
+        "description": "number of pressure sensors with |mean z (10 s)| > 3",
+        "unit": "count"
+      },
+      {
+        "name": "p_isolation",
+        "description": "|z|max / (|z|second + 1) over pressure sensors",
+        "unit": "ratio"
+      },
+      {
+        "name": "p_sign_consistency",
+        "description": "share of deviating pressure sensors with the sign of the strongest one",
+        "unit": "fraction"
+      },
+      {
+        "name": "cusum_neg_max",
+        "description": "max negative CUSUM / h over pressure sensors",
+        "unit": "ratio"
+      },
+      {
+        "name": "cusum_pos_max",
+        "description": "max positive CUSUM / h over pressure sensors",
+        "unit": "ratio"
+      },
+      {
+        "name": "mb_z",
+        "description": "normalised integral mass-balance residual (max over metered groups)",
+        "unit": "z"
+      },
+      {
+        "name": "flow_res_max_abs_z",
+        "description": "max |mean z (10 s)| over flow residual sensors",
+        "unit": "z"
+      },
+      {
+        "name": "flow_pattern",
+        "description": "mean z of inflow meters minus mean z of outflow meters (leak-like if > 0)",
+        "unit": "z"
+      },
+      {
+        "name": "pump_cmd_change",
+        "description": "max |change of pump speed command| in the window",
+        "unit": "ratio"
+      },
+      {
+        "name": "valve_cmd_change",
+        "description": "max |change of valve opening command| in the window",
+        "unit": "fraction"
+      },
+      {
+        "name": "time_since_cmd",
+        "description": "min(time since last public command, window) / window",
+        "unit": "fraction"
+      },
+      {
+        "name": "temp_change",
+        "description": "max |change| of measured inlet temperatures in the window",
+        "unit": "K"
+      },
+      {
+        "name": "wc_change",
+        "description": "max |change| of measured inlet water cut in the window",
+        "unit": "fraction"
+      },
+      {
+        "name": "frac_missing",
+        "description": "share of missing samples of residual sensors in the window",
+        "unit": "fraction"
+      },
+      {
+        "name": "max_data_age",
+        "description": "max age of the last good sample among residual sensors, capped at the window",
+        "unit": "s"
+      },
+      {
+        "name": "observer_disagreement",
+        "description": "mean |prediction fixed - prediction measured-property| / sigma over pressure sensors",
+        "unit": "z"
+      },
+      {
+        "name": "wave_onsets",
+        "description": "number of pressure sensors with a sharp negative onset in the window",
+        "unit": "count"
+      },
+      {
+        "name": "noise_ratio_max",
+        "description": "max ratio of high-rate residual std (10 s) to its calibration value",
+        "unit": "ratio"
+      },
+      {
+        "name": "jump_max_z",
+        "description": "max |mean(last 5 s) - mean(previous 5 s)| / sigma over pressure sensors",
+        "unit": "z"
+      }
+    ]
+  },
+  "physicsCoreVersion": "0.1.0",
+  "detectorVersion": "pipetwin-diag-0.1.0",
+  "warmupS": 180,
+  "labelPolicy": "Labels are derived later from ground_truth.json by the Python pipeline: leak (active and open), sensor_fault (active), operating_change (public command within the feature window), otherwise normal (hidden inlet temperature / composition changes are labelled normal)."
+}

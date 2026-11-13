@@ -1,0 +1,51 @@
+[
+  {
+    "episodeId": "D0-1",
+    "detector": "D0",
+    "startS": 421,
+    "cause": "leak",
+    "maxStatus": "confirmed",
+    "candidateEdges": [
+      {
+        "edgeId": "e4",
+        "misfit": 0,
+        "support": 0.3333333333333333,
+        "method": "nearest_sensor"
+      },
+      {
+        "edgeId": "e5",
+        "misfit": 0,
+        "support": 0.3333333333333333,
+        "method": "nearest_sensor"
+      },
+      {
+        "edgeId": "e6",
+        "misfit": 0,
+        "support": 0.3333333333333333,
+        "method": "nearest_sensor"
+      }
+    ],
+    "alarmS": 431,
+    "endS": 499
+  },
+  {
+    "episodeId": "D1-2",
+    "detector": "D1",
+    "startS": 421,
+    "cause": "sensor_fault",
+    "maxStatus": "confirmed",
+    "candidateEdges": [],
+    "alarmS": 439,
+    "endS": 500
+  },
+  {
+    "episodeId": "D2-3",
+    "detector": "D2",
+    "startS": 421,
+    "cause": "sensor_fault",
+    "maxStatus": "confirmed",
+    "candidateEdges": [],
+    "alarmS": 439,
+    "endS": 500
+  }
+]

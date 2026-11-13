@@ -1,0 +1,65 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "synthetic_oil",
+  "name": "Синтетическая нефть (без воды)",
+  "provenance": "synthetic",
+  "description": "rho_ref=850 kg/m3 @ 40 C/5 bar, c_bulk=1300 m/s (K_s = rho c^2), c_p=2000 J/(kg K), ln mu = a + b/T through 22 mPa s @ 20 C and 11 mPa s @ 40 C.",
+  "modelVersion": "1.0",
+  "validPressurePa": [
+    350000,
+    10000000
+  ],
+  "validTemperatureK": [
+    273.15,
+    353.15
+  ],
+  "compositionDefinition": "dead oil after first-stage separation, no free water (Y_w = 0)",
+  "compositionBounds": {
+    "waterMassFraction": [
+      0,
+      0
+    ]
+  },
+  "referencePressurePa": 500000,
+  "referenceTemperatureK": 313.15,
+  "referenceWaterMassFraction": 0,
+  "oil": {
+    "densityModel": {
+      "kind": "linear",
+      "rhoRefKgM3": 850,
+      "thermalExpansion1K": 0.0007
+    },
+    "viscosityModel": {
+      "kind": "arrhenius",
+      "a": -14.669664805241151,
+      "bK": 3181.54287282482
+    },
+    "heatCapacityJkgK": 2000,
+    "conductivityWmK": 0.13,
+    "bulkModulusPa": 1436500000
+  },
+  "mixtureViscosityModel": {
+    "kind": "single_phase"
+  },
+  "phaseBoundaryModel": {
+    "kind": "min_pressure",
+    "minPressurePa": 350000,
+    "note": "Synthetic: liquid degassed at the separator (4.2 bar a); below 3.5 bar a gas release is assumed possible and M0 is not valid."
+  },
+  "uncertainty": {
+    "densityRel": 0.01,
+    "viscosityRel": 0.15,
+    "soundSpeedRel": 0.03
+  },
+  "standardConditions": {
+    "pressurePa": 101325,
+    "temperatureK": 293.15
+  },
+  "capabilities": [
+    "M0_liquid"
+  ],
+  "notes": [
+    "Not a passport of any real crude.",
+    "Viscosity law is a two-point fit; used only inside 0..80 C."
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "inlet_cooling-112",
+  "scenarioId": "inlet_cooling_public",
+  "seed": 112,
+  "durationS": 1499.9945167698163,
+  "events": [
+    {
+      "eventId": "cool-1",
+      "kind": "inlet_change",
+      "startTimeS": 300,
+      "nodeId": "sep1",
+      "detail": {
+        "temperatureK": 301.15,
+        "rampDurationS": 120
+      }
+    }
+  ],
+  "normalExposureS": 1499.9945167698163,
+  "propertyDeviation": {
+    "viscosityFactor": 1.05,
+    "bulkModulusFactor": 0.98,
+    "roughnessFactor": 1.1
+  }
+}

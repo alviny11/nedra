@@ -1,0 +1,36 @@
+{
+  "rows": [
+    {
+      "targetReachM": 50,
+      "points": 596,
+      "dtS": 0.02138402552439358,
+      "dpAtPT111After2sPa": -60643.31649596966,
+      "dpAtPT109After60sPa": -4790.049639466684,
+      "leakKgS": 7.301334426241261,
+      "wallMsPerSimS": 6.308960528925623
+    },
+    {
+      "targetReachM": 25,
+      "points": 672,
+      "dtS": 0.01887117878333172,
+      "dpAtPT111After2sPa": -60703.841392742936,
+      "dpAtPT109After60sPa": -4786.859844935825,
+      "leakKgS": 7.300170572924907,
+      "wallMsPerSimS": 5.835953107438009
+    },
+    {
+      "targetReachM": 12.5,
+      "points": 1342,
+      "dtS": 0.00940108603810915,
+      "dpAtPT111After2sPa": -60653.63816849666,
+      "dpAtPT109After60sPa": -4789.079933421686,
+      "leakKgS": 7.301811595358671,
+      "wallMsPerSimS": 11.950612115702494
+    }
+  ],
+  "lastTwoRelDiff": {
+    "dp2s": 0.0008270189018428908,
+    "dp60s": 0.00046378806937696915,
+    "leak": 0.00022479234113381708
+  }
+}

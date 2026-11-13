@@ -1,0 +1,123 @@
+{
+  "$defs": {
+    "MeasurementSample": {
+      "additionalProperties": false,
+      "properties": {
+        "runId": {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.\\-]+$",
+          "title": "Runid",
+          "type": "string"
+        },
+        "sequence": {
+          "minimum": 0,
+          "title": "Sequence",
+          "type": "integer"
+        },
+        "sensorId": {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.\\-]+$",
+          "title": "Sensorid",
+          "type": "string"
+        },
+        "simTimeS": {
+          "minimum": 0,
+          "title": "Simtimes",
+          "type": "number"
+        },
+        "receivedAt": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Receivedat"
+        },
+        "valueSI": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Valuesi"
+        },
+        "quality": {
+          "enum": [
+            "good",
+            "missing",
+            "stale",
+            "saturated",
+            "invalid"
+          ],
+          "title": "Quality",
+          "type": "string"
+        },
+        "unit": {
+          "title": "Unit",
+          "type": "string"
+        },
+        "measurementKind": {
+          "enum": [
+            "pressure",
+            "temperature",
+            "massFlow",
+            "volumeFlow",
+            "waterFraction"
+          ],
+          "title": "Measurementkind",
+          "type": "string"
+        }
+      },
+      "required": [
+        "runId",
+        "sequence",
+        "sensorId",
+        "simTimeS",
+        "quality",
+        "unit",
+        "measurementKind"
+      ],
+      "title": "MeasurementSample",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": {
+      "title": "Schemaversion",
+      "type": "string"
+    },
+    "runId": {
+      "maxLength": 64,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9_.\\-]+$",
+      "title": "Runid",
+      "type": "string"
+    },
+    "samples": {
+      "items": {
+        "$ref": "#/$defs/MeasurementSample"
+      },
+      "maxItems": 200000,
+      "title": "Samples",
+      "type": "array"
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "runId",
+    "samples"
+  ],
+  "title": "MeasurementPacket",
+  "type": "object"
+}

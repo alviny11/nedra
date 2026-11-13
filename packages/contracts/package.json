@@ -1,0 +1,12 @@
+{
+  "name": "@pipetwin/contracts",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Versioned data contracts shared by PipeTwin physics, diagnostics, UI and backend. Truth-only types live in the ./truth entry.",
+  "exports": {
+    ".": "./src/index.ts",
+    "./truth": "./src/truth.ts",
+    "./schemas/*": "./schemas/*"
+  }
+}

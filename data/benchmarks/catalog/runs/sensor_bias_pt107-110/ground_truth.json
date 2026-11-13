@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "sensor_bias_pt107-110",
+  "scenarioId": "sensor_bias_pt107_public",
+  "seed": 110,
+  "durationS": 899.9853873563042,
+  "events": [
+    {
+      "eventId": "fault-1",
+      "kind": "sensor_fault",
+      "startTimeS": 420,
+      "sensorId": "PT-107",
+      "detail": {
+        "type": "bias_step",
+        "biasSI": 30000
+      }
+    }
+  ],
+  "normalExposureS": 899.9853873563042,
+  "propertyDeviation": {
+    "viscosityFactor": 1.05,
+    "bulkModulusFactor": 0.98,
+    "roughnessFactor": 1.1
+  }
+}

@@ -1,0 +1,86 @@
+{
+  "D0": {
+    "schemaVersion": "1.0.0",
+    "id": "D0-899.5",
+    "detector": "D0",
+    "detectorVersion": "pipetwin-diag-0.1.0/D0",
+    "simTimeS": 899.4823727189089,
+    "status": "normal",
+    "cause": "unknown",
+    "affectedSensorIds": [],
+    "candidateEdges": [],
+    "evidence": [],
+    "limitations": [
+      "D0: наблюдатель с фиксированными свойствами среды (паспорт при опорных T, Y_w); без учёта измеренной температуры и обводнённости.",
+      "D0 не различает причины: любая устойчивая тревога трактуется как утечка."
+    ],
+    "inputTimeRange": [
+      839.4823727189089,
+      899.4823727189089
+    ],
+    "score": 3.08785615029127
+  },
+  "D1": {
+    "schemaVersion": "1.0.0",
+    "id": "D1-899.5",
+    "detector": "D1",
+    "detectorVersion": "pipetwin-diag-0.1.0/D1",
+    "simTimeS": 899.4823727189089,
+    "status": "normal",
+    "cause": "unknown",
+    "affectedSensorIds": [],
+    "candidateEdges": [],
+    "evidence": [
+      {
+        "code": "MASS_BALANCE",
+        "text": "Баланс «Коллектор ДНС-1 → УПН» в норме (-0.4σ)",
+        "value": -0.031008852664080187
+      }
+    ],
+    "limitations": [
+      "Score и поддержка кандидатов — не откалиброванные вероятности."
+    ],
+    "inputTimeRange": [
+      839.4823727189089,
+      899.4823727189089
+    ],
+    "score": 0.20666485158541817
+  },
+  "D2": {
+    "schemaVersion": "1.0.0",
+    "id": "D2-899.5",
+    "detector": "D2",
+    "detectorVersion": "pipetwin-diag-0.1.0/D2",
+    "simTimeS": 899.4823727189089,
+    "status": "normal",
+    "cause": "unknown",
+    "affectedSensorIds": [],
+    "candidateEdges": [],
+    "evidence": [
+      {
+        "code": "MASS_BALANCE",
+        "text": "Баланс «Коллектор ДНС-1 → УПН» в норме (-0.4σ)",
+        "value": -0.031008852664080187
+      },
+      {
+        "code": "ML",
+        "text": "Классификатор: normal 0.98, leak 0.00, operating_change 0.00, sensor_fault 0.02"
+      }
+    ],
+    "limitations": [
+      "Score и поддержка кандидатов — не откалиброванные вероятности.",
+      "Модель logreg-v2; калибровка проверена на валидации."
+    ],
+    "inputTimeRange": [
+      839.4823727189089,
+      899.4823727189089
+    ],
+    "score": 0.20666485158541817,
+    "causeScores": {
+      "normal": 0.9809153517980236,
+      "leak": 0.0009882633720529835,
+      "operating_change": 0.00003263974907959041,
+      "sensor_fault": 0.018063745080843668
+    }
+  }
+}

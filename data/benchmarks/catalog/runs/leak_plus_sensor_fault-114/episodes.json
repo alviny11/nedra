@@ -1,0 +1,118 @@
+[
+  {
+    "episodeId": "D0-1",
+    "detector": "D0",
+    "startS": 301,
+    "cause": "leak",
+    "maxStatus": "confirmed",
+    "candidateEdges": [
+      {
+        "edgeId": "e2",
+        "misfit": 0,
+        "support": 0.25,
+        "method": "nearest_sensor"
+      },
+      {
+        "edgeId": "e3",
+        "misfit": 0,
+        "support": 0.25,
+        "method": "nearest_sensor"
+      },
+      {
+        "edgeId": "e4",
+        "misfit": 0,
+        "support": 0.25,
+        "method": "nearest_sensor"
+      },
+      {
+        "edgeId": "e8",
+        "misfit": 0,
+        "support": 0.25,
+        "method": "nearest_sensor"
+      }
+    ],
+    "alarmS": 311,
+    "endS": 382
+  },
+  {
+    "episodeId": "D1-2",
+    "detector": "D1",
+    "startS": 302,
+    "cause": "sensor_fault",
+    "maxStatus": "confirmed",
+    "candidateEdges": [],
+    "alarmS": 320,
+    "endS": 381
+  },
+  {
+    "episodeId": "D2-3",
+    "detector": "D2",
+    "startS": 302,
+    "cause": "sensor_fault",
+    "maxStatus": "confirmed",
+    "candidateEdges": [],
+    "alarmS": 320,
+    "endS": 381
+  },
+  {
+    "episodeId": "D0-4",
+    "detector": "D0",
+    "startS": 481,
+    "cause": "leak",
+    "maxStatus": "confirmed",
+    "candidateEdges": [
+      {
+        "edgeId": "e4",
+        "misfit": 0,
+        "support": 1,
+        "estimatedDistanceM": 1400,
+        "method": "nearest_sensor"
+      }
+    ],
+    "alarmS": 491
+  },
+  {
+    "episodeId": "D1-5",
+    "detector": "D1",
+    "startS": 482,
+    "cause": "leak",
+    "maxStatus": "confirmed",
+    "candidateEdges": [
+      {
+        "edgeId": "e6",
+        "misfit": 0.40048619075114517,
+        "support": 1,
+        "estimatedDistanceM": 1510,
+        "intervalM": [
+          1480,
+          1540
+        ],
+        "method": "wave_arrival"
+      }
+    ],
+    "alarmS": 491,
+    "estimatedLeakMassFlowKgs": 5.670015584205905
+  },
+  {
+    "episodeId": "D2-6",
+    "detector": "D2",
+    "startS": 482,
+    "cause": "leak",
+    "maxStatus": "confirmed",
+    "candidateEdges": [
+      {
+        "edgeId": "e6",
+        "misfit": 0.40048619075114517,
+        "support": 1,
+        "estimatedDistanceM": 1510,
+        "intervalM": [
+          1480,
+          1540
+        ],
+        "method": "wave_arrival"
+      }
+    ],
+    "alarmS": 485,
+    "estimatedLeakMassFlowKgs": 5.670015584205905
+  }
+]

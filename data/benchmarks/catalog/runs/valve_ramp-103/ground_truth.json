@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "valve_ramp-103",
+  "scenarioId": "valve_ramp_public",
+  "seed": 103,
+  "durationS": 899.9853873563042,
+  "events": [],
+  "normalExposureS": 899.9853873563042,
+  "propertyDeviation": {
+    "viscosityFactor": 1.05,
+    "bulkModulusFactor": 0.98,
+    "roughnessFactor": 1.1
+  }
+}

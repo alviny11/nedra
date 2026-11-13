@@ -1,0 +1,455 @@
+[
+  {
+    "simTimeS": 0,
+    "detector": "D0",
+    "status": "unavailable",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": []
+  },
+  {
+    "simTimeS": 0,
+    "detector": "D1",
+    "status": "unavailable",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": []
+  },
+  {
+    "simTimeS": 0,
+    "detector": "D2",
+    "status": "unavailable",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": []
+  },
+  {
+    "simTimeS": 180.49497414174667,
+    "detector": "D0",
+    "status": "normal",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": []
+  },
+  {
+    "simTimeS": 180.49497414174667,
+    "detector": "D1",
+    "status": "normal",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": []
+  },
+  {
+    "simTimeS": 180.49497414174667,
+    "detector": "D2",
+    "status": "normal",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": []
+  },
+  {
+    "simTimeS": 459.48696130439555,
+    "detector": "D1",
+    "status": "suspected",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": [
+      "Давление ниже расчётного (CUSUM): PT-102",
+      "Баланс «Водовод С-1 → КНС» в норме (1.5σ)",
+      "Изменение измеренных свойств на входе: ΔT=6.9 K, Δα_w=0.003 (учтено наблюдателем D1)"
+    ]
+  },
+  {
+    "simTimeS": 459.48696130439555,
+    "detector": "D2",
+    "status": "suspected",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": [
+      "Давление ниже расчётного (CUSUM): PT-102",
+      "Баланс «Водовод С-1 → КНС» в норме (1.5σ)",
+      "Изменение измеренных свойств на входе: ΔT=6.9 K, Δα_w=0.003 (учтено наблюдателем D1)",
+      "Классификатор: normal 1.00, leak 0.00, operating_change 0.00, sensor_fault 0.00"
+    ]
+  },
+  {
+    "simTimeS": 460.49773401870505,
+    "detector": "D1",
+    "status": "suspected",
+    "cause": "composition_change",
+    "edges": [],
+    "evidence": [
+      "Давление ниже расчётного (CUSUM): PT-102",
+      "Баланс «Водовод С-1 → КНС» в норме (1.5σ)",
+      "Изменение измеренных свойств на входе: ΔT=6.7 K, Δα_w=0.002 (учтено наблюдателем D1)"
+    ]
+  },
+  {
+    "simTimeS": 460.49773401870505,
+    "detector": "D2",
+    "status": "suspected",
+    "cause": "composition_change",
+    "edges": [],
+    "evidence": [
+      "Давление ниже расчётного (CUSUM): PT-102",
+      "Баланс «Водовод С-1 → КНС» в норме (1.5σ)",
+      "Изменение измеренных свойств на входе: ΔT=6.7 K, Δα_w=0.002 (учтено наблюдателем D1)",
+      "Классификатор: normal 1.00, leak 0.00, operating_change 0.00, sensor_fault 0.00"
+    ]
+  },
+  {
+    "simTimeS": 494.48964604066884,
+    "detector": "D1",
+    "status": "suspected",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": [
+      "Баланс «Водовод С-1 → КНС» в норме (1.3σ)"
+    ]
+  },
+  {
+    "simTimeS": 494.48964604066884,
+    "detector": "D2",
+    "status": "suspected",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": [
+      "Баланс «Водовод С-1 → КНС» в норме (1.3σ)",
+      "Классификатор: normal 1.00, leak 0.00, operating_change 0.00, sensor_fault 0.00"
+    ]
+  },
+  {
+    "simTimeS": 504.4850651043961,
+    "detector": "D1",
+    "status": "ambiguous",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": [
+      "Баланс «Водовод С-1 → КНС» в норме (1.3σ)"
+    ]
+  },
+  {
+    "simTimeS": 504.4850651043961,
+    "detector": "D2",
+    "status": "ambiguous",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": [
+      "Баланс «Водовод С-1 → КНС» в норме (1.3σ)",
+      "Классификатор: normal 1.00, leak 0.00, operating_change 0.00, sensor_fault 0.00"
+    ]
+  },
+  {
+    "simTimeS": 520.4889664142964,
+    "detector": "D1",
+    "status": "normal",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": [
+      "Баланс «Водовод С-1 → КНС» в норме (1.6σ)"
+    ]
+  },
+  {
+    "simTimeS": 520.4889664142964,
+    "detector": "D2",
+    "status": "normal",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": [
+      "Баланс «Водовод С-1 → КНС» в норме (1.6σ)",
+      "Классификатор: normal 1.00, leak 0.00, operating_change 0.00, sensor_fault 0.00"
+    ]
+  },
+  {
+    "simTimeS": 570.4847797461606,
+    "detector": "D0",
+    "status": "suspected",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": [
+      "|невязка| > 6σ: PT-111 (-6.1σ)"
+    ]
+  },
+  {
+    "simTimeS": 571.4955524604701,
+    "detector": "D0",
+    "status": "normal",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": []
+  },
+  {
+    "simTimeS": 631.4867848560615,
+    "detector": "D0",
+    "status": "suspected",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": [
+      "|невязка| > 6σ: PT-102 (-6.4σ)"
+    ]
+  },
+  {
+    "simTimeS": 632.497557570371,
+    "detector": "D0",
+    "status": "normal",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": []
+  },
+  {
+    "simTimeS": 677.4956613703715,
+    "detector": "D0",
+    "status": "suspected",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": [
+      "|невязка| > 6σ: PT-104 (-6.3σ)"
+    ]
+  },
+  {
+    "simTimeS": 678.4877160714531,
+    "detector": "D0",
+    "status": "normal",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": []
+  },
+  {
+    "simTimeS": 710.4955186912538,
+    "detector": "D0",
+    "status": "suspected",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": [
+      "|невязка| > 6σ: PT-104 (-6.2σ)"
+    ]
+  },
+  {
+    "simTimeS": 712.4983461066448,
+    "detector": "D0",
+    "status": "normal",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": []
+  },
+  {
+    "simTimeS": 719.4988830538995,
+    "detector": "D0",
+    "status": "suspected",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": [
+      "|невязка| > 6σ: PT-104 (-6.1σ)"
+    ]
+  },
+  {
+    "simTimeS": 721.4829924560626,
+    "detector": "D0",
+    "status": "normal",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": []
+  },
+  {
+    "simTimeS": 722.4937651703721,
+    "detector": "D0",
+    "status": "suspected",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": [
+      "|невязка| > 6σ: PT-104 (-6.0σ), PT-105 (-6.1σ)"
+    ]
+  },
+  {
+    "simTimeS": 728.4835294033172,
+    "detector": "D0",
+    "status": "normal",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": []
+  },
+  {
+    "simTimeS": 739.489721181354,
+    "detector": "D0",
+    "status": "suspected",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": [
+      "|невязка| > 6σ: PT-104 (-6.3σ)"
+    ]
+  },
+  {
+    "simTimeS": 740.4817758824355,
+    "detector": "D0",
+    "status": "normal",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": []
+  },
+  {
+    "simTimeS": 742.4846032978265,
+    "detector": "D0",
+    "status": "suspected",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": [
+      "|невязка| > 6σ: PT-105 (-6.6σ)"
+    ]
+  },
+  {
+    "simTimeS": 747.4823128296902,
+    "detector": "D0",
+    "status": "normal",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": []
+  },
+  {
+    "simTimeS": 751.4879676604722,
+    "detector": "D0",
+    "status": "suspected",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": [
+      "|невязка| > 6σ: PT-104 (-7.6σ)"
+    ]
+  },
+  {
+    "simTimeS": 754.8946460679598,
+    "detector": "D0",
+    "status": "normal",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": []
+  },
+  {
+    "simTimeS": 755.4936224912543,
+    "detector": "D0",
+    "status": "suspected",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": [
+      "|невязка| > 6σ: PT-103 (6.7σ)"
+    ]
+  },
+  {
+    "simTimeS": 762.887237716296,
+    "detector": "D0",
+    "status": "normal",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": []
+  },
+  {
+    "simTimeS": 765.4890415549816,
+    "detector": "D0",
+    "status": "suspected",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": [
+      "|невязка| > 6σ: PT-104 (-6.5σ)"
+    ]
+  },
+  {
+    "simTimeS": 768.4839236714541,
+    "detector": "D0",
+    "status": "normal",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": []
+  },
+  {
+    "simTimeS": 770.4867510868452,
+    "detector": "D0",
+    "status": "suspected",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": [
+      "|невязка| > 6σ: PT-103 (6.3σ)"
+    ]
+  },
+  {
+    "simTimeS": 775.4844606187088,
+    "detector": "D0",
+    "status": "normal",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": []
+  },
+  {
+    "simTimeS": 777.4872880340998,
+    "detector": "D0",
+    "status": "suspected",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": [
+      "|невязка| > 6σ: PT-103 (6.1σ), PT-104 (-6.5σ)"
+    ]
+  },
+  {
+    "simTimeS": 781.4929428648819,
+    "detector": "D0",
+    "status": "normal",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": []
+  },
+  {
+    "simTimeS": 782.4849975659635,
+    "detector": "D0",
+    "status": "suspected",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": [
+      "|невязка| > 6σ: PT-103 (6.1σ)"
+    ]
+  },
+  {
+    "simTimeS": 787.4827070978271,
+    "detector": "D0",
+    "status": "normal",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": []
+  },
+  {
+    "simTimeS": 788.4934798121366,
+    "detector": "D0",
+    "status": "suspected",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": [
+      "|невязка| > 6σ: PT-104 (-6.1σ)"
+    ]
+  },
+  {
+    "simTimeS": 792.4991346429186,
+    "detector": "D0",
+    "status": "normal",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": []
+  },
+  {
+    "simTimeS": 793.4911893440002,
+    "detector": "D0",
+    "status": "suspected",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": [
+      "|невязка| > 6σ: PT-103 (7.5σ)"
+    ]
+  },
+  {
+    "simTimeS": 803.4866084077274,
+    "detector": "D0",
+    "status": "confirmed",
+    "cause": "leak",
+    "edges": [
+      "e2"
+    ],
+    "evidence": [
+      "|невязка| > 6σ: PT-104 (-7.4σ), PT-105 (-6.7σ), PT-113 (-6.0σ)"
+    ]
+  }
+]

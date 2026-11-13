@@ -1,0 +1,81 @@
+[
+  {
+    "episodeId": "D1-1",
+    "detector": "D1",
+    "startS": 402,
+    "cause": "leak",
+    "maxStatus": "confirmed",
+    "candidateEdges": [
+      {
+        "edgeId": "e4",
+        "misfit": 4.046552131593366,
+        "support": 1,
+        "estimatedDistanceM": 1930,
+        "intervalM": [
+          1850,
+          2030
+        ],
+        "method": "steady_residual_fit"
+      }
+    ],
+    "alarmS": 430,
+    "estimatedLeakMassFlowKgs": 7.141772021538648
+  },
+  {
+    "episodeId": "D2-2",
+    "detector": "D2",
+    "startS": 402,
+    "cause": "leak",
+    "maxStatus": "confirmed",
+    "candidateEdges": [
+      {
+        "edgeId": "e4",
+        "misfit": 4.046552131593366,
+        "support": 1,
+        "estimatedDistanceM": 1930,
+        "intervalM": [
+          1850,
+          2030
+        ],
+        "method": "steady_residual_fit"
+      }
+    ],
+    "alarmS": 405,
+    "estimatedLeakMassFlowKgs": 7.141772021538648
+  },
+  {
+    "episodeId": "D0-3",
+    "detector": "D0",
+    "startS": 426,
+    "cause": "unknown",
+    "maxStatus": "suspected",
+    "candidateEdges": [],
+    "endS": 428
+  },
+  {
+    "episodeId": "D0-4",
+    "detector": "D0",
+    "startS": 431,
+    "cause": "unknown",
+    "maxStatus": "suspected",
+    "candidateEdges": [],
+    "endS": 432
+  },
+  {
+    "episodeId": "D0-5",
+    "detector": "D0",
+    "startS": 433,
+    "cause": "leak",
+    "maxStatus": "confirmed",
+    "candidateEdges": [
+      {
+        "edgeId": "e4",
+        "misfit": 0,
+        "support": 1,
+        "estimatedDistanceM": 1400,
+        "method": "nearest_sensor"
+      }
+    ],
+    "alarmS": 443
+  }
+]

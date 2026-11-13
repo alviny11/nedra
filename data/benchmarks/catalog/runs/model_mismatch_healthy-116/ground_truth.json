@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "model_mismatch_healthy-116",
+  "scenarioId": "model_mismatch_healthy_public",
+  "seed": 116,
+  "durationS": 899.9932694679387,
+  "events": [],
+  "normalExposureS": 899.9932694679387,
+  "propertyDeviation": {
+    "viscosityFactor": 1.15,
+    "bulkModulusFactor": 0.97,
+    "roughnessFactor": 1.3
+  }
+}

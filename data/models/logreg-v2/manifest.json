@@ -1,0 +1,46 @@
+{
+  "modelVersion": "logreg-v2",
+  "featureSchemaVersion": "features-1.0",
+  "training": {
+    "trainDataset": "train-v2",
+    "validationDataset": "val-v2",
+    "trainRuns": 100,
+    "validationRuns": 30,
+    "excludedIncompleteRuns": [],
+    "trainWindows": 14400,
+    "validationWindows": 4320,
+    "classCountsTrain": {
+      "normal": 9711,
+      "leak": 3145,
+      "operating_change": 276,
+      "sensor_fault": 1268
+    },
+    "classCountsValidation": {
+      "normal": 3121,
+      "leak": 706,
+      "operating_change": 84,
+      "sensor_fault": 409
+    },
+    "C": 1.0,
+    "classWeight": "None",
+    "split": "grouped by run: separate datasets generated with disjoint seed ranges; test split untouched during training/selection",
+    "labelPolicy": "leak: a leak has started and its open-area fraction at the window end is >= 0.05; sensor_fault: a sensor fault is active at the window end; operating_change: a public pump/valve command (t > 0) lies inside the feature window; normal: otherwise. Hidden inlet temperature / water-cut changes are labelled normal (policy: the D1 observer accounts for measured composition; composition_change is not a separate class in this version). Runs terminated by a model-domain stop are cut at the stop time.",
+    "comparisonCandidate": {
+      "model": "RandomForest(200, depth 8)",
+      "validationMacroF1": 0.7276971572577283,
+      "exported": false
+    }
+  },
+  "evaluation": {
+    "validationMacroF1": 0.886867710078333,
+    "eceValidation": 0.036540448249299695,
+    "note": "validation only; see evaluate for the held-out test split"
+  },
+  "parity": {
+    "rows": 64,
+    "maxAbsDiff": 4.440892098500626e-16,
+    "ok": true
+  },
+  "artifact": "model.json",
+  "golden": "golden.json"
+}

@@ -1,0 +1,55 @@
+{
+  "dataset": "heldout-v2",
+  "runs": 16,
+  "windows": 2304,
+  "macroF1": 0.7499316860669727,
+  "macroF1CI95": [
+    0.7020569238067523,
+    0.7969584744552516
+  ],
+  "classes": [
+    "normal",
+    "leak",
+    "operating_change",
+    "sensor_fault"
+  ],
+  "confusionMatrix": [
+    [
+      1081,
+      1,
+      0,
+      0
+    ],
+    [
+      5,
+      861,
+      0,
+      2
+    ],
+    [
+      0,
+      0,
+      60,
+      0
+    ],
+    [
+      269,
+      6,
+      0,
+      19
+    ]
+  ],
+  "perClassRecall": {
+    "normal": 0.9990757855822551,
+    "leak": 0.9919354838709677,
+    "operating_change": 1.0,
+    "sensor_fault": 0.06462585034013606
+  },
+  "disjointFromTraining": [
+    "train-v2",
+    "val-v2"
+  ],
+  "ece": 0.04111867896875796,
+  "brier": 0.04882154692173448,
+  "note": "Window-level classification on a held-out split of synthetic runs; windows of one run are not independent. ECE/Brier are measured on this split (the artefact's 'validated' status refers to the validation split only)."
+}

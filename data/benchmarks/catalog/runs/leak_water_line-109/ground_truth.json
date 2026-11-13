@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "leak_water_line-109",
+  "scenarioId": "leak_water_line_public",
+  "seed": 109,
+  "durationS": 899.9853873563042,
+  "events": [
+    {
+      "eventId": "leak-1",
+      "kind": "leak",
+      "startTimeS": 420,
+      "edgeId": "e9",
+      "requestedDistanceM": 1100,
+      "appliedDistanceM": 1100,
+      "snapErrorM": 0,
+      "holeDiameterM": 0.015,
+      "openingDurationS": 0,
+      "detail": {
+        "gridDxM": 25
+      },
+      "peakLeakMassFlowKgS": 3.5638397813689284,
+      "totalLeakMassKg": 1569.2810336850046
+    }
+  ],
+  "normalExposureS": 420,
+  "propertyDeviation": {
+    "viscosityFactor": 1.05,
+    "bulkModulusFactor": 0.98,
+    "roughnessFactor": 1.1
+  }
+}

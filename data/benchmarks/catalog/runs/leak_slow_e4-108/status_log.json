@@ -1,0 +1,158 @@
+[
+  {
+    "simTimeS": 0,
+    "detector": "D0",
+    "status": "unavailable",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": []
+  },
+  {
+    "simTimeS": 0,
+    "detector": "D1",
+    "status": "unavailable",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": []
+  },
+  {
+    "simTimeS": 0,
+    "detector": "D2",
+    "status": "unavailable",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": []
+  },
+  {
+    "simTimeS": 180.4972204816716,
+    "detector": "D0",
+    "status": "normal",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": []
+  },
+  {
+    "simTimeS": 180.4972204816716,
+    "detector": "D1",
+    "status": "normal",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": []
+  },
+  {
+    "simTimeS": 180.4972204816716,
+    "detector": "D2",
+    "status": "normal",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": []
+  },
+  {
+    "simTimeS": 402.4956511563428,
+    "detector": "D1",
+    "status": "suspected",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": [
+      "Давление ниже расчётного (CUSUM): PT-111",
+      "Баланс «Коллектор ДНС-1 → УПН» в норме (1.9σ)"
+    ]
+  },
+  {
+    "simTimeS": 402.4956511563428,
+    "detector": "D2",
+    "status": "suspected",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": [
+      "Давление ниже расчётного (CUSUM): PT-111",
+      "Баланс «Коллектор ДНС-1 → УПН» в норме (1.9σ)",
+      "Классификатор: normal 0.32, leak 0.51, operating_change 0.00, sensor_fault 0.17"
+    ]
+  },
+  {
+    "simTimeS": 405.49057096308525,
+    "detector": "D2",
+    "status": "confirmed",
+    "cause": "leak",
+    "edges": [
+      "e4"
+    ],
+    "evidence": [
+      "Давление ниже расчётного (CUSUM): PT-103, PT-105, PT-111",
+      "Баланс «Коллектор ДНС-1 → УПН» в норме (2.6σ)",
+      "Классификатор: normal 0.05, leak 0.92, operating_change 0.00, sensor_fault 0.04"
+    ]
+  },
+  {
+    "simTimeS": 426.49244610786684,
+    "detector": "D0",
+    "status": "suspected",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": [
+      "|невязка| > 6σ: PT-103 (-7.5σ)"
+    ]
+  },
+  {
+    "simTimeS": 428.49529872862587,
+    "detector": "D0",
+    "status": "normal",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": []
+  },
+  {
+    "simTimeS": 430.4981513493849,
+    "detector": "D1",
+    "status": "confirmed",
+    "cause": "leak",
+    "edges": [
+      "e4"
+    ],
+    "evidence": [
+      "Давление ниже расчётного (CUSUM): PT-103, PT-104, PT-105, PT-107, PT-111, PT-112, PT-113",
+      "Баланс «Коллектор ДНС-1 → УПН» не объясняется оценённым накоплением: дефицит 0.52 кг/с (6.7σ)"
+    ]
+  },
+  {
+    "simTimeS": 431.49021853536834,
+    "detector": "D0",
+    "status": "suspected",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": [
+      "|невязка| > 6σ: PT-111 (-6.4σ)"
+    ]
+  },
+  {
+    "simTimeS": 432.4822857213518,
+    "detector": "D0",
+    "status": "normal",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": []
+  },
+  {
+    "simTimeS": 433.49307115612737,
+    "detector": "D0",
+    "status": "suspected",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": [
+      "|невязка| > 6σ: PT-111 (-6.2σ)"
+    ]
+  },
+  {
+    "simTimeS": 443.4886160111304,
+    "detector": "D0",
+    "status": "confirmed",
+    "cause": "leak",
+    "edges": [
+      "e4"
+    ],
+    "evidence": [
+      "|невязка| > 6σ: PT-103 (-6.5σ), PT-111 (-6.9σ)"
+    ]
+  }
+]

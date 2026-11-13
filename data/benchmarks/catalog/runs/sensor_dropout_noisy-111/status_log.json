@@ -1,0 +1,50 @@
+[
+  {
+    "simTimeS": 0,
+    "detector": "D0",
+    "status": "unavailable",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": []
+  },
+  {
+    "simTimeS": 0,
+    "detector": "D1",
+    "status": "unavailable",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": []
+  },
+  {
+    "simTimeS": 0,
+    "detector": "D2",
+    "status": "unavailable",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": []
+  },
+  {
+    "simTimeS": 180.4946406726056,
+    "detector": "D0",
+    "status": "normal",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": []
+  },
+  {
+    "simTimeS": 180.4946406726056,
+    "detector": "D1",
+    "status": "normal",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": []
+  },
+  {
+    "simTimeS": 180.4946406726056,
+    "detector": "D2",
+    "status": "normal",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": []
+  }
+]

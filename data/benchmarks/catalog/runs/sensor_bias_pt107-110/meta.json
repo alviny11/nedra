@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "sensor_bias_pt107-110",
+  "scenarioId": "sensor_bias_pt107",
+  "tags": [
+    "sensor_fault"
+  ],
+  "durationS": 899.9853873563042,
+  "wallMs": 14115.883159,
+  "physicsCoreVersion": "0.1.0",
+  "detectorVersion": "pipetwin-diag-0.1.0",
+  "featureSchemaVersion": "features-1.0",
+  "modelVersion": "logreg-v2",
+  "commands": [],
+  "engineStatus": "running"
+}

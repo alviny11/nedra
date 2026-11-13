@@ -1,0 +1,14 @@
+{
+  "name": "@pipetwin/physics-core",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Pure TypeScript physics core of PipeTwin (no React/DOM/fetch). Public model in '.', generator truth runtime in './truth'.",
+  "exports": {
+    ".": "./src/index.ts",
+    "./truth": "./src/truth/index.ts"
+  },
+  "dependencies": {
+    "@pipetwin/contracts": "0.1.0"
+  }
+}

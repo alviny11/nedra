@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "leak_water_line-109",
+  "scenarioId": "leak_water_line",
+  "tags": [
+    "leak",
+    "abrupt",
+    "single_pipe"
+  ],
+  "durationS": 899.9853873563042,
+  "wallMs": 17746.283564,
+  "physicsCoreVersion": "0.1.0",
+  "detectorVersion": "pipetwin-diag-0.1.0",
+  "featureSchemaVersion": "features-1.0",
+  "modelVersion": "logreg-v2",
+  "commands": [],
+  "engineStatus": "running"
+}

@@ -1,0 +1,272 @@
+[
+  {
+    "simTimeS": 0,
+    "detector": "D0",
+    "status": "unavailable",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": []
+  },
+  {
+    "simTimeS": 0,
+    "detector": "D1",
+    "status": "unavailable",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": []
+  },
+  {
+    "simTimeS": 0,
+    "detector": "D2",
+    "status": "unavailable",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": []
+  },
+  {
+    "simTimeS": 180.49677944572494,
+    "detector": "D0",
+    "status": "normal",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": []
+  },
+  {
+    "simTimeS": 180.49677944572494,
+    "detector": "D1",
+    "status": "normal",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": []
+  },
+  {
+    "simTimeS": 180.49677944572494,
+    "detector": "D2",
+    "status": "normal",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": []
+  },
+  {
+    "simTimeS": 301.4912406808004,
+    "detector": "D0",
+    "status": "suspected",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": [
+      "|невязка| > 6σ: PT-105 (-17.5σ)"
+    ]
+  },
+  {
+    "simTimeS": 302.48330541555674,
+    "detector": "D1",
+    "status": "suspected",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": [
+      "Давление ниже расчётного (CUSUM): PT-105",
+      "Баланс «Водовод С-1 → КНС» в норме (0.5σ)"
+    ]
+  },
+  {
+    "simTimeS": 302.48330541555674,
+    "detector": "D2",
+    "status": "suspected",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": [
+      "Давление ниже расчётного (CUSUM): PT-105",
+      "Баланс «Водовод С-1 → КНС» в норме (0.5σ)",
+      "Классификатор: normal 0.91, leak 0.01, operating_change 0.00, sensor_fault 0.08"
+    ]
+  },
+  {
+    "simTimeS": 305.49693602491095,
+    "detector": "D2",
+    "status": "suspected",
+    "cause": "sensor_fault",
+    "edges": [],
+    "evidence": [
+      "Давление ниже расчётного (CUSUM): PT-105",
+      "Баланс «Водовод С-1 → КНС» в норме (0.3σ)",
+      "Классификатор: normal 0.00, leak 0.16, operating_change 0.00, sensor_fault 0.84"
+    ]
+  },
+  {
+    "simTimeS": 311.4867608385342,
+    "detector": "D0",
+    "status": "confirmed",
+    "cause": "leak",
+    "edges": [
+      "e2",
+      "e3",
+      "e4",
+      "e8"
+    ],
+    "evidence": [
+      "|невязка| > 6σ: PT-105 (-17.6σ)"
+    ]
+  },
+  {
+    "simTimeS": 320.4902162615117,
+    "detector": "D1",
+    "status": "confirmed",
+    "cause": "sensor_fault",
+    "edges": [],
+    "evidence": [
+      "Давление ниже расчётного (CUSUM): PT-105",
+      "Баланс «Водовод С-1 → КНС» в норме (0.6σ)",
+      "Отклоняется только PT-105; соседние датчики и баланс в норме — вероятна неисправность датчика",
+      "Фронты волны: PT-105 300.01 с. Фронт различим только на PT-105: волновая локализация невозможна."
+    ]
+  },
+  {
+    "simTimeS": 320.4902162615117,
+    "detector": "D2",
+    "status": "confirmed",
+    "cause": "sensor_fault",
+    "edges": [],
+    "evidence": [
+      "Давление ниже расчётного (CUSUM): PT-105",
+      "Баланс «Водовод С-1 → КНС» в норме (0.6σ)",
+      "Отклоняется только PT-105; соседние датчики и баланс в норме — вероятна неисправность датчика",
+      "Фронты волны: PT-105 300.01 с. Фронт различим только на PT-105: волновая локализация невозможна.",
+      "Классификатор: normal 0.06, leak 0.28, operating_change 0.00, sensor_fault 0.66"
+    ]
+  },
+  {
+    "simTimeS": 381.4928383477562,
+    "detector": "D1",
+    "status": "normal",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": [
+      "Баланс «Коллектор ДНС-1 → УПН» в норме (1.4σ)",
+      "Отклоняется только PT-105; соседние датчики и баланс в норме — вероятна неисправность датчика",
+      "Фронты волны: PT-105 300.01 с. Фронт различим только на PT-105: волновая локализация невозможна."
+    ]
+  },
+  {
+    "simTimeS": 381.4928383477562,
+    "detector": "D2",
+    "status": "normal",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": [
+      "Баланс «Коллектор ДНС-1 → УПН» в норме (1.4σ)",
+      "Отклоняется только PT-105; соседние датчики и баланс в норме — вероятна неисправность датчика",
+      "Фронты волны: PT-105 300.01 с. Фронт различим только на PT-105: волновая локализация невозможна.",
+      "Классификатор: normal 0.87, leak 0.06, operating_change 0.00, sensor_fault 0.07"
+    ]
+  },
+  {
+    "simTimeS": 382.4849030825126,
+    "detector": "D0",
+    "status": "normal",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": []
+  },
+  {
+    "simTimeS": 481.4854763301797,
+    "detector": "D0",
+    "status": "suspected",
+    "cause": "leak",
+    "edges": [],
+    "evidence": [
+      "|невязка| > 6σ: PT-109 (-13.5σ), PT-112 (-20.0σ)"
+    ]
+  },
+  {
+    "simTimeS": 482.49625926747865,
+    "detector": "D1",
+    "status": "suspected",
+    "cause": "sensor_fault",
+    "edges": [],
+    "evidence": [
+      "Давление ниже расчётного (CUSUM): PT-109, PT-112",
+      "Баланс «Водовод С-1 → КНС» в норме (1.0σ)",
+      "Фронты волны: PT-105 300.01 с. Фронт различим только на PT-105: волновая локализация невозможна."
+    ]
+  },
+  {
+    "simTimeS": 482.49625926747865,
+    "detector": "D2",
+    "status": "suspected",
+    "cause": "sensor_fault",
+    "edges": [],
+    "evidence": [
+      "Давление ниже расчётного (CUSUM): PT-109, PT-112",
+      "Баланс «Водовод С-1 → КНС» в норме (1.0σ)",
+      "Фронты волны: PT-105 300.01 с. Фронт различим только на PT-105: волновая локализация невозможна.",
+      "Классификатор: normal 0.88, leak 0.01, operating_change 0.00, sensor_fault 0.10"
+    ]
+  },
+  {
+    "simTimeS": 483.488324002235,
+    "detector": "D1",
+    "status": "suspected",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": [
+      "Давление ниже расчётного (CUSUM): PT-107, PT-109, PT-112",
+      "Баланс «Водовод С-1 → КНС» в норме (1.1σ)",
+      "Фронты волны: PT-105 300.01 с. Фронт различим только на PT-105: волновая локализация невозможна."
+    ]
+  },
+  {
+    "simTimeS": 483.488324002235,
+    "detector": "D2",
+    "status": "suspected",
+    "cause": "unknown",
+    "edges": [],
+    "evidence": [
+      "Давление ниже расчётного (CUSUM): PT-107, PT-109, PT-112",
+      "Баланс «Водовод С-1 → КНС» в норме (1.1σ)",
+      "Фронты волны: PT-105 300.01 с. Фронт различим только на PT-105: волновая локализация невозможна.",
+      "Классификатор: normal 0.88, leak 0.01, operating_change 0.00, sensor_fault 0.10"
+    ]
+  },
+  {
+    "simTimeS": 485.4911716742903,
+    "detector": "D2",
+    "status": "confirmed",
+    "cause": "leak",
+    "edges": [
+      "e6"
+    ],
+    "evidence": [
+      "Давление ниже расчётного (CUSUM): PT-107, PT-109, PT-111, PT-112",
+      "Баланс «Коллектор ДНС-1 → УПН» в норме (2.5σ)",
+      "Фронты волны: PT-105 300.01 с. Фронт различим только на PT-105: волновая локализация невозможна.",
+      "Классификатор: normal 0.00, leak 1.00, operating_change 0.00, sensor_fault 0.00"
+    ]
+  },
+  {
+    "simTimeS": 491.49971469045613,
+    "detector": "D0",
+    "status": "confirmed",
+    "cause": "leak",
+    "edges": [
+      "e4"
+    ],
+    "evidence": [
+      "|невязка| > 6σ: PT-103 (-7.0σ), PT-104 (-9.3σ), PT-107 (-9.8σ), PT-109 (-10.6σ), PT-111 (-12.9σ), PT-112 (-11.3σ)"
+    ]
+  },
+  {
+    "simTimeS": 491.49971469045613,
+    "detector": "D1",
+    "status": "confirmed",
+    "cause": "leak",
+    "edges": [
+      "e6"
+    ],
+    "evidence": [
+      "Давление ниже расчётного (CUSUM): PT-103, PT-104, PT-107, PT-109, PT-111, PT-112, PT-113",
+      "Баланс «Коллектор ДНС-1 → УПН» не объясняется оценённым накоплением: дефицит 0.82 кг/с (10.7σ)",
+      "Расходомеры: приток выше/отток ниже расчётного (9.5σ)",
+      "Фронты волны: PT-105 300.01 с. Фронт различим только на PT-105: волновая локализация невозможна."
+    ]
+  }
+]

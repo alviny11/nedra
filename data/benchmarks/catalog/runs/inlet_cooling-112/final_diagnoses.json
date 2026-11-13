@@ -1,0 +1,116 @@
+{
+  "D0": {
+    "schemaVersion": "1.0.0",
+    "id": "D0-1499.5",
+    "detector": "D0",
+    "detectorVersion": "pipetwin-diag-0.1.0/D0",
+    "simTimeS": 1499.4972122759552,
+    "status": "confirmed",
+    "cause": "leak",
+    "affectedSensorIds": [
+      "PT-103",
+      "PT-104",
+      "PT-105",
+      "PT-107",
+      "PT-111",
+      "PT-113"
+    ],
+    "candidateEdges": [
+      {
+        "edgeId": "e2",
+        "misfit": 0,
+        "support": 1,
+        "estimatedDistanceM": 1600,
+        "method": "nearest_sensor"
+      }
+    ],
+    "evidence": [
+      {
+        "code": "D0_THRESHOLD",
+        "text": "|невязка| > 6σ: PT-103 (21.5σ), PT-104 (-11.9σ), PT-105 (-12.7σ), PT-107 (-6.5σ), PT-111 (-11.7σ), PT-113 (-11.1σ)",
+        "sensorIds": [
+          "PT-103",
+          "PT-104",
+          "PT-105",
+          "PT-107",
+          "PT-111",
+          "PT-113"
+        ]
+      }
+    ],
+    "limitations": [
+      "D0: наблюдатель с фиксированными свойствами среды (паспорт при опорных T, Y_w); без учёта измеренной температуры и обводнённости.",
+      "D0 не различает причины: любая устойчивая тревога трактуется как утечка."
+    ],
+    "inputTimeRange": [
+      1439.4972122759552,
+      1499.4972122759552
+    ],
+    "score": 21.523762121185527,
+    "episodeId": "D0-18",
+    "firstAlarmTimeS": 803
+  },
+  "D1": {
+    "schemaVersion": "1.0.0",
+    "id": "D1-1499.5",
+    "detector": "D1",
+    "detectorVersion": "pipetwin-diag-0.1.0/D1",
+    "simTimeS": 1499.4972122759552,
+    "status": "normal",
+    "cause": "unknown",
+    "affectedSensorIds": [],
+    "candidateEdges": [],
+    "evidence": [
+      {
+        "code": "MASS_BALANCE",
+        "text": "Баланс «Водовод С-1 → КНС» в норме (1.0σ)",
+        "value": 0.04637083118627269
+      }
+    ],
+    "limitations": [
+      "Score и поддержка кандидатов — не откалиброванные вероятности."
+    ],
+    "inputTimeRange": [
+      1439.4972122759552,
+      1499.4972122759552
+    ],
+    "score": 0.9578317703158916
+  },
+  "D2": {
+    "schemaVersion": "1.0.0",
+    "id": "D2-1499.5",
+    "detector": "D2",
+    "detectorVersion": "pipetwin-diag-0.1.0/D2",
+    "simTimeS": 1499.4972122759552,
+    "status": "normal",
+    "cause": "unknown",
+    "affectedSensorIds": [],
+    "candidateEdges": [],
+    "evidence": [
+      {
+        "code": "MASS_BALANCE",
+        "text": "Баланс «Водовод С-1 → КНС» в норме (1.0σ)",
+        "value": 0.04637083118627269
+      },
+      {
+        "code": "ML",
+        "text": "Классификатор: normal 1.00, leak 0.00, operating_change 0.00, sensor_fault 0.00"
+      }
+    ],
+    "limitations": [
+      "Score и поддержка кандидатов — не откалиброванные вероятности.",
+      "Модель logreg-v2; калибровка проверена на валидации."
+    ],
+    "inputTimeRange": [
+      1439.4972122759552,
+      1499.4972122759552
+    ],
+    "score": 0.9578317703158916,
+    "causeScores": {
+      "normal": 0.9999999999999687,
+      "leak": 5.4309942954623374e-18,
+      "operating_change": 3.1254221506125864e-14,
+      "sensor_fault": 1.9473029298378092e-26
+    }
+  }
+}

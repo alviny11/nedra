@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "healthy_steady-101",
+  "scenarioId": "healthy_steady_public",
+  "seed": 101,
+  "durationS": 899.9853873563042,
+  "events": [],
+  "normalExposureS": 899.9853873563042,
+  "propertyDeviation": {
+    "viscosityFactor": 1.05,
+    "bulkModulusFactor": 0.98,
+    "roughnessFactor": 1.1
+  }
+}

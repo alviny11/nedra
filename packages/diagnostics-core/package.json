@@ -1,0 +1,14 @@
+{
+  "name": "@pipetwin/diagnostics-core",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Independent diagnostics: physical observers, residuals, CUSUM, mass balance, localisation, ML inference. Must not import truth types.",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@pipetwin/contracts": "0.1.0",
+    "@pipetwin/physics-core": "0.1.0"
+  }
+}

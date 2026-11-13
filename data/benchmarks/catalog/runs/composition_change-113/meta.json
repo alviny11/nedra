@@ -1,0 +1,17 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "composition_change-113",
+  "scenarioId": "composition_change",
+  "tags": [
+    "composition_change",
+    "normal"
+  ],
+  "durationS": 1499.9945167698163,
+  "wallMs": 24220.247208,
+  "physicsCoreVersion": "0.1.0",
+  "detectorVersion": "pipetwin-diag-0.1.0",
+  "featureSchemaVersion": "features-1.0",
+  "modelVersion": "logreg-v2",
+  "commands": [],
+  "engineStatus": "running"
+}

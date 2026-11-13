@@ -1,0 +1,233 @@
+{
+  "D0": {
+    "schemaVersion": "1.0.0",
+    "id": "D0-899.5",
+    "detector": "D0",
+    "detectorVersion": "pipetwin-diag-0.1.0/D0",
+    "simTimeS": 899.4838748352873,
+    "status": "confirmed",
+    "cause": "leak",
+    "affectedSensorIds": [
+      "PT-103",
+      "PT-104",
+      "PT-105",
+      "PT-107",
+      "PT-109",
+      "PT-111",
+      "PT-112",
+      "PT-113"
+    ],
+    "candidateEdges": [
+      {
+        "edgeId": "e4",
+        "misfit": 0,
+        "support": 1,
+        "estimatedDistanceM": 1400,
+        "method": "nearest_sensor"
+      }
+    ],
+    "evidence": [
+      {
+        "code": "D0_THRESHOLD",
+        "text": "|невязка| > 6σ: PT-103 (-24.7σ), PT-104 (-18.9σ), PT-105 (-23.6σ), PT-107 (-17.5σ), PT-109 (-9.1σ), PT-111 (-26.1σ), PT-112 (-12.4σ), PT-113 (-17.7σ)",
+        "sensorIds": [
+          "PT-103",
+          "PT-104",
+          "PT-105",
+          "PT-107",
+          "PT-109",
+          "PT-111",
+          "PT-112",
+          "PT-113"
+        ]
+      }
+    ],
+    "limitations": [
+      "D0: наблюдатель с фиксированными свойствами среды (паспорт при опорных T, Y_w); без учёта измеренной температуры и обводнённости.",
+      "D0 не различает причины: любая устойчивая тревога трактуется как утечка."
+    ],
+    "inputTimeRange": [
+      839.4838748352873,
+      899.4838748352873
+    ],
+    "score": 26.050474404706407,
+    "episodeId": "D0-5",
+    "firstAlarmTimeS": 443
+  },
+  "D1": {
+    "schemaVersion": "1.0.0",
+    "id": "D1-899.5",
+    "detector": "D1",
+    "detectorVersion": "pipetwin-diag-0.1.0/D1",
+    "simTimeS": 899.4838748352873,
+    "status": "confirmed",
+    "cause": "leak",
+    "affectedSensorIds": [
+      "PT-103",
+      "PT-104",
+      "PT-105",
+      "PT-106",
+      "PT-107",
+      "PT-108",
+      "PT-109",
+      "PT-111",
+      "PT-112",
+      "PT-113"
+    ],
+    "candidateEdges": [
+      {
+        "edgeId": "e4",
+        "misfit": 4.046552131593366,
+        "support": 1,
+        "estimatedDistanceM": 1930,
+        "intervalM": [
+          1850,
+          2030
+        ],
+        "method": "steady_residual_fit"
+      }
+    ],
+    "evidence": [
+      {
+        "code": "P_BELOW",
+        "text": "Давление ниже расчётного (CUSUM): PT-103, PT-104, PT-105, PT-106, PT-107, PT-108, PT-109, PT-111, PT-112, PT-113",
+        "sensorIds": [
+          "PT-103",
+          "PT-104",
+          "PT-105",
+          "PT-106",
+          "PT-107",
+          "PT-108",
+          "PT-109",
+          "PT-111",
+          "PT-112",
+          "PT-113"
+        ]
+      },
+      {
+        "code": "MASS_BALANCE",
+        "text": "Баланс «Коллектор ДНС-1 → УПН» не объясняется оценённым накоплением: дефицит 7.14 кг/с (93.3σ)",
+        "value": 7.141772021538648
+      },
+      {
+        "code": "FLOW_PATTERN",
+        "text": "Расходомеры: приток выше/отток ниже расчётного (12.9σ)",
+        "value": 12.862032947681321
+      },
+      {
+        "code": "STEADY_FIT",
+        "text": "Подбор по невязкам указывает одно ребро."
+      }
+    ],
+    "limitations": [
+      "Score и поддержка кандидатов — не откалиброванные вероятности."
+    ],
+    "inputTimeRange": [
+      839.4838748352873,
+      899.4838748352873
+    ],
+    "score": 426.23845268439436,
+    "episodeId": "D1-1",
+    "firstAlarmTimeS": 430,
+    "estimatedDistanceM": 1930,
+    "intervalM": [
+      1850,
+      2030
+    ],
+    "estimatedLeakMassFlowKgs": 7.141772021538648
+  },
+  "D2": {
+    "schemaVersion": "1.0.0",
+    "id": "D2-899.5",
+    "detector": "D2",
+    "detectorVersion": "pipetwin-diag-0.1.0/D2",
+    "simTimeS": 899.4838748352873,
+    "status": "confirmed",
+    "cause": "leak",
+    "affectedSensorIds": [
+      "PT-103",
+      "PT-104",
+      "PT-105",
+      "PT-106",
+      "PT-107",
+      "PT-108",
+      "PT-109",
+      "PT-111",
+      "PT-112",
+      "PT-113"
+    ],
+    "candidateEdges": [
+      {
+        "edgeId": "e4",
+        "misfit": 4.046552131593366,
+        "support": 1,
+        "estimatedDistanceM": 1930,
+        "intervalM": [
+          1850,
+          2030
+        ],
+        "method": "steady_residual_fit"
+      }
+    ],
+    "evidence": [
+      {
+        "code": "P_BELOW",
+        "text": "Давление ниже расчётного (CUSUM): PT-103, PT-104, PT-105, PT-106, PT-107, PT-108, PT-109, PT-111, PT-112, PT-113",
+        "sensorIds": [
+          "PT-103",
+          "PT-104",
+          "PT-105",
+          "PT-106",
+          "PT-107",
+          "PT-108",
+          "PT-109",
+          "PT-111",
+          "PT-112",
+          "PT-113"
+        ]
+      },
+      {
+        "code": "MASS_BALANCE",
+        "text": "Баланс «Коллектор ДНС-1 → УПН» не объясняется оценённым накоплением: дефицит 7.14 кг/с (93.3σ)",
+        "value": 7.141772021538648
+      },
+      {
+        "code": "FLOW_PATTERN",
+        "text": "Расходомеры: приток выше/отток ниже расчётного (12.9σ)",
+        "value": 12.862032947681321
+      },
+      {
+        "code": "STEADY_FIT",
+        "text": "Подбор по невязкам указывает одно ребро."
+      },
+      {
+        "code": "ML",
+        "text": "Классификатор: normal 0.00, leak 1.00, operating_change 0.00, sensor_fault 0.00"
+      }
+    ],
+    "limitations": [
+      "Score и поддержка кандидатов — не откалиброванные вероятности.",
+      "Модель logreg-v2; калибровка проверена на валидации."
+    ],
+    "inputTimeRange": [
+      839.4838748352873,
+      899.4838748352873
+    ],
+    "score": 426.23845268439436,
+    "causeScores": {
+      "normal": 4.992690560805183e-43,
+      "leak": 1,
+      "operating_change": 5.3255961310092415e-24,
+      "sensor_fault": 5.611037331500065e-31
+    },
+    "episodeId": "D2-2",
+    "firstAlarmTimeS": 405,
+    "estimatedDistanceM": 1930,
+    "intervalM": [
+      1850,
+      2030
+    ],
+    "calibratedProbability": 1,
+    "estimatedLeakMassFlowKgs": 7.141772021538648
+  }
+}

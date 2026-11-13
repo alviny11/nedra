@@ -1,0 +1,105 @@
+{
+  "D0": {
+    "schemaVersion": "1.0.0",
+    "id": "D0-899.5",
+    "detector": "D0",
+    "detectorVersion": "pipetwin-diag-0.1.0/D0",
+    "simTimeS": 899.4884474945588,
+    "status": "confirmed",
+    "cause": "leak",
+    "affectedSensorIds": [
+      "PT-103"
+    ],
+    "candidateEdges": [
+      {
+        "edgeId": "e2",
+        "misfit": 0,
+        "support": 1,
+        "method": "nearest_sensor"
+      }
+    ],
+    "evidence": [
+      {
+        "code": "D0_THRESHOLD",
+        "text": "|невязка| > 6σ: PT-103 (7.9σ)",
+        "sensorIds": [
+          "PT-103"
+        ]
+      }
+    ],
+    "limitations": [
+      "D0: наблюдатель с фиксированными свойствами среды (паспорт при опорных T, Y_w); без учёта измеренной температуры и обводнённости.",
+      "D0 не различает причины: любая устойчивая тревога трактуется как утечка."
+    ],
+    "inputTimeRange": [
+      839.4884474945588,
+      899.4884474945588
+    ],
+    "score": 7.872898844623627,
+    "episodeId": "D0-3",
+    "firstAlarmTimeS": 429
+  },
+  "D1": {
+    "schemaVersion": "1.0.0",
+    "id": "D1-899.5",
+    "detector": "D1",
+    "detectorVersion": "pipetwin-diag-0.1.0/D1",
+    "simTimeS": 899.4884474945588,
+    "status": "normal",
+    "cause": "unknown",
+    "affectedSensorIds": [],
+    "candidateEdges": [],
+    "evidence": [
+      {
+        "code": "MASS_BALANCE",
+        "text": "Баланс «Коллектор ДНС-1 → УПН» в норме (0.9σ)",
+        "value": 0.0701656986033176
+      }
+    ],
+    "limitations": [
+      "Score и поддержка кандидатов — не откалиброванные вероятности."
+    ],
+    "inputTimeRange": [
+      839.4884474945588,
+      899.4884474945588
+    ],
+    "score": 0.9166408481282264
+  },
+  "D2": {
+    "schemaVersion": "1.0.0",
+    "id": "D2-899.5",
+    "detector": "D2",
+    "detectorVersion": "pipetwin-diag-0.1.0/D2",
+    "simTimeS": 899.4884474945588,
+    "status": "normal",
+    "cause": "unknown",
+    "affectedSensorIds": [],
+    "candidateEdges": [],
+    "evidence": [
+      {
+        "code": "MASS_BALANCE",
+        "text": "Баланс «Коллектор ДНС-1 → УПН» в норме (0.9σ)",
+        "value": 0.0701656986033176
+      },
+      {
+        "code": "ML",
+        "text": "Классификатор: normal 1.00, leak 0.00, operating_change 0.00, sensor_fault 0.00"
+      }
+    ],
+    "limitations": [
+      "Score и поддержка кандидатов — не откалиброванные вероятности.",
+      "Модель logreg-v2; калибровка проверена на валидации."
+    ],
+    "inputTimeRange": [
+      839.4884474945588,
+      899.4884474945588
+    ],
+    "score": 0.9166408481282264,
+    "causeScores": {
+      "normal": 0.9995824608074892,
+      "leak": 0.00037220176539030534,
+      "operating_change": 0.000010981165562530057,
+      "sensor_fault": 0.00003435626155800373
+    }
+  }
+}

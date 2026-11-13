@@ -1,0 +1,11 @@
+[
+  {
+    "episodeId": "D0-1",
+    "detector": "D0",
+    "startS": 1318,
+    "cause": "unknown",
+    "maxStatus": "suspected",
+    "candidateEdges": [],
+    "endS": 1319
+  }
+]

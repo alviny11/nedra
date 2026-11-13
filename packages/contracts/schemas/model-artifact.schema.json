@@ -1,0 +1,214 @@
+{
+  "$defs": {
+    "Calibration": {
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "enum": [
+            "validated",
+            "not_validated"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "method": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Method"
+        },
+        "brierValidation": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Briervalidation"
+        },
+        "note": {
+          "title": "Note",
+          "type": "string"
+        }
+      },
+      "required": [
+        "status",
+        "note"
+      ],
+      "title": "Calibration",
+      "type": "object"
+    },
+    "DecisionThresholds": {
+      "additionalProperties": false,
+      "properties": {
+        "minTopScore": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Mintopscore",
+          "type": "number"
+        }
+      },
+      "required": [
+        "minTopScore"
+      ],
+      "title": "DecisionThresholds",
+      "type": "object"
+    },
+    "Parity": {
+      "additionalProperties": false,
+      "properties": {
+        "goldenFile": {
+          "title": "Goldenfile",
+          "type": "string"
+        },
+        "maxAbsDiff": {
+          "minimum": 0,
+          "title": "Maxabsdiff",
+          "type": "number"
+        }
+      },
+      "required": [
+        "goldenFile",
+        "maxAbsDiff"
+      ],
+      "title": "Parity",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": {
+      "title": "Schemaversion",
+      "type": "string"
+    },
+    "modelVersion": {
+      "title": "Modelversion",
+      "type": "string"
+    },
+    "featureSchemaVersion": {
+      "title": "Featureschemaversion",
+      "type": "string"
+    },
+    "kind": {
+      "const": "multinomial_logistic",
+      "title": "Kind",
+      "type": "string"
+    },
+    "classes": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 2,
+      "title": "Classes",
+      "type": "array"
+    },
+    "featureNames": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Featurenames",
+      "type": "array"
+    },
+    "scalerMean": {
+      "items": {
+        "type": "number"
+      },
+      "title": "Scalermean",
+      "type": "array"
+    },
+    "scalerScale": {
+      "items": {
+        "exclusiveMinimum": 0,
+        "type": "number"
+      },
+      "title": "Scalerscale",
+      "type": "array"
+    },
+    "coefficients": {
+      "items": {
+        "items": {
+          "type": "number"
+        },
+        "type": "array"
+      },
+      "title": "Coefficients",
+      "type": "array"
+    },
+    "intercepts": {
+      "items": {
+        "type": "number"
+      },
+      "title": "Intercepts",
+      "type": "array"
+    },
+    "classMapping": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Classmapping",
+      "type": "object"
+    },
+    "missingFeaturePolicy": {
+      "const": "impute_scaler_mean",
+      "title": "Missingfeaturepolicy",
+      "type": "string"
+    },
+    "decisionThresholds": {
+      "$ref": "#/$defs/DecisionThresholds"
+    },
+    "calibration": {
+      "$ref": "#/$defs/Calibration"
+    },
+    "trainingMetadata": {
+      "additionalProperties": true,
+      "title": "Trainingmetadata",
+      "type": "object"
+    },
+    "evaluationSummary": {
+      "additionalProperties": true,
+      "title": "Evaluationsummary",
+      "type": "object"
+    },
+    "parity": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Parity"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "modelVersion",
+    "featureSchemaVersion",
+    "kind",
+    "classes",
+    "featureNames",
+    "scalerMean",
+    "scalerScale",
+    "coefficients",
+    "intercepts",
+    "classMapping",
+    "missingFeaturePolicy",
+    "decisionThresholds",
+    "calibration",
+    "trainingMetadata",
+    "evaluationSummary"
+  ],
+  "title": "LogisticModelArtifact",
+  "type": "object"
+}

@@ -1,0 +1,507 @@
+{
+  "$defs": {
+    "CompositionBounds": {
+      "additionalProperties": false,
+      "properties": {
+        "waterMassFraction": {
+          "maxItems": 2,
+          "minItems": 2,
+          "prefixItems": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            }
+          ],
+          "title": "Watermassfraction",
+          "type": "array"
+        }
+      },
+      "required": [
+        "waterMassFraction"
+      ],
+      "title": "CompositionBounds",
+      "type": "object"
+    },
+    "LinearDensityModel": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "linear",
+          "title": "Kind",
+          "type": "string"
+        },
+        "rhoRefKgM3": {
+          "exclusiveMinimum": 0,
+          "title": "Rhorefkgm3",
+          "type": "number"
+        },
+        "thermalExpansion1K": {
+          "title": "Thermalexpansion1K",
+          "type": "number"
+        }
+      },
+      "required": [
+        "kind",
+        "rhoRefKgM3",
+        "thermalExpansion1K"
+      ],
+      "title": "LinearDensityModel",
+      "type": "object"
+    },
+    "MixtureSinglePhase": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "single_phase",
+          "title": "Kind",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind"
+      ],
+      "title": "MixtureSinglePhase",
+      "type": "object"
+    },
+    "MixtureWoEmulsion": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "wo_emulsion_power",
+          "title": "Kind",
+          "type": "string"
+        },
+        "exponent": {
+          "exclusiveMinimum": 0,
+          "title": "Exponent",
+          "type": "number"
+        },
+        "maxWaterVolumeFraction": {
+          "exclusiveMinimum": 0,
+          "maximum": 1,
+          "title": "Maxwatervolumefraction",
+          "type": "number"
+        },
+        "calibrated": {
+          "title": "Calibrated",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "kind",
+        "exponent",
+        "maxWaterVolumeFraction",
+        "calibrated"
+      ],
+      "title": "MixtureWoEmulsion",
+      "type": "object"
+    },
+    "PhaseBoundary": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "min_pressure",
+          "title": "Kind",
+          "type": "string"
+        },
+        "minPressurePa": {
+          "exclusiveMinimum": 0,
+          "title": "Minpressurepa",
+          "type": "number"
+        },
+        "note": {
+          "title": "Note",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "minPressurePa",
+        "note"
+      ],
+      "title": "PhaseBoundary",
+      "type": "object"
+    },
+    "PhaseProperties": {
+      "additionalProperties": false,
+      "properties": {
+        "densityModel": {
+          "$ref": "#/$defs/LinearDensityModel"
+        },
+        "viscosityModel": {
+          "discriminator": {
+            "mapping": {
+              "arrhenius": "#/$defs/ViscosityArrhenius",
+              "constant": "#/$defs/ViscosityConstant",
+              "table_log": "#/$defs/ViscosityTableLog"
+            },
+            "propertyName": "kind"
+          },
+          "oneOf": [
+            {
+              "$ref": "#/$defs/ViscosityConstant"
+            },
+            {
+              "$ref": "#/$defs/ViscosityArrhenius"
+            },
+            {
+              "$ref": "#/$defs/ViscosityTableLog"
+            }
+          ],
+          "title": "Viscositymodel"
+        },
+        "heatCapacityJkgK": {
+          "exclusiveMinimum": 0,
+          "title": "Heatcapacityjkgk",
+          "type": "number"
+        },
+        "conductivityWmK": {
+          "exclusiveMinimum": 0,
+          "title": "Conductivitywmk",
+          "type": "number"
+        },
+        "bulkModulusPa": {
+          "exclusiveMinimum": 0,
+          "title": "Bulkmoduluspa",
+          "type": "number"
+        }
+      },
+      "required": [
+        "densityModel",
+        "viscosityModel",
+        "heatCapacityJkgK",
+        "conductivityWmK",
+        "bulkModulusPa"
+      ],
+      "title": "PhaseProperties",
+      "type": "object"
+    },
+    "StandardConditions": {
+      "additionalProperties": false,
+      "properties": {
+        "pressurePa": {
+          "exclusiveMinimum": 0,
+          "title": "Pressurepa",
+          "type": "number"
+        },
+        "temperatureK": {
+          "exclusiveMinimum": 0,
+          "title": "Temperaturek",
+          "type": "number"
+        }
+      },
+      "required": [
+        "pressurePa",
+        "temperatureK"
+      ],
+      "title": "StandardConditions",
+      "type": "object"
+    },
+    "Uncertainty": {
+      "additionalProperties": false,
+      "properties": {
+        "densityRel": {
+          "minimum": 0,
+          "title": "Densityrel",
+          "type": "number"
+        },
+        "viscosityRel": {
+          "minimum": 0,
+          "title": "Viscosityrel",
+          "type": "number"
+        },
+        "soundSpeedRel": {
+          "minimum": 0,
+          "title": "Soundspeedrel",
+          "type": "number"
+        }
+      },
+      "required": [
+        "densityRel",
+        "viscosityRel",
+        "soundSpeedRel"
+      ],
+      "title": "Uncertainty",
+      "type": "object"
+    },
+    "ViscosityArrhenius": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "arrhenius",
+          "title": "Kind",
+          "type": "string"
+        },
+        "a": {
+          "title": "A",
+          "type": "number"
+        },
+        "bK": {
+          "title": "Bk",
+          "type": "number"
+        }
+      },
+      "required": [
+        "kind",
+        "a",
+        "bK"
+      ],
+      "title": "ViscosityArrhenius",
+      "type": "object"
+    },
+    "ViscosityConstant": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "constant",
+          "title": "Kind",
+          "type": "string"
+        },
+        "muPaS": {
+          "exclusiveMinimum": 0,
+          "title": "Mupas",
+          "type": "number"
+        }
+      },
+      "required": [
+        "kind",
+        "muPaS"
+      ],
+      "title": "ViscosityConstant",
+      "type": "object"
+    },
+    "ViscosityTableLog": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "table_log",
+          "title": "Kind",
+          "type": "string"
+        },
+        "temperatureK": {
+          "items": {
+            "exclusiveMinimum": 0,
+            "type": "number"
+          },
+          "minItems": 2,
+          "title": "Temperaturek",
+          "type": "array"
+        },
+        "viscosityPaS": {
+          "items": {
+            "exclusiveMinimum": 0,
+            "type": "number"
+          },
+          "minItems": 2,
+          "title": "Viscositypas",
+          "type": "array"
+        }
+      },
+      "required": [
+        "kind",
+        "temperatureK",
+        "viscosityPaS"
+      ],
+      "title": "ViscosityTableLog",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": {
+      "title": "Schemaversion",
+      "type": "string"
+    },
+    "id": {
+      "maxLength": 64,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9_.\\-]+$",
+      "title": "Id",
+      "type": "string"
+    },
+    "name": {
+      "title": "Name",
+      "type": "string"
+    },
+    "provenance": {
+      "enum": [
+        "measured",
+        "correlation",
+        "synthetic"
+      ],
+      "title": "Provenance",
+      "type": "string"
+    },
+    "sourceUrl": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Sourceurl"
+    },
+    "description": {
+      "title": "Description",
+      "type": "string"
+    },
+    "modelVersion": {
+      "title": "Modelversion",
+      "type": "string"
+    },
+    "validPressurePa": {
+      "maxItems": 2,
+      "minItems": 2,
+      "prefixItems": [
+        {
+          "exclusiveMinimum": 0,
+          "type": "number"
+        },
+        {
+          "exclusiveMinimum": 0,
+          "type": "number"
+        }
+      ],
+      "title": "Validpressurepa",
+      "type": "array"
+    },
+    "validTemperatureK": {
+      "maxItems": 2,
+      "minItems": 2,
+      "prefixItems": [
+        {
+          "exclusiveMinimum": 0,
+          "type": "number"
+        },
+        {
+          "exclusiveMinimum": 0,
+          "type": "number"
+        }
+      ],
+      "title": "Validtemperaturek",
+      "type": "array"
+    },
+    "compositionDefinition": {
+      "title": "Compositiondefinition",
+      "type": "string"
+    },
+    "compositionBounds": {
+      "$ref": "#/$defs/CompositionBounds"
+    },
+    "referencePressurePa": {
+      "exclusiveMinimum": 0,
+      "title": "Referencepressurepa",
+      "type": "number"
+    },
+    "referenceTemperatureK": {
+      "exclusiveMinimum": 0,
+      "title": "Referencetemperaturek",
+      "type": "number"
+    },
+    "referenceWaterMassFraction": {
+      "maximum": 1,
+      "minimum": 0,
+      "title": "Referencewatermassfraction",
+      "type": "number"
+    },
+    "oil": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/PhaseProperties"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "water": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/PhaseProperties"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "mixtureViscosityModel": {
+      "discriminator": {
+        "mapping": {
+          "single_phase": "#/$defs/MixtureSinglePhase",
+          "wo_emulsion_power": "#/$defs/MixtureWoEmulsion"
+        },
+        "propertyName": "kind"
+      },
+      "oneOf": [
+        {
+          "$ref": "#/$defs/MixtureSinglePhase"
+        },
+        {
+          "$ref": "#/$defs/MixtureWoEmulsion"
+        }
+      ],
+      "title": "Mixtureviscositymodel"
+    },
+    "phaseBoundaryModel": {
+      "$ref": "#/$defs/PhaseBoundary"
+    },
+    "uncertainty": {
+      "$ref": "#/$defs/Uncertainty"
+    },
+    "standardConditions": {
+      "$ref": "#/$defs/StandardConditions"
+    },
+    "capabilities": {
+      "items": {
+        "enum": [
+          "M0_liquid",
+          "M1_acoustic_experiment"
+        ],
+        "type": "string"
+      },
+      "title": "Capabilities",
+      "type": "array"
+    },
+    "notes": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Notes",
+      "type": "array"
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "id",
+    "name",
+    "provenance",
+    "description",
+    "modelVersion",
+    "validPressurePa",
+    "validTemperatureK",
+    "compositionDefinition",
+    "compositionBounds",
+    "referencePressurePa",
+    "referenceTemperatureK",
+    "referenceWaterMassFraction",
+    "mixtureViscosityModel",
+    "phaseBoundaryModel",
+    "uncertainty",
+    "standardConditions",
+    "capabilities",
+    "notes"
+  ],
+  "title": "FluidProfile",
+  "type": "object"
+}

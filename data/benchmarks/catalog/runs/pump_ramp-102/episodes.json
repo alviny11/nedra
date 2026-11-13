@@ -1,0 +1,36 @@
+[
+  {
+    "episodeId": "D0-1",
+    "detector": "D0",
+    "startS": 408,
+    "cause": "unknown",
+    "maxStatus": "suspected",
+    "candidateEdges": [],
+    "endS": 410
+  },
+  {
+    "episodeId": "D0-2",
+    "detector": "D0",
+    "startS": 411,
+    "cause": "unknown",
+    "maxStatus": "suspected",
+    "candidateEdges": [],
+    "endS": 418
+  },
+  {
+    "episodeId": "D0-3",
+    "detector": "D0",
+    "startS": 419,
+    "cause": "leak",
+    "maxStatus": "confirmed",
+    "candidateEdges": [
+      {
+        "edgeId": "e2",
+        "misfit": 0,
+        "support": 1,
+        "method": "nearest_sensor"
+      }
+    ],
+    "alarmS": 429
+  }
+]

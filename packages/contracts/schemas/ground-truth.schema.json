@@ -1,0 +1,303 @@
+{
+  "$defs": {
+    "PropertyDeviation": {
+      "additionalProperties": false,
+      "properties": {
+        "viscosityFactor": {
+          "exclusiveMinimum": 0,
+          "title": "Viscosityfactor",
+          "type": "number"
+        },
+        "bulkModulusFactor": {
+          "exclusiveMinimum": 0,
+          "title": "Bulkmodulusfactor",
+          "type": "number"
+        },
+        "roughnessFactor": {
+          "exclusiveMinimum": 0,
+          "title": "Roughnessfactor",
+          "type": "number"
+        }
+      },
+      "required": [
+        "viscosityFactor",
+        "bulkModulusFactor",
+        "roughnessFactor"
+      ],
+      "title": "PropertyDeviation",
+      "type": "object"
+    },
+    "TerminatedEarly": {
+      "additionalProperties": false,
+      "properties": {
+        "simTimeS": {
+          "minimum": 0,
+          "title": "Simtimes",
+          "type": "number"
+        },
+        "code": {
+          "title": "Code",
+          "type": "string"
+        },
+        "message": {
+          "title": "Message",
+          "type": "string"
+        }
+      },
+      "required": [
+        "simTimeS",
+        "code",
+        "message"
+      ],
+      "title": "TerminatedEarly",
+      "type": "object"
+    },
+    "TruthEventRealization": {
+      "additionalProperties": false,
+      "properties": {
+        "eventId": {
+          "title": "Eventid",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "leak",
+            "sensor_fault",
+            "inlet_change",
+            "ambient_change"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "startTimeS": {
+          "minimum": 0,
+          "title": "Starttimes",
+          "type": "number"
+        },
+        "endTimeS": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Endtimes"
+        },
+        "edgeId": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Edgeid"
+        },
+        "requestedDistanceM": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Requesteddistancem"
+        },
+        "appliedDistanceM": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Applieddistancem"
+        },
+        "snapErrorM": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Snaperrorm"
+        },
+        "holeDiameterM": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Holediameterm"
+        },
+        "openingDurationS": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Openingdurations"
+        },
+        "peakLeakMassFlowKgS": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Peakleakmassflowkgs"
+        },
+        "totalLeakMassKg": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Totalleakmasskg"
+        },
+        "sensorId": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sensorid"
+        },
+        "nodeId": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Nodeid"
+        },
+        "detail": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Detail"
+        }
+      },
+      "required": [
+        "eventId",
+        "kind",
+        "startTimeS"
+      ],
+      "title": "TruthEventRealization",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": {
+      "title": "Schemaversion",
+      "type": "string"
+    },
+    "runId": {
+      "maxLength": 64,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9_.\\-]+$",
+      "title": "Runid",
+      "type": "string"
+    },
+    "scenarioId": {
+      "title": "Scenarioid",
+      "type": "string"
+    },
+    "seed": {
+      "title": "Seed",
+      "type": "integer"
+    },
+    "durationS": {
+      "minimum": 0,
+      "title": "Durations",
+      "type": "number"
+    },
+    "events": {
+      "items": {
+        "$ref": "#/$defs/TruthEventRealization"
+      },
+      "title": "Events",
+      "type": "array"
+    },
+    "normalExposureS": {
+      "minimum": 0,
+      "title": "Normalexposures",
+      "type": "number"
+    },
+    "propertyDeviation": {
+      "$ref": "#/$defs/PropertyDeviation"
+    },
+    "terminatedEarly": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/TerminatedEarly"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "runId",
+    "scenarioId",
+    "seed",
+    "durationS",
+    "events",
+    "normalExposureS",
+    "propertyDeviation"
+  ],
+  "title": "GroundTruthRecord",
+  "type": "object"
+}

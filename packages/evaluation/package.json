@@ -1,0 +1,13 @@
+{
+  "name": "@pipetwin/evaluation",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Evaluator: matches detector alarm episodes with ground truth (truth access allowed here, never used by inference).",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@pipetwin/contracts": "0.1.0"
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "dataset": "ood-v2",
+  "runs": 20,
+  "windows": 2880,
+  "macroF1": 0.7856003727615428,
+  "macroF1CI95": [
+    0.6484704409006693,
+    0.9112427222230386
+  ],
+  "classes": [
+    "normal",
+    "leak",
+    "operating_change",
+    "sensor_fault"
+  ],
+  "confusionMatrix": [
+    [
+      1716,
+      0,
+      0,
+      0
+    ],
+    [
+      10,
+      471,
+      0,
+      1
+    ],
+    [
+      0,
+      0,
+      60,
+      0
+    ],
+    [
+      359,
+      124,
+      0,
+      139
+    ]
+  ],
+  "perClassRecall": {
+    "normal": 1.0,
+    "leak": 0.9771784232365145,
+    "operating_change": 1.0,
+    "sensor_fault": 0.22347266881028938
+  },
+  "disjointFromTraining": [
+    "train-v2",
+    "val-v2"
+  ],
+  "ece": 0.06529829025210049,
+  "brier": 0.06963682805536156,
+  "note": "Window-level classification on a held-out split of synthetic runs; windows of one run are not independent. ECE/Brier are measured on this split (the artefact's 'validated' status refers to the validation split only)."
+}

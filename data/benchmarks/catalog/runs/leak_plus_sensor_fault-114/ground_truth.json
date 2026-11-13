@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "leak_plus_sensor_fault-114",
+  "scenarioId": "leak_plus_sensor_fault_public",
+  "seed": 114,
+  "durationS": 899.9853873563042,
+  "events": [
+    {
+      "eventId": "fault-1",
+      "kind": "sensor_fault",
+      "startTimeS": 300,
+      "sensorId": "PT-105",
+      "detail": {
+        "type": "bias_step",
+        "biasSI": -25000
+      }
+    },
+    {
+      "eventId": "leak-1",
+      "kind": "leak",
+      "startTimeS": 480,
+      "edgeId": "e6",
+      "requestedDistanceM": 1500,
+      "appliedDistanceM": 1511.111111111111,
+      "snapErrorM": 11.111111111111086,
+      "holeDiameterM": 0.02,
+      "openingDurationS": 0,
+      "detail": {
+        "gridDxM": 22.22222222222222
+      },
+      "peakLeakMassFlowKgS": 5.763774560416809,
+      "totalLeakMassKg": 2387.0850322026718
+    }
+  ],
+  "normalExposureS": 480,
+  "propertyDeviation": {
+    "viscosityFactor": 1.05,
+    "bulkModulusFactor": 0.98,
+    "roughnessFactor": 1.1
+  }
+}

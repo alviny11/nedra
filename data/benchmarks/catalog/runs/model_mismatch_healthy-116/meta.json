@@ -1,0 +1,17 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "model_mismatch_healthy-116",
+  "scenarioId": "model_mismatch_healthy",
+  "tags": [
+    "normal",
+    "robustness"
+  ],
+  "durationS": 899.9932694679387,
+  "wallMs": 14137.384263,
+  "physicsCoreVersion": "0.1.0",
+  "detectorVersion": "pipetwin-diag-0.1.0",
+  "featureSchemaVersion": "features-1.0",
+  "modelVersion": "logreg-v2",
+  "commands": [],
+  "engineStatus": "running"
+}

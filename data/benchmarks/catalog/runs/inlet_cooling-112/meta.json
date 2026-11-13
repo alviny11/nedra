@@ -1,0 +1,17 @@
+{
+  "schemaVersion": "1.0.0",
+  "runId": "inlet_cooling-112",
+  "scenarioId": "inlet_cooling",
+  "tags": [
+    "temperature_change",
+    "normal"
+  ],
+  "durationS": 1499.9945167698163,
+  "wallMs": 24604.686036000006,
+  "physicsCoreVersion": "0.1.0",
+  "detectorVersion": "pipetwin-diag-0.1.0",
+  "featureSchemaVersion": "features-1.0",
+  "modelVersion": "logreg-v2",
+  "commands": [],
+  "engineStatus": "running"
+}

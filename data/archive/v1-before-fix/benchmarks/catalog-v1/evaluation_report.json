@@ -1,0 +1,873 @@
+{
+  "protocol": {
+    "responseWindowS": 180,
+    "causeWindowS": 240,
+    "bootstrap": 500,
+    "seed": 7
+  },
+  "generatedAt": "2026-11-11T18:13:08.481Z",
+  "datasetSize": {
+    "runs": 16,
+    "totalSimulatedH": 4.333275649622091,
+    "normalExposureH": 2.4833081221636366,
+    "leakEvents": 8
+  },
+  "detectors": [
+    {
+      "detector": "D0",
+      "runs": 16,
+      "leakEvents": 8,
+      "detected": 8,
+      "missed": 0,
+      "recall": 1,
+      "recallCI95": [
+        1,
+        1
+      ],
+      "leakAlarms": 12,
+      "truePositiveAlarms": 8,
+      "precision": 0.6666666666666666,
+      "falseAlarms": 4,
+      "lateAlarms": 0,
+      "normalExposureH": 2.4833081221636366,
+      "falseAlarmsPerHour": 1.6107546076541288,
+      "falseAlarmsPerHourCI95": [
+        0.41848128562275955,
+        3.0451180843484567
+      ],
+      "latencyMedianS": 11,
+      "latencyP95S": 69.34999999999998,
+      "localized": 8,
+      "edgeAccuracy": 0.5,
+      "distanceErrorMedianM": null,
+      "distanceErrorP95M": null,
+      "ambiguousShare": 0,
+      "causeConfusion": {
+        "leak": {
+          "leak": 8
+        },
+        "sensor_fault": {
+          "leak": 2,
+          "normal": 2
+        },
+        "operating_change": {
+          "leak": 1,
+          "normal": 1
+        },
+        "property_change": {
+          "normal": 2
+        },
+        "normal": {
+          "normal": 2
+        }
+      },
+      "causeMacroF1": 0.5371120107962213,
+      "perEvent": [
+        {
+          "runId": "leak_abrupt_e2-105",
+          "scenarioId": "leak_abrupt_e2",
+          "eventId": "leak-1",
+          "edgeId": "e2",
+          "detected": true,
+          "latencyS": 11,
+          "predictedEdge": "e2"
+        },
+        {
+          "runId": "leak_abrupt_e3-107",
+          "scenarioId": "leak_abrupt_e3",
+          "eventId": "leak-1",
+          "edgeId": "e3",
+          "detected": true,
+          "latencyS": 11,
+          "predictedEdge": "e2"
+        },
+        {
+          "runId": "leak_abrupt_e4-104",
+          "scenarioId": "leak_abrupt_e4",
+          "eventId": "leak-1",
+          "edgeId": "e4",
+          "detected": true,
+          "latencyS": 11,
+          "predictedEdge": "e2"
+        },
+        {
+          "runId": "leak_abrupt_e4_lowrate-115",
+          "scenarioId": "leak_abrupt_e4_lowrate",
+          "eventId": "leak-1",
+          "edgeId": "e4",
+          "detected": true,
+          "latencyS": 12,
+          "predictedEdge": "e2"
+        },
+        {
+          "runId": "leak_abrupt_e6-106",
+          "scenarioId": "leak_abrupt_e6",
+          "eventId": "leak-1",
+          "edgeId": "e6",
+          "detected": true,
+          "latencyS": 11,
+          "predictedEdge": "e6"
+        },
+        {
+          "runId": "leak_plus_sensor_fault-114",
+          "scenarioId": "leak_plus_sensor_fault",
+          "eventId": "leak-1",
+          "edgeId": "e6",
+          "detected": true,
+          "latencyS": 11,
+          "predictedEdge": "e4"
+        },
+        {
+          "runId": "leak_slow_e4-108",
+          "scenarioId": "leak_slow_e4",
+          "eventId": "leak-1",
+          "edgeId": "e4",
+          "detected": true,
+          "latencyS": 83,
+          "predictedEdge": "e4"
+        },
+        {
+          "runId": "leak_water_line-109",
+          "scenarioId": "leak_water_line",
+          "eventId": "leak-1",
+          "edgeId": "e9",
+          "detected": true,
+          "latencyS": 44,
+          "predictedEdge": "e9"
+        }
+      ]
+    },
+    {
+      "detector": "D1",
+      "runs": 16,
+      "leakEvents": 8,
+      "detected": 8,
+      "missed": 0,
+      "recall": 1,
+      "recallCI95": [
+        1,
+        1
+      ],
+      "leakAlarms": 8,
+      "truePositiveAlarms": 8,
+      "precision": 1,
+      "falseAlarms": 0,
+      "lateAlarms": 0,
+      "normalExposureH": 2.4833081221636366,
+      "falseAlarmsPerHour": 0,
+      "falseAlarmsPerHourCI95": [
+        0,
+        0
+      ],
+      "latencyMedianS": 11.5,
+      "latencyP95S": 51.09999999999997,
+      "localized": 8,
+      "edgeAccuracy": 1,
+      "distanceErrorMedianM": 3.9426523297490803,
+      "distanceErrorP95M": 25.388888888888907,
+      "ambiguousShare": 0.09090909090909091,
+      "causeConfusion": {
+        "leak": {
+          "leak": 8
+        },
+        "sensor_fault": {
+          "sensor_fault": 2,
+          "normal": 2
+        },
+        "operating_change": {
+          "normal": 2
+        },
+        "property_change": {
+          "normal": 1,
+          "unknown": 1
+        },
+        "normal": {
+          "normal": 2
+        }
+      },
+      "causeMacroF1": 0.8412698412698413,
+      "perEvent": [
+        {
+          "runId": "leak_abrupt_e2-105",
+          "scenarioId": "leak_abrupt_e2",
+          "eventId": "leak-1",
+          "edgeId": "e2",
+          "detected": true,
+          "latencyS": 15,
+          "predictedEdge": "e2",
+          "distanceErrorM": 1.1111111111108585
+        },
+        {
+          "runId": "leak_abrupt_e3-107",
+          "scenarioId": "leak_abrupt_e3",
+          "eventId": "leak-1",
+          "edgeId": "e3",
+          "detected": true,
+          "latencyS": 16,
+          "predictedEdge": "e3",
+          "distanceErrorM": 6.774193548387075
+        },
+        {
+          "runId": "leak_abrupt_e4-104",
+          "scenarioId": "leak_abrupt_e4",
+          "eventId": "leak-1",
+          "edgeId": "e4",
+          "detected": true,
+          "latencyS": 11,
+          "predictedEdge": "e4",
+          "distanceErrorM": 1.1111111111110858
+        },
+        {
+          "runId": "leak_abrupt_e4_lowrate-115",
+          "scenarioId": "leak_abrupt_e4_lowrate",
+          "eventId": "leak-1",
+          "edgeId": "e4",
+          "detected": true,
+          "latencyS": 12,
+          "predictedEdge": "e4",
+          "distanceErrorM": 28.888888888888914
+        },
+        {
+          "runId": "leak_abrupt_e6-106",
+          "scenarioId": "leak_abrupt_e6",
+          "eventId": "leak-1",
+          "edgeId": "e6",
+          "detected": true,
+          "latencyS": 10,
+          "predictedEdge": "e6",
+          "distanceErrorM": 10
+        },
+        {
+          "runId": "leak_plus_sensor_fault-114",
+          "scenarioId": "leak_plus_sensor_fault",
+          "eventId": "leak-1",
+          "edgeId": "e6",
+          "detected": true,
+          "latencyS": 11,
+          "predictedEdge": "e6",
+          "distanceErrorM": 1.1111111111110858
+        },
+        {
+          "runId": "leak_slow_e4-108",
+          "scenarioId": "leak_slow_e4",
+          "eventId": "leak-1",
+          "edgeId": "e4",
+          "detected": true,
+          "latencyS": 70,
+          "predictedEdge": "e4",
+          "distanceErrorM": 18.888888888888914
+        },
+        {
+          "runId": "leak_water_line-109",
+          "scenarioId": "leak_water_line",
+          "eventId": "leak-1",
+          "edgeId": "e9",
+          "detected": true,
+          "latencyS": 11,
+          "predictedEdge": "e9",
+          "distanceErrorM": 0
+        }
+      ]
+    },
+    {
+      "detector": "D2",
+      "runs": 16,
+      "leakEvents": 8,
+      "detected": 8,
+      "missed": 0,
+      "recall": 1,
+      "recallCI95": [
+        1,
+        1
+      ],
+      "leakAlarms": 8,
+      "truePositiveAlarms": 8,
+      "precision": 1,
+      "falseAlarms": 0,
+      "lateAlarms": 0,
+      "normalExposureH": 2.4833081221636366,
+      "falseAlarmsPerHour": 0,
+      "falseAlarmsPerHourCI95": [
+        0,
+        0
+      ],
+      "latencyMedianS": 5,
+      "latencyP95S": 32.749999999999986,
+      "localized": 8,
+      "edgeAccuracy": 1,
+      "distanceErrorMedianM": 3.9426523297490803,
+      "distanceErrorP95M": 25.388888888888907,
+      "ambiguousShare": 0.09090909090909091,
+      "causeConfusion": {
+        "leak": {
+          "leak": 8
+        },
+        "sensor_fault": {
+          "sensor_fault": 2,
+          "normal": 2
+        },
+        "operating_change": {
+          "normal": 2
+        },
+        "property_change": {
+          "normal": 1,
+          "unknown": 1
+        },
+        "normal": {
+          "normal": 2
+        }
+      },
+      "causeMacroF1": 0.8412698412698413,
+      "perEvent": [
+        {
+          "runId": "leak_abrupt_e2-105",
+          "scenarioId": "leak_abrupt_e2",
+          "eventId": "leak-1",
+          "edgeId": "e2",
+          "detected": true,
+          "latencyS": 5,
+          "predictedEdge": "e2",
+          "distanceErrorM": 1.1111111111108585
+        },
+        {
+          "runId": "leak_abrupt_e3-107",
+          "scenarioId": "leak_abrupt_e3",
+          "eventId": "leak-1",
+          "edgeId": "e3",
+          "detected": true,
+          "latencyS": 5,
+          "predictedEdge": "e3",
+          "distanceErrorM": 6.774193548387075
+        },
+        {
+          "runId": "leak_abrupt_e4-104",
+          "scenarioId": "leak_abrupt_e4",
+          "eventId": "leak-1",
+          "edgeId": "e4",
+          "detected": true,
+          "latencyS": 5,
+          "predictedEdge": "e4",
+          "distanceErrorM": 1.1111111111110858
+        },
+        {
+          "runId": "leak_abrupt_e4_lowrate-115",
+          "scenarioId": "leak_abrupt_e4_lowrate",
+          "eventId": "leak-1",
+          "edgeId": "e4",
+          "detected": true,
+          "latencyS": 5,
+          "predictedEdge": "e4",
+          "distanceErrorM": 28.888888888888914
+        },
+        {
+          "runId": "leak_abrupt_e6-106",
+          "scenarioId": "leak_abrupt_e6",
+          "eventId": "leak-1",
+          "edgeId": "e6",
+          "detected": true,
+          "latencyS": 5,
+          "predictedEdge": "e6",
+          "distanceErrorM": 10
+        },
+        {
+          "runId": "leak_plus_sensor_fault-114",
+          "scenarioId": "leak_plus_sensor_fault",
+          "eventId": "leak-1",
+          "edgeId": "e6",
+          "detected": true,
+          "latencyS": 5,
+          "predictedEdge": "e6",
+          "distanceErrorM": 1.1111111111110858
+        },
+        {
+          "runId": "leak_slow_e4-108",
+          "scenarioId": "leak_slow_e4",
+          "eventId": "leak-1",
+          "edgeId": "e4",
+          "detected": true,
+          "latencyS": 45,
+          "predictedEdge": "e4",
+          "distanceErrorM": 18.888888888888914
+        },
+        {
+          "runId": "leak_water_line-109",
+          "scenarioId": "leak_water_line",
+          "eventId": "leak-1",
+          "edgeId": "e9",
+          "detected": true,
+          "latencyS": 10,
+          "predictedEdge": "e9",
+          "distanceErrorM": 0
+        }
+      ]
+    }
+  ],
+  "notes": [
+    "Все результаты получены на синтетических сценариях одного условного объекта; не являются оценкой промышленной надёжности.",
+    "Доверительные интервалы — перцентильный бутстрап по независимым прогонам (runs), не по соседним окнам.",
+    "D0: доля событий с приемлемой реакцией по причинам 0.72 (политика: штатная команда и изменение свойств допускают ответ «норма»).",
+    "D1: доля событий с приемлемой реакцией по причинам 0.83 (политика: штатная команда и изменение свойств допускают ответ «норма»).",
+    "D2: доля событий с приемлемой реакцией по причинам 0.83 (политика: штатная команда и изменение свойств допускают ответ «норма»)."
+  ],
+  "suite": "catalog",
+  "model": {
+    "modelVersion": "logreg-logreg-v1"
+  },
+  "perRun": [
+    {
+      "runId": "healthy_steady-101",
+      "scenarioId": "healthy_steady",
+      "wallS": 16.222437225,
+      "simS": 899.9853873563042,
+      "final": {
+        "D0": {
+          "status": "normal",
+          "cause": "unknown",
+          "edges": []
+        },
+        "D1": {
+          "status": "normal",
+          "cause": "unknown",
+          "edges": []
+        },
+        "D2": {
+          "status": "normal",
+          "cause": "unknown",
+          "edges": []
+        }
+      }
+    },
+    {
+      "runId": "pump_ramp-102",
+      "scenarioId": "pump_ramp",
+      "wallS": 14.661341766000001,
+      "simS": 899.9853873563042,
+      "final": {
+        "D0": {
+          "status": "confirmed",
+          "cause": "leak",
+          "edges": [
+            "e2"
+          ]
+        },
+        "D1": {
+          "status": "normal",
+          "cause": "unknown",
+          "edges": []
+        },
+        "D2": {
+          "status": "normal",
+          "cause": "unknown",
+          "edges": []
+        }
+      }
+    },
+    {
+      "runId": "valve_ramp-103",
+      "scenarioId": "valve_ramp",
+      "wallS": 14.508413598999999,
+      "simS": 899.9853873563042,
+      "final": {
+        "D0": {
+          "status": "normal",
+          "cause": "unknown",
+          "edges": []
+        },
+        "D1": {
+          "status": "normal",
+          "cause": "unknown",
+          "edges": []
+        },
+        "D2": {
+          "status": "normal",
+          "cause": "unknown",
+          "edges": []
+        }
+      }
+    },
+    {
+      "runId": "leak_abrupt_e4-104",
+      "scenarioId": "leak_abrupt_e4",
+      "wallS": 18.810717369000006,
+      "simS": 899.9853873563042,
+      "final": {
+        "D0": {
+          "status": "confirmed",
+          "cause": "leak",
+          "edges": [
+            "e2"
+          ]
+        },
+        "D1": {
+          "status": "confirmed",
+          "cause": "leak",
+          "edges": [
+            "e4"
+          ],
+          "x": 1110,
+          "q": 7.258721791393883
+        },
+        "D2": {
+          "status": "confirmed",
+          "cause": "leak",
+          "edges": [
+            "e4"
+          ],
+          "x": 1110,
+          "q": 7.258721791393883
+        }
+      }
+    },
+    {
+      "runId": "leak_abrupt_e2-105",
+      "scenarioId": "leak_abrupt_e2",
+      "wallS": 17.641114001000002,
+      "simS": 899.9853873563042,
+      "final": {
+        "D0": {
+          "status": "confirmed",
+          "cause": "leak",
+          "edges": [
+            "e2"
+          ]
+        },
+        "D1": {
+          "status": "confirmed",
+          "cause": "leak",
+          "edges": [
+            "e2"
+          ],
+          "x": 2310,
+          "q": 4.240943189652012
+        },
+        "D2": {
+          "status": "confirmed",
+          "cause": "leak",
+          "edges": [
+            "e2"
+          ],
+          "x": 2310,
+          "q": 4.240943189652012
+        }
+      }
+    },
+    {
+      "runId": "leak_abrupt_e6-106",
+      "scenarioId": "leak_abrupt_e6",
+      "wallS": 17.854082681,
+      "simS": 899.9853873563042,
+      "final": {
+        "D0": {
+          "status": "confirmed",
+          "cause": "leak",
+          "edges": [
+            "e6"
+          ]
+        },
+        "D1": {
+          "status": "confirmed",
+          "cause": "leak",
+          "edges": [
+            "e6"
+          ],
+          "x": 610,
+          "q": 9.539857822838874
+        },
+        "D2": {
+          "status": "confirmed",
+          "cause": "leak",
+          "edges": [
+            "e6"
+          ],
+          "x": 610,
+          "q": 9.539857822838874
+        }
+      }
+    },
+    {
+      "runId": "leak_abrupt_e3-107",
+      "scenarioId": "leak_abrupt_e3",
+      "wallS": 17.789924684,
+      "simS": 899.9853873563042,
+      "final": {
+        "D0": {
+          "status": "confirmed",
+          "cause": "leak",
+          "edges": [
+            "e2",
+            "e3",
+            "e4",
+            "e8"
+          ]
+        },
+        "D1": {
+          "status": "confirmed",
+          "cause": "leak",
+          "edges": [
+            "e3"
+          ],
+          "x": 910,
+          "q": 2.722118391518242
+        },
+        "D2": {
+          "status": "confirmed",
+          "cause": "leak",
+          "edges": [
+            "e3"
+          ],
+          "x": 910,
+          "q": 2.722118391518242
+        }
+      }
+    },
+    {
+      "runId": "leak_slow_e4-108",
+      "scenarioId": "leak_slow_e4",
+      "wallS": 17.81852170699999,
+      "simS": 899.9853873563042,
+      "final": {
+        "D0": {
+          "status": "confirmed",
+          "cause": "leak",
+          "edges": [
+            "e4"
+          ]
+        },
+        "D1": {
+          "status": "confirmed",
+          "cause": "leak",
+          "edges": [
+            "e4"
+          ],
+          "x": 1930,
+          "q": 7.141772021538648
+        },
+        "D2": {
+          "status": "confirmed",
+          "cause": "leak",
+          "edges": [
+            "e4"
+          ],
+          "x": 1930,
+          "q": 7.141772021538648
+        }
+      }
+    },
+    {
+      "runId": "leak_water_line-109",
+      "scenarioId": "leak_water_line",
+      "wallS": 19.628751962000003,
+      "simS": 899.9853873563042,
+      "final": {
+        "D0": {
+          "status": "confirmed",
+          "cause": "leak",
+          "edges": [
+            "e9"
+          ]
+        },
+        "D1": {
+          "status": "confirmed",
+          "cause": "leak",
+          "edges": [
+            "e9"
+          ],
+          "x": 1100,
+          "q": 3.26585963720098
+        },
+        "D2": {
+          "status": "confirmed",
+          "cause": "leak",
+          "edges": [
+            "e9"
+          ],
+          "x": 1100,
+          "q": 3.26585963720098
+        }
+      }
+    },
+    {
+      "runId": "sensor_bias_pt107-110",
+      "scenarioId": "sensor_bias_pt107",
+      "wallS": 14.681790431999998,
+      "simS": 899.9853873563042,
+      "final": {
+        "D0": {
+          "status": "normal",
+          "cause": "unknown",
+          "edges": []
+        },
+        "D1": {
+          "status": "normal",
+          "cause": "unknown",
+          "edges": []
+        },
+        "D2": {
+          "status": "normal",
+          "cause": "unknown",
+          "edges": []
+        }
+      }
+    },
+    {
+      "runId": "sensor_dropout_noisy-111",
+      "scenarioId": "sensor_dropout_noisy",
+      "wallS": 15.666124254000001,
+      "simS": 899.9853873563042,
+      "final": {
+        "D0": {
+          "status": "normal",
+          "cause": "unknown",
+          "edges": []
+        },
+        "D1": {
+          "status": "normal",
+          "cause": "unknown",
+          "edges": []
+        },
+        "D2": {
+          "status": "normal",
+          "cause": "unknown",
+          "edges": []
+        }
+      }
+    },
+    {
+      "runId": "inlet_cooling-112",
+      "scenarioId": "inlet_cooling",
+      "wallS": 25.137336856999994,
+      "simS": 1499.9945167698163,
+      "final": {
+        "D0": {
+          "status": "confirmed",
+          "cause": "leak",
+          "edges": [
+            "e2"
+          ]
+        },
+        "D1": {
+          "status": "normal",
+          "cause": "unknown",
+          "edges": []
+        },
+        "D2": {
+          "status": "normal",
+          "cause": "unknown",
+          "edges": []
+        }
+      }
+    },
+    {
+      "runId": "composition_change-113",
+      "scenarioId": "composition_change",
+      "wallS": 25.263430278,
+      "simS": 1499.9945167698163,
+      "final": {
+        "D0": {
+          "status": "normal",
+          "cause": "unknown",
+          "edges": []
+        },
+        "D1": {
+          "status": "normal",
+          "cause": "unknown",
+          "edges": []
+        },
+        "D2": {
+          "status": "normal",
+          "cause": "unknown",
+          "edges": []
+        }
+      }
+    },
+    {
+      "runId": "leak_plus_sensor_fault-114",
+      "scenarioId": "leak_plus_sensor_fault",
+      "wallS": 18.408089590999996,
+      "simS": 899.9853873563042,
+      "final": {
+        "D0": {
+          "status": "confirmed",
+          "cause": "leak",
+          "edges": [
+            "e4"
+          ]
+        },
+        "D1": {
+          "status": "confirmed",
+          "cause": "leak",
+          "edges": [
+            "e6"
+          ],
+          "x": 1510,
+          "q": 5.670015584205905
+        },
+        "D2": {
+          "status": "confirmed",
+          "cause": "leak",
+          "edges": [
+            "e6"
+          ],
+          "x": 1510,
+          "q": 5.670015584205905
+        }
+      }
+    },
+    {
+      "runId": "leak_abrupt_e4_lowrate-115",
+      "scenarioId": "leak_abrupt_e4_lowrate",
+      "wallS": 17.015512641999987,
+      "simS": 899.9853873563042,
+      "final": {
+        "D0": {
+          "status": "confirmed",
+          "cause": "leak",
+          "edges": [
+            "e2"
+          ]
+        },
+        "D1": {
+          "status": "confirmed",
+          "cause": "leak",
+          "edges": [
+            "e4"
+          ],
+          "x": 1140,
+          "q": 7.352900922819458
+        },
+        "D2": {
+          "status": "confirmed",
+          "cause": "leak",
+          "edges": [
+            "e4"
+          ],
+          "x": 1140,
+          "q": 7.352900922819458
+        }
+      }
+    },
+    {
+      "runId": "model_mismatch_healthy-116",
+      "scenarioId": "model_mismatch_healthy",
+      "wallS": 14.487445194,
+      "simS": 899.9932694679387,
+      "final": {
+        "D0": {
+          "status": "normal",
+          "cause": "unknown",
+          "edges": []
+        },
+        "D1": {
+          "status": "normal",
+          "cause": "unknown",
+          "edges": []
+        },
+        "D2": {
+          "status": "normal",
+          "cause": "unknown",
+          "edges": []
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+ "valid/leak_abrupt_e4.scenario.json": "valid",
+ "valid/healthy_steady.scenario.json": "valid",
+ "valid/demo.public.json": "valid",
+ "invalid/schema_version.scenario.json": "invalid",
+ "invalid/component_without_pressure_boundary.scenario.json": "invalid",
+ "invalid/sensor_unknown_edge.scenario.json": "invalid",
+ "invalid/extra_field.scenario.json": "invalid",
+ "invalid/negative_length.scenario.json": "invalid",
+ "invalid/temperature_out_of_range.scenario.json": "invalid",
+ "invalid/unknown_sensor_kind.scenario.json": "invalid",
+ "invalid/elevation_mismatch.scenario.json": "invalid"
+}

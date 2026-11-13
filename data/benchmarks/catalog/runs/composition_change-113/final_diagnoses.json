@@ -1,0 +1,86 @@
+{
+  "D0": {
+    "schemaVersion": "1.0.0",
+    "id": "D0-1499.5",
+    "detector": "D0",
+    "detectorVersion": "pipetwin-diag-0.1.0/D0",
+    "simTimeS": 1499.4961794655785,
+    "status": "normal",
+    "cause": "unknown",
+    "affectedSensorIds": [],
+    "candidateEdges": [],
+    "evidence": [],
+    "limitations": [
+      "D0: наблюдатель с фиксированными свойствами среды (паспорт при опорных T, Y_w); без учёта измеренной температуры и обводнённости.",
+      "D0 не различает причины: любая устойчивая тревога трактуется как утечка."
+    ],
+    "inputTimeRange": [
+      1439.4961794655785,
+      1499.4961794655785
+    ],
+    "score": 3.1334911280997764
+  },
+  "D1": {
+    "schemaVersion": "1.0.0",
+    "id": "D1-1499.5",
+    "detector": "D1",
+    "detectorVersion": "pipetwin-diag-0.1.0/D1",
+    "simTimeS": 1499.4961794655785,
+    "status": "normal",
+    "cause": "unknown",
+    "affectedSensorIds": [],
+    "candidateEdges": [],
+    "evidence": [
+      {
+        "code": "MASS_BALANCE",
+        "text": "Баланс «Коллектор ДНС-1 → УПН» в норме (0.7σ)",
+        "value": 0.050902147589911816
+      }
+    ],
+    "limitations": [
+      "Score и поддержка кандидатов — не откалиброванные вероятности."
+    ],
+    "inputTimeRange": [
+      1439.4961794655785,
+      1499.4961794655785
+    ],
+    "score": 0.6649828715046638
+  },
+  "D2": {
+    "schemaVersion": "1.0.0",
+    "id": "D2-1499.5",
+    "detector": "D2",
+    "detectorVersion": "pipetwin-diag-0.1.0/D2",
+    "simTimeS": 1499.4961794655785,
+    "status": "normal",
+    "cause": "unknown",
+    "affectedSensorIds": [],
+    "candidateEdges": [],
+    "evidence": [
+      {
+        "code": "MASS_BALANCE",
+        "text": "Баланс «Коллектор ДНС-1 → УПН» в норме (0.7σ)",
+        "value": 0.050902147589911816
+      },
+      {
+        "code": "ML",
+        "text": "Классификатор: normal 0.96, leak 0.02, operating_change 0.00, sensor_fault 0.03"
+      }
+    ],
+    "limitations": [
+      "Score и поддержка кандидатов — не откалиброванные вероятности.",
+      "Модель logreg-v2; калибровка проверена на валидации."
+    ],
+    "inputTimeRange": [
+      1439.4961794655785,
+      1499.4961794655785
+    ],
+    "score": 0.6649828715046638,
+    "causeScores": {
+      "normal": 0.9569879056872205,
+      "leak": 0.016530112664326344,
+      "operating_change": 0.00012686635851265755,
+      "sensor_fault": 0.026355115289940563
+    }
+  }
+}

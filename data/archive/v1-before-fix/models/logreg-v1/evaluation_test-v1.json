@@ -1,0 +1,51 @@
+{
+  "dataset": "test-v1",
+  "runs": 40,
+  "windows": 5760,
+  "macroF1": 0.831609362518077,
+  "macroF1CI95": [
+    0.7076691935041695,
+    0.9479186851140187
+  ],
+  "classes": [
+    "normal",
+    "leak",
+    "operating_change",
+    "sensor_fault"
+  ],
+  "confusionMatrix": [
+    [
+      4073,
+      2,
+      0,
+      2
+    ],
+    [
+      149,
+      1091,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      96,
+      0
+    ],
+    [
+      248,
+      1,
+      0,
+      98
+    ]
+  ],
+  "perClassRecall": {
+    "normal": 0.9990188864361049,
+    "leak": 0.8798387096774194,
+    "operating_change": 1.0,
+    "sensor_fault": 0.2824207492795389
+  },
+  "ece": 0.04130030455122084,
+  "brier": 0.03216944380936871,
+  "note": "Window-level classification on a held-out split of synthetic runs; windows of one run are not independent. ECE/Brier are measured on this split (the artefact's 'validated' status refers to the validation split only)."
+}
