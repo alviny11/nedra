@@ -8,11 +8,17 @@ import { Charts } from '../features/charts/Charts';
 import { DiagnosticsPanel } from '../features/diagnostics/DiagnosticsPanel';
 import { TrialsPanel } from '../features/benchmarks/TrialsPanel';
 import { M1Panel } from './M1Panel';
+import { PipelineDetail } from '../features/pipelines/PipelineDetail';
+import { data } from '../features/pipelines/data';
 
 export function App() {
   const [placingLeak, setPlacingLeak] = useState(false);
   const [leakDraft, setLeakDraft] = useState<{ edgeId: string; distanceM: number } | null>(null);
   const [m1, setM1] = useState(false);
+  const [pipelineId, setPipelineId] = useState<string | null>(null);
+  const openPipeline = (id: string | null) => { setPipelineId(id); window.scrollTo({ top: 0, behavior: 'instant' }); };
+  const pipeline = data.groups.find(g => g.featured && g.id === pipelineId);
+  useEffect(() => { window.scrollTo({ top: 0, behavior: 'instant' }); }, [pipelineId]);
   const toasts = useApp((s) => s.toasts);
   const scenario = useApp((s) => s.scenario);
   const catalogEntry = useApp((s) => s.catalog.find((c) => c.id === s.scenario?.id));
@@ -35,6 +41,8 @@ export function App() {
   return (
     <div className="app">
       <TopBar onM1={() => setM1(true)} />
+      {pipeline && <PipelineDetail key={pipeline.id} group={pipeline} onBack={() => openPipeline(null)} onOpen={openPipeline} />}
+      <div style={{ display: pipeline ? 'none' : undefined }}>
       {scenario && (
         <div className="scenario-note small">
           <b>{scenario.name}.</b> {scenario.description}{' '}
@@ -44,6 +52,7 @@ export function App() {
       <main className="layout">
         <div className="center">
           <MapView
+            onOpenPipeline={openPipeline}
             placingLeak={placingLeak}
             onPlaceLeak={(edgeId, distanceM) => {
               setLeakDraft({ edgeId, distanceM });
@@ -57,6 +66,7 @@ export function App() {
           <Charts />
         </div>
       </main>
+      </div>
       <TrialsPanel />
       {m1 && <M1Panel onClose={() => setM1(false)} />}
       <div className="toasts" aria-live="assertive">

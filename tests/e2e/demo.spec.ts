@@ -23,8 +23,9 @@ test('demo flow: run, operator leak injection, independent diagnosis, export to 
   await expect.poll(() => simTime(page), { timeout: 120_000 }).toBeGreaterThan(200);
   await expect(page.locator('.det-card').nth(1).locator('.badge')).toHaveText('норма');
   // select a pipe, inject an abrupt leak as operator
-  await page.getByRole('button', { name: 'Труба У-1 → У-2 (коллектор)' }).focus();
+  await page.getByRole('button', { name: 'Труба 1: открыть отчёт' }).focus();
   await page.keyboard.press('Enter');
+  await page.getByRole('button', { name: '← На общую карту', exact: true }).click();
   await expect(page.locator('.inspector h2')).toHaveText('У-1 → У-2 (коллектор)');
   await page.getByRole('tab', { name: 'Эксперимент' }).click();
   await page.getByRole('button', { name: 'Внести утечку' }).click();

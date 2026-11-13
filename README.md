@@ -86,3 +86,8 @@ node $R bench-perf --out data/benchmarks/verification/perf.json
 ```
 
 Те же шаги доступны через API (`/api/jobs/dataset`, `/api/jobs/train`, `/api/jobs/evaluate`). Протокол, все числа и разбор ошибок — `docs/validation.md`; результаты до исправлений — `data/archive/v1-before-fix/`.
+
+
+## Прогноз деградации по реальным данным
+
+Добавлен автономный модуль подготовки сегментов, проверки по историческим ВТД и прогноза толщины. Запуск, ограничения и выходные файлы: [docs/corrosion.md](docs/corrosion.md). Исходные CSV передаются через `--data-dir`, в репозиторий автоматически не копируются.

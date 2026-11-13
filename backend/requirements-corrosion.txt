@@ -1,0 +1,4 @@
+# Standalone, tested environment for the offline corrosion baseline.
+# Existing backend environments may use their own compatible NumPy/pandas pins.
+numpy==2.3.5
+pandas==2.2.3

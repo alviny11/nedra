@@ -9,6 +9,7 @@
     "packages/physics-core",
     "packages/diagnostics-core",
     "packages/evaluation",
+    "packages/evaluation",
     "tools/headless-runner",
     "apps/web"
   ],

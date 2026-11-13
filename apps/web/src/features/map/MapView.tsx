@@ -12,13 +12,19 @@ const LAYERS: Array<{ id: Layer; label: string }> = [
   { id: 'diagnostics', label: 'Диагностика' }
 ];
 
+// Navigation anchors on the existing schematic; not a hydraulic mapping of real assets.
+const REPORT_PIPES: Record<string, { id: string; label: string }> = {
+  e4: { id: 'MAIN-2', label: 'Труба 1' },
+  e6: { id: 'MAIN-4', label: 'Труба 2' }
+};
+
 interface Hover {
   x: number;
   y: number;
   text: string[];
 }
 
-export function MapView({ placingLeak, onPlaceLeak }: { placingLeak: boolean; onPlaceLeak: (edgeId: string, distanceM: number) => void }) {
+export function MapView({ placingLeak, onPlaceLeak, onOpenPipeline }: { onOpenPipeline?: (id: string) => void; placingLeak: boolean; onPlaceLeak: (edgeId: string, distanceM: number) => void }) {
   const scenario = useApp((s) => s.scenario);
   const layout = useApp((s) => s.layout);
   const view = useApp((s) => s.view);
@@ -95,6 +101,8 @@ export function MapView({ placingLeak, onPlaceLeak }: { placingLeak: boolean; on
       lines.push(`p = ${barA(field.p[g]!)} бар а · T = ${degC(field.T[g]!)} °C`, `ṁ = ${kgs(field.m[g]!)} кг/с · Y_w = ${pct(field.Y[g]!)} % (масс.)`);
       lines.push(view === 'operator' ? 'источник: истинная модель (оператор)' : 'источник: наблюдатель D1 (без скрытых событий)');
     }
+    const report = REPORT_PIPES[p.id];
+    if (report && onOpenPipeline) lines.push(`${report.label}: нажмите на трубу, чтобы открыть обследования и прогноз`);
     return lines;
   };
 
@@ -197,12 +205,14 @@ export function MapView({ placingLeak, onPlaceLeak }: { placingLeak: boolean; on
               const col = field && layout ? colorOf(valueAt(g)) : '#9aa4b2';
               segs.push(<line key={s} x1={a.x} y1={a.y} x2={b.x} y2={b.y} stroke={col} strokeWidth={p.innerDiameterM > 0.2 ? 7 : 5} strokeLinecap="round" />);
             }
+            const report = onOpenPipeline ? REPORT_PIPES[p.id] : undefined;
             const mid = pointAlong(p.displayPolyline, 0.5);
             const mflow = field && layout && j !== undefined ? field.m[off + Math.round(n / 2)]! : 0;
             const dirAngle = (mid.angle * 180) / Math.PI + (mflow < 0 ? 180 : 0);
             return (
               <g key={p.id} className={`pipe ${selectedEdge === p.id ? 'selected' : ''}`}>
                 {selectedEdge === p.id && <polyline points={p.displayPolyline.map((q) => `${q.x},${q.y}`).join(' ')} className="sel-halo" />}
+                {report && <polyline points={p.displayPolyline.map(q => `${q.x},${q.y}`).join(' ')} fill="none" stroke="#1f6feb" strokeWidth="13" opacity="0.16" pointerEvents="none" />}
                 {segs}
                 {Math.abs(mflow) > 0.05 && (
                   <path d="M -6 -5 L 6 0 L -6 5 Z" transform={`translate(${mid.x},${mid.y}) rotate(${dirAngle})`} className="flow-arrow" />
@@ -216,6 +226,7 @@ export function MapView({ placingLeak, onPlaceLeak }: { placingLeak: boolean; on
                     const { f } = closestFraction(p.displayPolyline, loc.x, loc.y);
                     if (placingLeak) onPlaceLeak(p.id, f * p.lengthM);
                     set({ selectedEdge: p.id });
+                    if (!placingLeak && report) { setHover(null); onOpenPipeline?.(report.id); }
                   }}
                   onPointerMove={(e) => {
                     const loc = toLocal(e);
@@ -224,13 +235,18 @@ export function MapView({ placingLeak, onPlaceLeak }: { placingLeak: boolean; on
                   }}
                   tabIndex={0}
                   role="button"
-                  aria-label={`Труба ${p.name}`}
+                  aria-label={report ? `${report.label}: открыть отчёт` : `Труба ${p.name}`}
                   onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') set({ selectedEdge: p.id });
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault(); e.stopPropagation();
+                      set({ selectedEdge: p.id });
+                      if (placingLeak) onPlaceLeak(p.id, p.lengthM/2);
+                      else if (report) { setHover(null); onOpenPipeline?.(report.id); }
+                    }
                   }}
                 />
-                <text x={mid.x} y={mid.y - 10} className="pipe-label">
-                  {p.id}
+                <text x={mid.x} y={mid.y - 10} className={report ? "pipe-label pipe-report-label" : "pipe-label"}>
+                  {report ? `${report.label} · отчёт ↗` : p.id}
                 </text>
               </g>
             );

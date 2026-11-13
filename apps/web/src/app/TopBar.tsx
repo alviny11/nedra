@@ -16,7 +16,7 @@ export function TopBar({ onM1 }: { onM1: () => void }) {
     <header className="topbar">
       <div className="brand">
         <b>PipeTwin</b>
-        <span className="small">цифровой двойник · синтетический объект</span>
+        <span className="small">симуляция · синтетическая сеть</span>
       </div>
       <label className="sc-select">
         <span className="small">Сценарий</span>
