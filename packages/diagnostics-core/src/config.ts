@@ -119,5 +119,21 @@ export function demoMassBalanceGroups(cfg: PublicScenarioConfig): MassBalanceGro
       segments: [{ edgeId: 'e9', fromM: 20, toM: 1780 }]
     });
   }
+  // One balance zone per schematic pipe that is metered at both ends.
+  for (const link of cfg.links) {
+    if (link.kind !== 'pipe') continue;
+    const flows = cfg.sensors.filter((s) => s.kind === 'massFlow' && s.edgeId === link.id && s.availability === 'online' && s.distanceM !== undefined);
+    const inlet = flows.find((s) => s.distanceM! <= 1);
+    const outlet = [...flows].reverse().find((s) => s.distanceM! >= link.lengthM - 1);
+    if (!inlet || !outlet || inlet.id === outlet.id) continue;
+    if (groups.some((g) => g.inflowSensorIds.includes(inlet.id) || g.outflowSensorIds.includes(outlet.id))) continue;
+    groups.push({
+      id: `mb-${link.id}`,
+      name: link.name,
+      inflowSensorIds: [inlet.id],
+      outflowSensorIds: [outlet.id],
+      segments: [{ edgeId: link.id, fromM: 0, toM: link.lengthM }]
+    });
+  }
   return groups;
 }

@@ -16,7 +16,7 @@ export function TopBar({ onM1 }: { onM1: () => void }) {
     <header className="topbar">
       <div className="brand">
         <b>PipeTwin</b>
-        <span className="small">цифровой двойник · синтетический объект</span>
+        <span className="small">две схематические нитки · 200 м</span>
       </div>
       <label className="sc-select">
         <span className="small">Сценарий</span>
@@ -69,7 +69,7 @@ export function TopBar({ onM1 }: { onM1: () => void }) {
           факт ×{st.achievedSpeed.toFixed(1)}
         </span>
       </div>
-      <div className="mode-badge" title="M0: жидкость, MOC, фиксированные опорные ρ и c по трубам, вязкость(T, Y_w); газосодержащий участок — контекст">
+      <div className="mode-badge" title="M0: жидкость, MOC, фиксированные опорные ρ и c по трубам, вязкость(T, Y_w)">
         M0 · жидкость <span className={`pill ${st.modelStop ? 'bad' : 'ok'}`}>{st.modelStop ? 'вне области' : 'в области модели'}</span>
       </div>
       <div className="status small">

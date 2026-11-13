@@ -275,6 +275,18 @@ input[type='number'] {
   font-family: var(--mono);
   fill: var(--ink-3);
   text-anchor: middle;
+  pointer-events: none;
+}
+.chain-tick {
+  stroke: var(--ink-3);
+  stroke-width: 1;
+  pointer-events: none;
+}
+.chain-label {
+  font-size: 9px;
+  font-family: var(--mono);
+  fill: var(--ink-3);
+  pointer-events: none;
 }
 .pipe-hit {
   fill: none;

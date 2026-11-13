@@ -22,6 +22,13 @@ function useWidth(ref: React.RefObject<HTMLDivElement | null>): number {
   return w;
 }
 
+function mbLabel(id: string): string {
+  if (id === 'mb-oil') return 'дефицит: коллектор';
+  if (id === 'mb-water') return 'дефицит: водовод';
+  if (id.startsWith('mb-')) return `дефицит: ${id.slice(3)}`;
+  return id;
+}
+
 function UChart({ title, data, series, yLabel, version, height = 170, xLabel = 't, с', cursorSync = true }: { title: string; data: AlignedData; series: Options['series']; yLabel: string; version: number | string; height?: number; xLabel?: string; cursorSync?: boolean }) {
   const box = useRef<HTMLDivElement>(null);
   const plot = useRef<uPlot | null>(null);
@@ -124,7 +131,7 @@ export function Charts() {
     let k = 0;
     for (const [id, arr] of chartData.mb.values) {
       cols.push(arr.map((v) => (Number.isFinite(v) ? v : null)));
-      ser.push({ label: id === 'mb-oil' ? 'дефицит: коллектор' : id === 'mb-water' ? 'дефицит: водовод' : id, stroke: COLORS[k++ % 5], width: 1.5 });
+      ser.push({ label: mbLabel(id), stroke: COLORS[k++ % 5], width: 1.5 });
     }
     return { data: [chartData.mb.t.slice(), ...cols] as AlignedData, series: ser };
     // eslint-disable-next-line react-hooks/exhaustive-deps

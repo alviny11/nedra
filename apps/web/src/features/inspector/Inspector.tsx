@@ -86,7 +86,7 @@ export function Inspector({ leakDraft, setLeakDraft, placingLeak, setPlacingLeak
               </>
             )}
             <dt>Происхождение параметров</dt>
-            <dd>синтетический демонстрационный объект; изменение геометрии требует переинициализации (не во время шага)</dd>
+            <dd>диаметр, стенка, давление и расход — паспорт и техрежим этих двух участков, длина на схеме 200 м; свойства среды модельные. Изменение геометрии требует переинициализации (не во время шага)</dd>
           </dl>
         )}
         {tab === 'sensors' && <SensorsTab sensors={sensorsHere} />}
@@ -117,8 +117,8 @@ export function Inspector({ leakDraft, setLeakDraft, placingLeak, setPlacingLeak
               <li>M0: полностью заполненная труба, без кавитации/выделения газа; ниже границы фаз расчёт останавливается.</li>
               <li>Фиксированные опорные ρ и c по трубе (режим 1); вязкость следует переносимым T и Y_w.</li>
               <li>Трение квазистационарное; нестационарное трение и вязкоупругость стенки не учитываются.</li>
-              <li>Сепаратор — граница давления; волна через аппарат не передаётся.</li>
-              <li>Газосодержащий участок до сепарации — контекст (M1 только как акустический эксперимент).</li>
+              <li>Каждая нитка считается отдельно: расход задан на входе, давление — на выходе. Длина на схеме укорочена до 200 м.</li>
+              <li>M1 — отдельный акустический калькулятор Вуда, не расчёт этих ниток.</li>
             </ul>
             <h4>Детекторы</h4>
             <ul className="small">
@@ -242,13 +242,17 @@ function Actions({ pipe, leakDraft, setLeakDraft, placingLeak, setPlacingLeak }:
   const [opening, setOpening] = useState(0);
   const [cd, setCd] = useState(0.62);
   const [delay, setDelay] = useState(2);
-  const [faultSensor, setFaultSensor] = useState('PT-107');
+  const [faultSensor, setFaultSensor] = useState('');
   const [faultType, setFaultType] = useState<'bias_step' | 'drift' | 'stuck' | 'noise_increase' | 'dropout'>('bias_step');
   const [faultMag, setFaultMag] = useState(0.3);
-  const [inletNode, setInletNode] = useState('sep1');
+  const [inletNode, setInletNode] = useState('');
   const [inletT, setInletT] = useState(30);
   const [inletW, setInletW] = useState(0.35);
   const cfg = scenario.public;
+  const residualSensors = cfg.sensors.filter((s) => s.role === 'residual');
+  const faultId = residualSensors.some((s) => s.id === faultSensor) ? faultSensor : (residualSensors[0]?.id ?? '');
+  const inlets = cfg.nodes.filter((n) => n.kind === 'mass_flow_source' || n.role === 'separator_liquid');
+  const inletId = inlets.some((n) => n.id === inletNode) ? inletNode : (inlets[0]?.id ?? '');
   const pumps = cfg.links.filter((l) => l.kind === 'pump') as PumpConfig[];
   const valves = cfg.links.filter((l) => l.kind === 'valve') as ValveConfig[];
   const t = truth?.simTimeS ?? 0;
@@ -350,7 +354,7 @@ function Actions({ pipe, leakDraft, setLeakDraft, placingLeak, setPlacingLeak }:
             <div className="grid2">
               <label>
                 Датчик
-                <select value={faultSensor} onChange={(e) => setFaultSensor(e.target.value)}>
+                <select value={faultId} onChange={(e) => setFaultSensor(e.target.value)}>
                   {cfg.sensors.filter((s) => s.role === 'residual').map((s) => (
                     <option key={s.id} value={s.id}>
                       {s.id}
@@ -376,7 +380,8 @@ function Actions({ pipe, leakDraft, setLeakDraft, placingLeak, setPlacingLeak }:
             <p className="small">Смещение/дрейф: бар (давление) или кг/с (расход) и в секунду для дрейфа; шум — множитель; пропуски — доля.</p>
             <button
               onClick={() => {
-                const s = cfg.sensors.find((x) => x.id === faultSensor)!;
+                const s = cfg.sensors.find((x) => x.id === faultId);
+                if (!s) return;
                 const k = s.kind === 'pressure' ? 1e5 : 1;
                 const fault =
                   faultType === 'bias_step'
@@ -388,7 +393,7 @@ function Actions({ pipe, leakDraft, setLeakDraft, placingLeak, setPlacingLeak }:
                         : faultType === 'noise_increase'
                           ? { type: 'noise_increase' as const, factor: Math.max(1, faultMag) }
                           : { type: 'dropout' as const, probability: Math.min(0.95, Math.max(0, faultMag)) };
-                applyHiddenEvent({ kind: 'sensor_fault', eventId: `fault-${Date.now()}`, sensorId: faultSensor, startTimeS: t + 1, fault }, `Неисправность ${faultSensor}: ${faultType} ${faultMag}`);
+                applyHiddenEvent({ kind: 'sensor_fault', eventId: `fault-${Date.now()}`, sensorId: faultId, startTimeS: t + 1, fault }, `Неисправность ${faultId}: ${faultType} ${faultMag}`);
               }}
             >
               Внести неисправность
@@ -399,7 +404,7 @@ function Actions({ pipe, leakDraft, setLeakDraft, placingLeak, setPlacingLeak }:
             <div className="grid2">
               <label>
                 Узел
-                <select value={inletNode} onChange={(e) => setInletNode(e.target.value)}>
+                <select value={inletId} onChange={(e) => setInletNode(e.target.value)}>
                   {cfg.nodes.filter((n) => n.kind === 'mass_flow_source' || n.role === 'separator_liquid').map((n) => (
                     <option key={n.id} value={n.id}>
                       {n.name}
@@ -417,8 +422,8 @@ function Actions({ pipe, leakDraft, setLeakDraft, placingLeak, setPlacingLeak }:
               </label>
             </div>
             <div className="row">
-              <button onClick={() => applyHiddenEvent({ kind: 'inlet_change', eventId: `inl-${Date.now()}`, nodeId: inletNode, startTimeS: t + 1, rampDurationS: 90, temperatureK: inletT + 273.15 }, `Температура ${inletNode} → ${inletT} °C за 90 с`)}>Сменить T</button>
-              <button onClick={() => applyHiddenEvent({ kind: 'inlet_change', eventId: `inl-${Date.now()}`, nodeId: inletNode, startTimeS: t + 1, rampDurationS: 60, waterMassFraction: inletW }, `Обводнённость ${inletNode} → Y_w=${inletW} за 60 с`)}>Сменить состав</button>
+              <button onClick={() => applyHiddenEvent({ kind: 'inlet_change', eventId: `inl-${Date.now()}`, nodeId: inletId, startTimeS: t + 1, rampDurationS: 90, temperatureK: inletT + 273.15 }, `Температура ${inletId} → ${inletT} °C за 90 с`)}>Сменить T</button>
+              <button onClick={() => applyHiddenEvent({ kind: 'inlet_change', eventId: `inl-${Date.now()}`, nodeId: inletId, startTimeS: t + 1, rampDurationS: 60, waterMassFraction: inletW }, `Обводнённость ${inletId} → Y_w=${inletW} за 60 с`)}>Сменить состав</button>
             </div>
           </section>
           <OperatorLog />

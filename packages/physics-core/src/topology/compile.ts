@@ -215,16 +215,23 @@ export function pipeWaveSpeed(pipe: CompiledPipe, p: number, T: number, yw: numb
 export function discretize(net: CompiledNetwork, cEstimate: (pipe: CompiledPipe) => number, opts: CompileOptions = {}): void {
   const target = opts.targetReachLengthM ?? net.settings.targetReachLengthM;
   const minN = Math.max(2, net.settings.minReachesPerPipe);
+  // Schematic pipes whose length is exactly minN * target keep that spacing (21 points at 10 m
+  // on a 200 m line). Other networks still refine the slower pipe so Courant numbers match.
+  const locked = net.pipes.length > 0 && net.pipes.every((p) => Math.abs(p.L / target - minN) < 1e-6);
   // dt from the most restrictive pipe at its target reach count
   let dt = Number.POSITIVE_INFINITY;
-  for (const p of net.pipes) {
-    const nT = Math.max(minN, Math.round(p.L / target));
-    dt = Math.min(dt, p.L / (nT * cEstimate(p)));
+  if (locked) {
+    for (const p of net.pipes) dt = Math.min(dt, target / cEstimate(p));
+  } else {
+    for (const p of net.pipes) {
+      const nT = Math.max(minN, Math.round(p.L / target));
+      dt = Math.min(dt, p.L / (nT * cEstimate(p)));
+    }
   }
   let offset = 0;
   let cellOffset = 0;
   for (const p of net.pipes) {
-    const n = Math.max(minN, Math.floor((p.L / (cEstimate(p) * dt)) * (1 + 1e-12)));
+    const n = locked ? minN : Math.max(minN, Math.floor((p.L / (cEstimate(p) * dt)) * (1 + 1e-12)));
     p.n = n;
     p.dx = p.L / n;
     p.offset = offset;

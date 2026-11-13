@@ -233,7 +233,7 @@ export function MapView({ placingLeak, onPlaceLeak }: { placingLeak: boolean; on
           setHover(null);
         }}
         role="img"
-        aria-label="Технологическая схема условного месторождения"
+        aria-label="Схема двух участков по 200 м"
       >
         <defs>
           <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
@@ -310,9 +310,17 @@ export function MapView({ placingLeak, onPlaceLeak }: { placingLeak: boolean; on
                     if (e.key === 'Enter' || e.key === ' ') set({ selectedEdge: p.id });
                   }}
                 />
-                <text x={mid.x} y={mid.y - 10} className="pipe-label">
+                <text x={mid.x} y={mid.y - 28} className="pipe-label">
                   {p.id}
                 </text>
+                {chainageMarks(p).map((m) => (
+                  <g key={m.label} transform={`translate(${m.x},${m.y})`}>
+                    <line x1={0} y1={-9} x2={0} y2={9} className="chain-tick" />
+                    <text y={22} textAnchor="middle" className="chain-label">
+                      {m.label}
+                    </text>
+                  </g>
+                ))}
               </g>
             );
           })}
@@ -433,6 +441,20 @@ export function MapView({ placingLeak, onPlaceLeak }: { placingLeak: boolean; on
       )}
     </div>
   );
+}
+
+/** Chainage ticks every 10 m on a short schematic pipe (21 labels on 200 m). */
+function chainageMarks(p: PipeConfig): Array<{ x: number; y: number; label: string }> {
+  const step = 10;
+  if (!(p.lengthM > 0) || p.lengthM > 250) return [];
+  const n = Math.round(p.lengthM / step);
+  if (Math.abs(p.lengthM - n * step) > 0.05) return [];
+  const marks = [];
+  for (let i = 0; i <= n; i++) {
+    const pt = pointAlong(p.displayPolyline, n === 0 ? 0 : i / n);
+    marks.push({ x: pt.x, y: pt.y, label: String(i * step) });
+  }
+  return marks;
 }
 
 function Legend({ layer, range }: { layer: Layer; range: { lo: number; hi: number } }) {

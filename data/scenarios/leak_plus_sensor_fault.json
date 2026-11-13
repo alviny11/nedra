@@ -1,11 +1,11 @@
 {
   "schemaVersion": "1.0.0",
   "id": "leak_plus_sensor_fault",
-  "name": "Отложенный тест: смещение датчика + утечка",
-  "description": "PT-105 смещается на −0.25 бар в t = 300 с, затем утечка 20 мм на e6 (1500 м) в t = 480 с.",
+  "name": "Смещение PT-105 и утечка на 1250009587",
+  "description": "PT-105 смещается на −0.25 бар в t = 300 с, затем утечка 8 мм на 1250009587 (120 м) в t = 480 с.",
   "expectedBehavior": "Сначала единичное отклонение датчика, затем физическая утечка с волной и дефицитом баланса.",
   "limitations": [
-    "Синтетический объект и синтетические свойства среды; результаты не переносятся на реальное месторождение без калибровки.",
+    "Две реальные нитки, укороченные до 200 м и нарисованные прямыми без полевых координат. Диаметр, стенка, давление и расход взяты из паспорта и техрежима; шероховатость в паспорте пустая.",
     "M0: фиксированные опорные rho и c по трубам; вязкость следует переносимым T и Y_w."
   ],
   "tags": [
@@ -16,8 +16,8 @@
   "public": {
     "schemaVersion": "1.0.0",
     "id": "leak_plus_sensor_fault_public",
-    "name": "Условное месторождение: ДНС-1 → УПН",
-    "description": "Синтетическая сеть сбора жидкости после первичной сепарации: 9 рассчитываемых труб, насос, 2 задвижки, 2 куста с замером расхода, водовод на КНС. Газосодержащий участок — контекст.",
+    "name": "Схема двух участков: 1250009583 и 1250009587",
+    "description": "Две прямые непересекающиеся нитки по 200 м. Отметки и узлы сетки каждые 10 м (0…200). Полевые координаты не используются. 1250009583: Dнар 219 мм, стенка 4.5 мм, Dвн 210 мм, pнач 13.462 атм изб., pкон 13.422 атм изб., Q 161 м³/сут (техрежим 2021-12-29), нефть 134.202 т/сут. 1250009587: Dнар 159 мм, стенка 6.0 мм, Dвн 147 мм, pнач 13.113 атм изб., pкон 13.11 атм изб., Q 161 м³/сут, нефть 134.202 т/сут. На укороченной нитке выход держит pкон, вход — массовый расход Q·ρ. Шероховатость в паспорте пустая, в модели 0.045 мм.",
     "fluidProfiles": [
       {
         "schemaVersion": "1.0.0",
@@ -191,778 +191,314 @@
     ],
     "nodes": [
       {
-        "id": "sep1",
-        "name": "С-1: нефть (выход жидкости)",
-        "kind": "pressure_boundary",
+        "id": "in-1250009583",
+        "name": "Вход 1250009583",
+        "kind": "mass_flow_source",
         "role": "separator_liquid",
-        "elevationM": 120,
+        "elevationM": 0,
         "display": {
-          "x": 290,
-          "y": 320
+          "x": 80,
+          "y": 220
         },
         "boundary": {
-          "pressurePa": 420000,
-          "temperatureK": 323.15,
-          "waterMassFraction": 0.15
+          "massFlowKgS": 1.568596,
+          "temperatureK": 292.709372,
+          "waterMassFraction": 0.00036
         }
       },
       {
-        "id": "p1s",
-        "name": "Н-1: приём",
-        "kind": "junction",
-        "role": "pump_suction",
-        "elevationM": 112,
-        "display": {
-          "x": 360,
-          "y": 330
-        }
-      },
-      {
-        "id": "p1d",
-        "name": "Н-1: нагнетание",
-        "kind": "junction",
-        "role": "pump_discharge",
-        "elevationM": 112,
-        "display": {
-          "x": 400,
-          "y": 330
-        }
-      },
-      {
-        "id": "j1",
-        "name": "Узел У-1",
-        "kind": "junction",
-        "role": "junction",
-        "elevationM": 104,
-        "display": {
-          "x": 650,
-          "y": 330
-        }
-      },
-      {
-        "id": "k3",
-        "name": "Куст-3 (УПСВ)",
-        "kind": "mass_flow_source",
-        "role": "well_pad_liquid",
-        "elevationM": 131,
-        "display": {
-          "x": 600,
-          "y": 110
-        },
-        "boundary": {
-          "massFlowKgS": 19,
-          "temperatureK": 318.15,
-          "waterMassFraction": 0.3
-        }
-      },
-      {
-        "id": "j2",
-        "name": "Узел У-2",
-        "kind": "junction",
-        "role": "junction",
-        "elevationM": 97,
-        "display": {
-          "x": 830,
-          "y": 400
-        }
-      },
-      {
-        "id": "k4",
-        "name": "Куст-4 (УПСВ)",
-        "kind": "mass_flow_source",
-        "role": "well_pad_liquid",
-        "elevationM": 86,
-        "display": {
-          "x": 800,
-          "y": 640
-        },
-        "boundary": {
-          "massFlowKgS": 12,
-          "temperatureK": 313.15,
-          "waterMassFraction": 0.2
-        }
-      },
-      {
-        "id": "v1i",
-        "name": "ЗД-1: вход",
-        "kind": "junction",
-        "role": "valve_port",
-        "elevationM": 92,
-        "display": {
-          "x": 960,
-          "y": 400
-        }
-      },
-      {
-        "id": "v1o",
-        "name": "ЗД-1: выход",
-        "kind": "junction",
-        "role": "valve_port",
-        "elevationM": 92,
-        "display": {
-          "x": 1000,
-          "y": 400
-        }
-      },
-      {
-        "id": "upn",
-        "name": "УПН: вход",
+        "id": "out-1250009583",
+        "name": "Выход 1250009583",
         "kind": "pressure_boundary",
         "role": "treatment_inlet",
-        "elevationM": 92,
+        "elevationM": 0,
         "display": {
-          "x": 1090,
-          "y": 400
+          "x": 1120,
+          "y": 220
         },
         "boundary": {
-          "pressurePa": 500000,
-          "temperatureK": 313.15,
-          "waterMassFraction": 0.2
+          "pressurePa": 1417573.6,
+          "temperatureK": 292.709372,
+          "waterMassFraction": 0.00036
         }
       },
       {
-        "id": "v2i",
-        "name": "ЗД-2: вход",
-        "kind": "junction",
-        "role": "valve_port",
-        "elevationM": 100,
+        "id": "in-1250009587",
+        "name": "Вход 1250009587",
+        "kind": "mass_flow_source",
+        "role": "separator_liquid",
+        "elevationM": 0,
         "display": {
-          "x": 680,
-          "y": 520
+          "x": 80,
+          "y": 460
+        },
+        "boundary": {
+          "massFlowKgS": 1.580831,
+          "temperatureK": 278.179784,
+          "waterMassFraction": 0.000357
         }
       },
       {
-        "id": "tank",
-        "name": "Буферная ёмкость Е-1",
+        "id": "out-1250009587",
+        "name": "Выход 1250009587",
         "kind": "pressure_boundary",
-        "role": "tank",
-        "elevationM": 100,
+        "role": "treatment_inlet",
+        "elevationM": 0,
         "display": {
-          "x": 720,
-          "y": 560
+          "x": 1120,
+          "y": 460
         },
         "boundary": {
-          "pressurePa": 400000,
-          "temperatureK": 303.15,
-          "waterMassFraction": 0.2
-        }
-      },
-      {
-        "id": "sepw",
-        "name": "С-1: вода (выход)",
-        "kind": "pressure_boundary",
-        "role": "separator_water",
-        "elevationM": 120,
-        "display": {
-          "x": 290,
-          "y": 370
-        },
-        "boundary": {
-          "pressurePa": 420000,
-          "temperatureK": 323.15,
-          "waterMassFraction": 1
-        }
-      },
-      {
-        "id": "wout",
-        "name": "КНС: приём",
-        "kind": "pressure_boundary",
-        "role": "water_outlet",
-        "elevationM": 80,
-        "display": {
-          "x": 330,
-          "y": 660
-        },
-        "boundary": {
-          "pressurePa": 650000,
-          "temperatureK": 313.15,
-          "waterMassFraction": 1
+          "pressurePa": 1386976.8,
+          "temperatureK": 278.179784,
+          "waterMassFraction": 0.000357
         }
       }
     ],
     "links": [
       {
         "kind": "pipe",
-        "id": "e1",
-        "name": "С-1 → Н-1",
-        "fromNodeId": "sep1",
-        "toNodeId": "p1s",
-        "lengthM": 150,
-        "innerDiameterM": 0.309,
-        "wallThicknessM": 0.008,
-        "youngModulusPa": 206000000000,
-        "poissonRatio": 0.3,
-        "roughnessM": 0.000045,
-        "restraintModel": "anchored_throughout",
-        "elevationProfile": [
-          {
-            "distanceM": 0,
-            "elevationM": 120
-          },
-          {
-            "distanceM": 150,
-            "elevationM": 112
-          }
-        ],
-        "displayPolyline": [
-          {
-            "x": 290,
-            "y": 320
-          },
-          {
-            "x": 360,
-            "y": 330
-          }
-        ],
-        "thermal": {
-          "overallHeatTransferWm2K": 2.5,
-          "referenceOuterDiameterM": 0.325,
-          "ambientTemperatureK": 278.15,
-          "insulation": "подземная прокладка без изоляции (синтетическое U)"
-        },
-        "fluidProfileId": "synthetic_oil_water",
-        "solverModel": "M0_liquid_moc"
-      },
-      {
-        "kind": "pipe",
-        "id": "e2",
-        "name": "Н-1 → У-1 (напорный)",
-        "fromNodeId": "p1d",
-        "toNodeId": "j1",
-        "lengthM": 3200,
-        "innerDiameterM": 0.259,
-        "wallThicknessM": 0.007,
-        "youngModulusPa": 206000000000,
-        "poissonRatio": 0.3,
-        "roughnessM": 0.000045,
-        "restraintModel": "anchored_throughout",
-        "elevationProfile": [
-          {
-            "distanceM": 0,
-            "elevationM": 112
-          },
-          {
-            "distanceM": 800,
-            "elevationM": 118
-          },
-          {
-            "distanceM": 1600,
-            "elevationM": 126
-          },
-          {
-            "distanceM": 2400,
-            "elevationM": 115
-          },
-          {
-            "distanceM": 3200,
-            "elevationM": 104
-          }
-        ],
-        "displayPolyline": [
-          {
-            "x": 400,
-            "y": 330
-          },
-          {
-            "x": 470,
-            "y": 370
-          },
-          {
-            "x": 560,
-            "y": 360
-          },
-          {
-            "x": 650,
-            "y": 330
-          }
-        ],
-        "thermal": {
-          "overallHeatTransferWm2K": 2.5,
-          "referenceOuterDiameterM": 0.273,
-          "ambientTemperatureK": 278.15,
-          "insulation": "подземная прокладка без изоляции (синтетическое U)"
-        },
-        "fluidProfileId": "synthetic_oil_water",
-        "solverModel": "M0_liquid_moc"
-      },
-      {
-        "kind": "pipe",
-        "id": "e3",
-        "name": "Куст-3 → У-1",
-        "fromNodeId": "k3",
-        "toNodeId": "j1",
-        "lengthM": 2100,
-        "innerDiameterM": 0.15,
+        "id": "s1250009583",
+        "name": "1250009583 УЗ-2—УЗ-3 (Dнар 219 мм, стенка 4.5 мм)",
+        "fromNodeId": "in-1250009583",
+        "toNodeId": "out-1250009583",
+        "lengthM": 200.0,
+        "innerDiameterM": 0.21,
         "wallThicknessM": 0.0045,
         "youngModulusPa": 206000000000,
         "poissonRatio": 0.3,
-        "roughnessM": 0.000045,
+        "roughnessM": 4.5e-05,
         "restraintModel": "anchored_throughout",
         "elevationProfile": [
           {
             "distanceM": 0,
-            "elevationM": 131
+            "elevationM": 0
           },
           {
-            "distanceM": 1000,
-            "elevationM": 122
+            "distanceM": 10,
+            "elevationM": 0
           },
           {
-            "distanceM": 2100,
-            "elevationM": 104
+            "distanceM": 20,
+            "elevationM": 0
+          },
+          {
+            "distanceM": 30,
+            "elevationM": 0
+          },
+          {
+            "distanceM": 40,
+            "elevationM": 0
+          },
+          {
+            "distanceM": 50,
+            "elevationM": 0
+          },
+          {
+            "distanceM": 60,
+            "elevationM": 0
+          },
+          {
+            "distanceM": 70,
+            "elevationM": 0
+          },
+          {
+            "distanceM": 80,
+            "elevationM": 0
+          },
+          {
+            "distanceM": 90,
+            "elevationM": 0
+          },
+          {
+            "distanceM": 100,
+            "elevationM": 0
+          },
+          {
+            "distanceM": 110,
+            "elevationM": 0
+          },
+          {
+            "distanceM": 120,
+            "elevationM": 0
+          },
+          {
+            "distanceM": 130,
+            "elevationM": 0
+          },
+          {
+            "distanceM": 140,
+            "elevationM": 0
+          },
+          {
+            "distanceM": 150,
+            "elevationM": 0
+          },
+          {
+            "distanceM": 160,
+            "elevationM": 0
+          },
+          {
+            "distanceM": 170,
+            "elevationM": 0
+          },
+          {
+            "distanceM": 180,
+            "elevationM": 0
+          },
+          {
+            "distanceM": 190,
+            "elevationM": 0
+          },
+          {
+            "distanceM": 200,
+            "elevationM": 0
           }
         ],
         "displayPolyline": [
           {
-            "x": 600,
-            "y": 110
-          },
-          {
-            "x": 620,
+            "x": 80,
             "y": 220
           },
           {
-            "x": 650,
-            "y": 330
-          }
-        ],
-        "thermal": {
-          "overallHeatTransferWm2K": 2.5,
-          "referenceOuterDiameterM": 0.159,
-          "ambientTemperatureK": 278.15,
-          "insulation": "подземная прокладка без изоляции (синтетическое U)"
-        },
-        "fluidProfileId": "synthetic_oil_water",
-        "solverModel": "M0_liquid_moc"
-      },
-      {
-        "kind": "pipe",
-        "id": "e4",
-        "name": "У-1 → У-2 (коллектор)",
-        "fromNodeId": "j1",
-        "toNodeId": "j2",
-        "lengthM": 2800,
-        "innerDiameterM": 0.309,
-        "wallThicknessM": 0.008,
-        "youngModulusPa": 206000000000,
-        "poissonRatio": 0.3,
-        "roughnessM": 0.000045,
-        "restraintModel": "anchored_throughout",
-        "elevationProfile": [
-          {
-            "distanceM": 0,
-            "elevationM": 104
-          },
-          {
-            "distanceM": 1400,
-            "elevationM": 94
-          },
-          {
-            "distanceM": 2800,
-            "elevationM": 97
-          }
-        ],
-        "displayPolyline": [
-          {
-            "x": 650,
-            "y": 330
-          },
-          {
-            "x": 740,
-            "y": 380
-          },
-          {
-            "x": 830,
-            "y": 400
-          }
-        ],
-        "thermal": {
-          "overallHeatTransferWm2K": 2.5,
-          "referenceOuterDiameterM": 0.325,
-          "ambientTemperatureK": 278.15,
-          "insulation": "подземная прокладка без изоляции (синтетическое U)"
-        },
-        "fluidProfileId": "synthetic_oil_water",
-        "solverModel": "M0_liquid_moc"
-      },
-      {
-        "kind": "pipe",
-        "id": "e5",
-        "name": "Куст-4 → У-2",
-        "fromNodeId": "k4",
-        "toNodeId": "j2",
-        "lengthM": 1500,
-        "innerDiameterM": 0.125,
-        "wallThicknessM": 0.004,
-        "youngModulusPa": 206000000000,
-        "poissonRatio": 0.3,
-        "roughnessM": 0.000045,
-        "restraintModel": "anchored_throughout",
-        "elevationProfile": [
-          {
-            "distanceM": 0,
-            "elevationM": 86
-          },
-          {
-            "distanceM": 800,
-            "elevationM": 92
-          },
-          {
-            "distanceM": 1500,
-            "elevationM": 97
-          }
-        ],
-        "displayPolyline": [
-          {
-            "x": 800,
-            "y": 640
-          },
-          {
-            "x": 820,
-            "y": 520
-          },
-          {
-            "x": 830,
-            "y": 400
-          }
-        ],
-        "thermal": {
-          "overallHeatTransferWm2K": 2.5,
-          "referenceOuterDiameterM": 0.133,
-          "ambientTemperatureK": 278.15,
-          "insulation": "подземная прокладка без изоляции (синтетическое U)"
-        },
-        "fluidProfileId": "synthetic_oil_water",
-        "solverModel": "M0_liquid_moc"
-      },
-      {
-        "kind": "pipe",
-        "id": "e6",
-        "name": "У-2 → ЗД-1 (коллектор)",
-        "fromNodeId": "j2",
-        "toNodeId": "v1i",
-        "lengthM": 2400,
-        "innerDiameterM": 0.309,
-        "wallThicknessM": 0.008,
-        "youngModulusPa": 206000000000,
-        "poissonRatio": 0.3,
-        "roughnessM": 0.000045,
-        "restraintModel": "anchored_throughout",
-        "elevationProfile": [
-          {
-            "distanceM": 0,
-            "elevationM": 97
-          },
-          {
-            "distanceM": 1200,
-            "elevationM": 101
-          },
-          {
-            "distanceM": 2400,
-            "elevationM": 92
-          }
-        ],
-        "displayPolyline": [
-          {
-            "x": 830,
-            "y": 400
-          },
-          {
-            "x": 900,
-            "y": 420
-          },
-          {
-            "x": 960,
-            "y": 400
-          }
-        ],
-        "thermal": {
-          "overallHeatTransferWm2K": 2.5,
-          "referenceOuterDiameterM": 0.325,
-          "ambientTemperatureK": 278.15,
-          "insulation": "подземная прокладка без изоляции (синтетическое U)"
-        },
-        "fluidProfileId": "synthetic_oil_water",
-        "solverModel": "M0_liquid_moc"
-      },
-      {
-        "kind": "pipe",
-        "id": "e7",
-        "name": "ЗД-1 → УПН",
-        "fromNodeId": "v1o",
-        "toNodeId": "upn",
-        "lengthM": 300,
-        "innerDiameterM": 0.309,
-        "wallThicknessM": 0.008,
-        "youngModulusPa": 206000000000,
-        "poissonRatio": 0.3,
-        "roughnessM": 0.000045,
-        "restraintModel": "anchored_throughout",
-        "elevationProfile": [
-          {
-            "distanceM": 0,
-            "elevationM": 92
-          },
-          {
-            "distanceM": 300,
-            "elevationM": 92
-          }
-        ],
-        "displayPolyline": [
-          {
-            "x": 1000,
-            "y": 400
-          },
-          {
-            "x": 1090,
-            "y": 400
-          }
-        ],
-        "thermal": {
-          "overallHeatTransferWm2K": 2.5,
-          "referenceOuterDiameterM": 0.325,
-          "ambientTemperatureK": 278.15,
-          "insulation": "подземная прокладка без изоляции (синтетическое U)"
-        },
-        "fluidProfileId": "synthetic_oil_water",
-        "solverModel": "M0_liquid_moc"
-      },
-      {
-        "kind": "pipe",
-        "id": "e8",
-        "name": "У-1 → ЗД-2 (линия сброса)",
-        "fromNodeId": "j1",
-        "toNodeId": "v2i",
-        "lengthM": 800,
-        "innerDiameterM": 0.207,
-        "wallThicknessM": 0.006,
-        "youngModulusPa": 206000000000,
-        "poissonRatio": 0.3,
-        "roughnessM": 0.000045,
-        "restraintModel": "anchored_throughout",
-        "elevationProfile": [
-          {
-            "distanceM": 0,
-            "elevationM": 104
-          },
-          {
-            "distanceM": 800,
-            "elevationM": 100
-          }
-        ],
-        "displayPolyline": [
-          {
-            "x": 650,
-            "y": 330
-          },
-          {
-            "x": 670,
-            "y": 430
-          },
-          {
-            "x": 680,
-            "y": 520
+            "x": 1120,
+            "y": 220
           }
         ],
         "thermal": {
           "overallHeatTransferWm2K": 2.5,
           "referenceOuterDiameterM": 0.219,
           "ambientTemperatureK": 278.15,
-          "insulation": "подземная прокладка без изоляции (синтетическое U)"
+          "insulation": "подземная прокладка, глубина заложения по паспорту 1.2 м; U модельный"
         },
         "fluidProfileId": "synthetic_oil_water",
         "solverModel": "M0_liquid_moc"
       },
       {
         "kind": "pipe",
-        "id": "e9",
-        "name": "С-1 → КНС (водовод)",
-        "fromNodeId": "sepw",
-        "toNodeId": "wout",
-        "lengthM": 1800,
-        "innerDiameterM": 0.15,
+        "id": "s1250009587",
+        "name": "1250009587 УЗ-17—УЗ-4 (Dнар 159 мм, стенка 6.0 мм)",
+        "fromNodeId": "in-1250009587",
+        "toNodeId": "out-1250009587",
+        "lengthM": 200.0,
+        "innerDiameterM": 0.147,
         "wallThicknessM": 0.006,
         "youngModulusPa": 206000000000,
         "poissonRatio": 0.3,
-        "roughnessM": 0.000045,
+        "roughnessM": 4.5e-05,
         "restraintModel": "anchored_throughout",
         "elevationProfile": [
           {
             "distanceM": 0,
-            "elevationM": 120
+            "elevationM": 0
           },
           {
-            "distanceM": 900,
-            "elevationM": 100
+            "distanceM": 10,
+            "elevationM": 0
           },
           {
-            "distanceM": 1800,
-            "elevationM": 80
+            "distanceM": 20,
+            "elevationM": 0
+          },
+          {
+            "distanceM": 30,
+            "elevationM": 0
+          },
+          {
+            "distanceM": 40,
+            "elevationM": 0
+          },
+          {
+            "distanceM": 50,
+            "elevationM": 0
+          },
+          {
+            "distanceM": 60,
+            "elevationM": 0
+          },
+          {
+            "distanceM": 70,
+            "elevationM": 0
+          },
+          {
+            "distanceM": 80,
+            "elevationM": 0
+          },
+          {
+            "distanceM": 90,
+            "elevationM": 0
+          },
+          {
+            "distanceM": 100,
+            "elevationM": 0
+          },
+          {
+            "distanceM": 110,
+            "elevationM": 0
+          },
+          {
+            "distanceM": 120,
+            "elevationM": 0
+          },
+          {
+            "distanceM": 130,
+            "elevationM": 0
+          },
+          {
+            "distanceM": 140,
+            "elevationM": 0
+          },
+          {
+            "distanceM": 150,
+            "elevationM": 0
+          },
+          {
+            "distanceM": 160,
+            "elevationM": 0
+          },
+          {
+            "distanceM": 170,
+            "elevationM": 0
+          },
+          {
+            "distanceM": 180,
+            "elevationM": 0
+          },
+          {
+            "distanceM": 190,
+            "elevationM": 0
+          },
+          {
+            "distanceM": 200,
+            "elevationM": 0
           }
         ],
         "displayPolyline": [
           {
-            "x": 290,
-            "y": 370
+            "x": 80,
+            "y": 460
           },
           {
-            "x": 270,
-            "y": 500
-          },
-          {
-            "x": 330,
-            "y": 660
+            "x": 1120,
+            "y": 460
           }
         ],
         "thermal": {
           "overallHeatTransferWm2K": 2.5,
-          "referenceOuterDiameterM": 0.162,
+          "referenceOuterDiameterM": 0.159,
           "ambientTemperatureK": 278.15,
-          "insulation": "подземная прокладка без изоляции (синтетическое U)"
+          "insulation": "подземная прокладка, глубина заложения по паспорту 1.2 м; U модельный"
         },
-        "fluidProfileId": "water_tabulated",
+        "fluidProfileId": "synthetic_oil_water",
         "solverModel": "M0_liquid_moc"
-      },
-      {
-        "kind": "pump",
-        "id": "P1",
-        "name": "Насос Н-1 (ДНС-1)",
-        "fromNodeId": "p1s",
-        "toNodeId": "p1d",
-        "curve": {
-          "flowM3S": [
-            0,
-            0.03,
-            0.06,
-            0.09,
-            0.12
-          ],
-          "headM": [
-            150,
-            146,
-            135,
-            117,
-            92
-          ]
-        },
-        "referenceSpeedRpm": 2970,
-        "initialSpeedRatio": 1,
-        "speedTimeConstantS": 4,
-        "checkValve": true,
-        "allowedFlowM3S": [
-          0,
-          0.13
-        ],
-        "efficiency": {
-          "flowM3S": [
-            0.02,
-            0.05,
-            0.08,
-            0.11
-          ],
-          "eta": [
-            0.45,
-            0.68,
-            0.76,
-            0.7
-          ]
-        },
-        "display": {
-          "x": 380,
-          "y": 330
-        }
-      },
-      {
-        "kind": "valve",
-        "id": "V1",
-        "name": "Регулирующая задвижка ЗД-1",
-        "fromNodeId": "v1i",
-        "toNodeId": "v1o",
-        "diameterM": 0.25,
-        "characteristic": {
-          "opening": [
-            0.05,
-            0.1,
-            0.2,
-            0.3,
-            0.4,
-            0.5,
-            0.6,
-            0.7,
-            0.8,
-            0.9,
-            1
-          ],
-          "lossCoefficientK": [
-            3000,
-            750,
-            160,
-            60,
-            28,
-            14,
-            7.5,
-            4,
-            2,
-            0.8,
-            0.3
-          ]
-        },
-        "initialOpening": 0.6,
-        "strokeTimeS": 40,
-        "display": {
-          "x": 980,
-          "y": 400
-        }
-      },
-      {
-        "kind": "valve",
-        "id": "V2",
-        "name": "Задвижка сброса ЗД-2",
-        "fromNodeId": "v2i",
-        "toNodeId": "tank",
-        "diameterM": 0.15,
-        "characteristic": {
-          "opening": [
-            0.05,
-            0.1,
-            0.2,
-            0.3,
-            0.4,
-            0.5,
-            0.6,
-            0.7,
-            0.8,
-            0.9,
-            1
-          ],
-          "lossCoefficientK": [
-            3000,
-            750,
-            160,
-            60,
-            28,
-            14,
-            7.5,
-            4,
-            2,
-            0.8,
-            0.3
-          ]
-        },
-        "initialOpening": 0,
-        "strokeTimeS": 30,
-        "display": {
-          "x": 700,
-          "y": 540
-        }
       }
     ],
     "sensors": [
       {
-        "id": "PT-101",
-        "name": "Давление С-1 (нефть)",
+        "id": "PT-110",
+        "name": "Давление выхода 1250009583",
         "kind": "pressure",
-        "nodeId": "sep1",
+        "nodeId": "out-1250009583",
         "sampleRateHz": 10,
         "timeConstantS": 0.1,
         "delayS": 0,
@@ -973,37 +509,38 @@
         "timestampJitterS": 0.002,
         "rangeSI": [
           0,
-          4000000
+          4000000.0
         ],
         "role": "boundary_input",
         "availability": "online",
-        "boundaryNodeId": "sep1"
+        "boundaryNodeId": "out-1250009583"
       },
       {
-        "id": "PT-102",
-        "name": "Давление приёма Н-1",
+        "id": "PT-204",
+        "name": "Давление выхода 1250009587",
         "kind": "pressure",
-        "nodeId": "p1s",
-        "sampleRateHz": 50,
-        "timeConstantS": 0.02,
+        "nodeId": "out-1250009587",
+        "sampleRateHz": 10,
+        "timeConstantS": 0.1,
         "delayS": 0,
-        "noiseStdSI": 1500,
+        "noiseStdSI": 1000,
         "biasSI": 0,
         "quantizationStepSI": 100,
         "dropoutProbability": 0.001,
         "timestampJitterS": 0.002,
         "rangeSI": [
           0,
-          4000000
+          4000000.0
         ],
-        "role": "residual",
-        "availability": "online"
+        "role": "boundary_input",
+        "availability": "online",
+        "boundaryNodeId": "out-1250009587"
       },
       {
-        "id": "PT-103",
-        "name": "Давление нагнетания Н-1",
+        "id": "PT-101",
+        "name": "Давление входа 1250009583",
         "kind": "pressure",
-        "nodeId": "p1d",
+        "nodeId": "in-1250009583",
         "sampleRateHz": 50,
         "timeConstantS": 0.02,
         "delayS": 0,
@@ -1014,17 +551,17 @@
         "timestampJitterS": 0.002,
         "rangeSI": [
           0,
-          4000000
+          4000000.0
         ],
         "role": "residual",
         "availability": "online"
       },
       {
         "id": "PT-104",
-        "name": "Давление e2, 1600 м",
+        "name": "Давление 1250009583, 40 м",
         "kind": "pressure",
-        "edgeId": "e2",
-        "distanceM": 1600,
+        "edgeId": "s1250009583",
+        "distanceM": 40,
         "sampleRateHz": 50,
         "timeConstantS": 0.02,
         "delayS": 0,
@@ -1035,16 +572,17 @@
         "timestampJitterS": 0.002,
         "rangeSI": [
           0,
-          4000000
+          4000000.0
         ],
         "role": "residual",
         "availability": "online"
       },
       {
         "id": "PT-105",
-        "name": "Давление У-1",
+        "name": "Давление 1250009583, 80 м",
         "kind": "pressure",
-        "nodeId": "j1",
+        "edgeId": "s1250009583",
+        "distanceM": 80,
         "sampleRateHz": 50,
         "timeConstantS": 0.02,
         "delayS": 0,
@@ -1055,16 +593,17 @@
         "timestampJitterS": 0.002,
         "rangeSI": [
           0,
-          4000000
+          4000000.0
         ],
         "role": "residual",
         "availability": "online"
       },
       {
-        "id": "PT-106",
-        "name": "Давление Куст-3",
+        "id": "PT-111",
+        "name": "Давление 1250009583, 120 м",
         "kind": "pressure",
-        "nodeId": "k3",
+        "edgeId": "s1250009583",
+        "distanceM": 120,
         "sampleRateHz": 50,
         "timeConstantS": 0.02,
         "delayS": 0,
@@ -1075,16 +614,17 @@
         "timestampJitterS": 0.002,
         "rangeSI": [
           0,
-          4000000
+          4000000.0
         ],
         "role": "residual",
         "availability": "online"
       },
       {
         "id": "PT-107",
-        "name": "Давление У-2",
+        "name": "Давление 1250009583, 160 м",
         "kind": "pressure",
-        "nodeId": "j2",
+        "edgeId": "s1250009583",
+        "distanceM": 160,
         "sampleRateHz": 50,
         "timeConstantS": 0.02,
         "delayS": 0,
@@ -1095,161 +635,16 @@
         "timestampJitterS": 0.002,
         "rangeSI": [
           0,
-          4000000
-        ],
-        "role": "residual",
-        "availability": "online"
-      },
-      {
-        "id": "PT-108",
-        "name": "Давление Куст-4",
-        "kind": "pressure",
-        "nodeId": "k4",
-        "sampleRateHz": 50,
-        "timeConstantS": 0.02,
-        "delayS": 0,
-        "noiseStdSI": 1500,
-        "biasSI": 0,
-        "quantizationStepSI": 100,
-        "dropoutProbability": 0.001,
-        "timestampJitterS": 0.002,
-        "rangeSI": [
-          0,
-          4000000
-        ],
-        "role": "residual",
-        "availability": "online"
-      },
-      {
-        "id": "PT-109",
-        "name": "Давление перед ЗД-1",
-        "kind": "pressure",
-        "nodeId": "v1i",
-        "sampleRateHz": 50,
-        "timeConstantS": 0.02,
-        "delayS": 0,
-        "noiseStdSI": 1500,
-        "biasSI": 0,
-        "quantizationStepSI": 100,
-        "dropoutProbability": 0.001,
-        "timestampJitterS": 0.002,
-        "rangeSI": [
-          0,
-          4000000
-        ],
-        "role": "residual",
-        "availability": "online"
-      },
-      {
-        "id": "PT-110",
-        "name": "Давление на входе УПН",
-        "kind": "pressure",
-        "nodeId": "upn",
-        "sampleRateHz": 10,
-        "timeConstantS": 0.1,
-        "delayS": 0,
-        "noiseStdSI": 1000,
-        "biasSI": 0,
-        "quantizationStepSI": 100,
-        "dropoutProbability": 0.001,
-        "timestampJitterS": 0.002,
-        "rangeSI": [
-          0,
-          4000000
-        ],
-        "role": "boundary_input",
-        "availability": "online",
-        "boundaryNodeId": "upn"
-      },
-      {
-        "id": "PT-111",
-        "name": "Давление e4, 1400 м",
-        "kind": "pressure",
-        "edgeId": "e4",
-        "distanceM": 1400,
-        "sampleRateHz": 50,
-        "timeConstantS": 0.02,
-        "delayS": 0,
-        "noiseStdSI": 1500,
-        "biasSI": 0,
-        "quantizationStepSI": 100,
-        "dropoutProbability": 0.001,
-        "timestampJitterS": 0.002,
-        "rangeSI": [
-          0,
-          4000000
-        ],
-        "role": "residual",
-        "availability": "online"
-      },
-      {
-        "id": "PT-112",
-        "name": "Давление e6, 1200 м",
-        "kind": "pressure",
-        "edgeId": "e6",
-        "distanceM": 1200,
-        "sampleRateHz": 50,
-        "timeConstantS": 0.02,
-        "delayS": 0,
-        "noiseStdSI": 1500,
-        "biasSI": 0,
-        "quantizationStepSI": 100,
-        "dropoutProbability": 0.001,
-        "timestampJitterS": 0.002,
-        "rangeSI": [
-          0,
-          4000000
-        ],
-        "role": "residual",
-        "availability": "online"
-      },
-      {
-        "id": "PT-113",
-        "name": "Давление перед ЗД-2",
-        "kind": "pressure",
-        "nodeId": "v2i",
-        "sampleRateHz": 50,
-        "timeConstantS": 0.02,
-        "delayS": 0,
-        "noiseStdSI": 1500,
-        "biasSI": 0,
-        "quantizationStepSI": 100,
-        "dropoutProbability": 0.001,
-        "timestampJitterS": 0.002,
-        "rangeSI": [
-          0,
-          4000000
+          4000000.0
         ],
         "role": "residual",
         "availability": "online"
       },
       {
         "id": "PT-201",
-        "name": "Давление С-1 (вода)",
+        "name": "Давление входа 1250009587",
         "kind": "pressure",
-        "nodeId": "sepw",
-        "sampleRateHz": 10,
-        "timeConstantS": 0.1,
-        "delayS": 0,
-        "noiseStdSI": 1000,
-        "biasSI": 0,
-        "quantizationStepSI": 100,
-        "dropoutProbability": 0.001,
-        "timestampJitterS": 0.002,
-        "rangeSI": [
-          0,
-          4000000
-        ],
-        "role": "boundary_input",
-        "availability": "online",
-        "boundaryNodeId": "sepw"
-      },
-      {
-        "id": "PT-202",
-        "name": "Давление водовода, 450 м",
-        "kind": "pressure",
-        "edgeId": "e9",
-        "distanceM": 450,
+        "nodeId": "in-1250009587",
         "sampleRateHz": 50,
         "timeConstantS": 0.02,
         "delayS": 0,
@@ -1260,17 +655,17 @@
         "timestampJitterS": 0.002,
         "rangeSI": [
           0,
-          4000000
+          4000000.0
         ],
         "role": "residual",
         "availability": "online"
       },
       {
-        "id": "PT-203",
-        "name": "Давление водовода, 1350 м",
+        "id": "PT-205",
+        "name": "Давление 1250009587, 50 м",
         "kind": "pressure",
-        "edgeId": "e9",
-        "distanceM": 1350,
+        "edgeId": "s1250009587",
+        "distanceM": 50,
         "sampleRateHz": 50,
         "timeConstantS": 0.02,
         "delayS": 0,
@@ -1281,186 +676,144 @@
         "timestampJitterS": 0.002,
         "rangeSI": [
           0,
-          4000000
+          4000000.0
         ],
         "role": "residual",
         "availability": "online"
       },
       {
-        "id": "PT-204",
-        "name": "Давление на приёме КНС",
+        "id": "PT-207",
+        "name": "Давление 1250009587, 100 м",
         "kind": "pressure",
-        "nodeId": "wout",
-        "sampleRateHz": 10,
-        "timeConstantS": 0.1,
+        "edgeId": "s1250009587",
+        "distanceM": 100,
+        "sampleRateHz": 50,
+        "timeConstantS": 0.02,
         "delayS": 0,
-        "noiseStdSI": 1000,
+        "noiseStdSI": 1500,
         "biasSI": 0,
         "quantizationStepSI": 100,
         "dropoutProbability": 0.001,
         "timestampJitterS": 0.002,
         "rangeSI": [
           0,
-          4000000
+          4000000.0
         ],
-        "role": "boundary_input",
-        "availability": "online",
-        "boundaryNodeId": "wout"
+        "role": "residual",
+        "availability": "online"
+      },
+      {
+        "id": "PT-211",
+        "name": "Давление 1250009587, 150 м",
+        "kind": "pressure",
+        "edgeId": "s1250009587",
+        "distanceM": 150,
+        "sampleRateHz": 50,
+        "timeConstantS": 0.02,
+        "delayS": 0,
+        "noiseStdSI": 1500,
+        "biasSI": 0,
+        "quantizationStepSI": 100,
+        "dropoutProbability": 0.001,
+        "timestampJitterS": 0.002,
+        "rangeSI": [
+          0,
+          4000000.0
+        ],
+        "role": "residual",
+        "availability": "online"
       },
       {
         "id": "FT-101",
-        "name": "Расход после Н-1",
+        "name": "Расход входа 1250009583",
         "kind": "massFlow",
-        "edgeId": "e2",
-        "distanceM": 50,
+        "edgeId": "s1250009583",
+        "distanceM": 0,
         "sampleRateHz": 2,
-        "timeConstantS": 1,
+        "timeConstantS": 1.0,
         "delayS": 0,
-        "noiseStdSI": 0.25,
+        "noiseStdSI": 0.02,
         "biasSI": 0,
-        "quantizationStepSI": 0.01,
+        "quantizationStepSI": 0.001,
         "dropoutProbability": 0.002,
         "timestampJitterS": 0.01,
         "rangeSI": [
-          -50,
-          250
+          -5,
+          20
+        ],
+        "role": "boundary_input",
+        "availability": "online",
+        "boundaryNodeId": "in-1250009583"
+      },
+      {
+        "id": "FT-104",
+        "name": "Расход выхода 1250009583",
+        "kind": "massFlow",
+        "edgeId": "s1250009583",
+        "distanceM": 200,
+        "sampleRateHz": 2,
+        "timeConstantS": 1.0,
+        "delayS": 0,
+        "noiseStdSI": 0.02,
+        "biasSI": 0,
+        "quantizationStepSI": 0.001,
+        "dropoutProbability": 0.002,
+        "timestampJitterS": 0.01,
+        "rangeSI": [
+          -5,
+          20
         ],
         "role": "residual",
         "availability": "online"
       },
       {
         "id": "FT-102",
-        "name": "Расход Куст-3",
+        "name": "Расход входа 1250009587",
         "kind": "massFlow",
-        "edgeId": "e3",
+        "edgeId": "s1250009587",
         "distanceM": 0,
         "sampleRateHz": 2,
-        "timeConstantS": 1,
+        "timeConstantS": 1.0,
         "delayS": 0,
-        "noiseStdSI": 0.25,
+        "noiseStdSI": 0.02,
         "biasSI": 0,
-        "quantizationStepSI": 0.01,
+        "quantizationStepSI": 0.001,
         "dropoutProbability": 0.002,
         "timestampJitterS": 0.01,
         "rangeSI": [
-          -50,
-          250
+          -5,
+          20
         ],
         "role": "boundary_input",
         "availability": "online",
-        "boundaryNodeId": "k3"
-      },
-      {
-        "id": "FT-103",
-        "name": "Расход Куст-4",
-        "kind": "massFlow",
-        "edgeId": "e5",
-        "distanceM": 0,
-        "sampleRateHz": 2,
-        "timeConstantS": 1,
-        "delayS": 0,
-        "noiseStdSI": 0.25,
-        "biasSI": 0,
-        "quantizationStepSI": 0.01,
-        "dropoutProbability": 0.002,
-        "timestampJitterS": 0.01,
-        "rangeSI": [
-          -50,
-          250
-        ],
-        "role": "boundary_input",
-        "availability": "online",
-        "boundaryNodeId": "k4"
-      },
-      {
-        "id": "FT-104",
-        "name": "Расход на УПН",
-        "kind": "massFlow",
-        "edgeId": "e7",
-        "distanceM": 250,
-        "sampleRateHz": 2,
-        "timeConstantS": 1,
-        "delayS": 0,
-        "noiseStdSI": 0.25,
-        "biasSI": 0,
-        "quantizationStepSI": 0.01,
-        "dropoutProbability": 0.002,
-        "timestampJitterS": 0.01,
-        "rangeSI": [
-          -50,
-          250
-        ],
-        "role": "residual",
-        "availability": "online"
-      },
-      {
-        "id": "FT-105",
-        "name": "Расход в линии сброса",
-        "kind": "massFlow",
-        "edgeId": "e8",
-        "distanceM": 780,
-        "sampleRateHz": 2,
-        "timeConstantS": 1,
-        "delayS": 0,
-        "noiseStdSI": 0.25,
-        "biasSI": 0,
-        "quantizationStepSI": 0.01,
-        "dropoutProbability": 0.002,
-        "timestampJitterS": 0.01,
-        "rangeSI": [
-          -50,
-          250
-        ],
-        "role": "residual",
-        "availability": "online"
-      },
-      {
-        "id": "FT-201",
-        "name": "Расход воды от С-1",
-        "kind": "massFlow",
-        "edgeId": "e9",
-        "distanceM": 20,
-        "sampleRateHz": 2,
-        "timeConstantS": 1,
-        "delayS": 0,
-        "noiseStdSI": 0.25,
-        "biasSI": 0,
-        "quantizationStepSI": 0.01,
-        "dropoutProbability": 0.002,
-        "timestampJitterS": 0.01,
-        "rangeSI": [
-          -50,
-          250
-        ],
-        "role": "residual",
-        "availability": "online"
+        "boundaryNodeId": "in-1250009587"
       },
       {
         "id": "FT-202",
-        "name": "Расход воды на КНС",
+        "name": "Расход выхода 1250009587",
         "kind": "massFlow",
-        "edgeId": "e9",
-        "distanceM": 1780,
+        "edgeId": "s1250009587",
+        "distanceM": 200,
         "sampleRateHz": 2,
-        "timeConstantS": 1,
+        "timeConstantS": 1.0,
         "delayS": 0,
-        "noiseStdSI": 0.25,
+        "noiseStdSI": 0.02,
         "biasSI": 0,
-        "quantizationStepSI": 0.01,
+        "quantizationStepSI": 0.001,
         "dropoutProbability": 0.002,
         "timestampJitterS": 0.01,
         "rangeSI": [
-          -50,
-          250
+          -5,
+          20
         ],
         "role": "residual",
         "availability": "online"
       },
       {
         "id": "TT-101",
-        "name": "Температура С-1 (нефть)",
+        "name": "Температура входа 1250009583",
         "kind": "temperature",
-        "edgeId": "e1",
+        "edgeId": "s1250009583",
         "distanceM": 0,
         "sampleRateHz": 1,
         "timeConstantS": 15,
@@ -1476,78 +829,13 @@
         ],
         "role": "boundary_input",
         "availability": "online",
-        "boundaryNodeId": "sep1"
-      },
-      {
-        "id": "TT-102",
-        "name": "Температура Куст-3",
-        "kind": "temperature",
-        "edgeId": "e3",
-        "distanceM": 0,
-        "sampleRateHz": 1,
-        "timeConstantS": 15,
-        "delayS": 0,
-        "noiseStdSI": 0.1,
-        "biasSI": 0,
-        "quantizationStepSI": 0.01,
-        "dropoutProbability": 0.002,
-        "timestampJitterS": 0.01,
-        "rangeSI": [
-          253.15,
-          393.15
-        ],
-        "role": "boundary_input",
-        "availability": "online",
-        "boundaryNodeId": "k3"
-      },
-      {
-        "id": "TT-103",
-        "name": "Температура Куст-4",
-        "kind": "temperature",
-        "edgeId": "e5",
-        "distanceM": 0,
-        "sampleRateHz": 1,
-        "timeConstantS": 15,
-        "delayS": 0,
-        "noiseStdSI": 0.1,
-        "biasSI": 0,
-        "quantizationStepSI": 0.01,
-        "dropoutProbability": 0.002,
-        "timestampJitterS": 0.01,
-        "rangeSI": [
-          253.15,
-          393.15
-        ],
-        "role": "boundary_input",
-        "availability": "online",
-        "boundaryNodeId": "k4"
-      },
-      {
-        "id": "TT-104",
-        "name": "Температура на входе УПН",
-        "kind": "temperature",
-        "edgeId": "e7",
-        "distanceM": 250,
-        "sampleRateHz": 1,
-        "timeConstantS": 15,
-        "delayS": 0,
-        "noiseStdSI": 0.1,
-        "biasSI": 0,
-        "quantizationStepSI": 0.01,
-        "dropoutProbability": 0.002,
-        "timestampJitterS": 0.01,
-        "rangeSI": [
-          253.15,
-          393.15
-        ],
-        "role": "residual",
-        "availability": "online"
+        "boundaryNodeId": "in-1250009583"
       },
       {
         "id": "TT-201",
-        "name": "Температура воды С-1",
+        "name": "Температура входа 1250009587",
         "kind": "temperature",
-        "edgeId": "e9",
+        "edgeId": "s1250009587",
         "distanceM": 0,
         "sampleRateHz": 1,
         "timeConstantS": 15,
@@ -1563,13 +851,13 @@
         ],
         "role": "boundary_input",
         "availability": "online",
-        "boundaryNodeId": "sepw"
+        "boundaryNodeId": "in-1250009587"
       },
       {
         "id": "WC-101",
-        "name": "Обводнённость С-1",
+        "name": "Обводнённость входа 1250009583",
         "kind": "waterFraction",
-        "edgeId": "e1",
+        "edgeId": "s1250009583",
         "distanceM": 0,
         "sampleRateHz": 0.5,
         "timeConstantS": 10,
@@ -1585,13 +873,13 @@
         ],
         "role": "boundary_input",
         "availability": "online",
-        "boundaryNodeId": "sep1"
+        "boundaryNodeId": "in-1250009583"
       },
       {
         "id": "WC-102",
-        "name": "Обводнённость Куст-3",
+        "name": "Обводнённость входа 1250009587",
         "kind": "waterFraction",
-        "edgeId": "e3",
+        "edgeId": "s1250009587",
         "distanceM": 0,
         "sampleRateHz": 0.5,
         "timeConstantS": 10,
@@ -1607,196 +895,23 @@
         ],
         "role": "boundary_input",
         "availability": "online",
-        "boundaryNodeId": "k3"
-      },
-      {
-        "id": "WC-103",
-        "name": "Обводнённость Куст-4",
-        "kind": "waterFraction",
-        "edgeId": "e5",
-        "distanceM": 0,
-        "sampleRateHz": 0.5,
-        "timeConstantS": 10,
-        "delayS": 0,
-        "noiseStdSI": 0.004,
-        "biasSI": 0,
-        "quantizationStepSI": 0.001,
-        "dropoutProbability": 0.002,
-        "timestampJitterS": 0.01,
-        "rangeSI": [
-          0,
-          1
-        ],
-        "role": "boundary_input",
-        "availability": "online",
-        "boundaryNodeId": "k4"
-      },
-      {
-        "id": "WC-104",
-        "name": "Обводнённость на входе УПН",
-        "kind": "waterFraction",
-        "edgeId": "e7",
-        "distanceM": 250,
-        "sampleRateHz": 0.5,
-        "timeConstantS": 10,
-        "delayS": 0,
-        "noiseStdSI": 0.004,
-        "biasSI": 0,
-        "quantizationStepSI": 0.001,
-        "dropoutProbability": 0.002,
-        "timestampJitterS": 0.01,
-        "rangeSI": [
-          0,
-          1
-        ],
-        "role": "residual",
-        "availability": "online"
+        "boundaryNodeId": "in-1250009587"
       }
     ],
     "commands": [],
     "simulation": {
-      "targetReachLengthM": 25,
-      "minReachesPerPipe": 6,
+      "targetReachLengthM": 10,
+      "minReachesPerPipe": 20,
       "transportCourant": 0.5,
       "maxTransportIntervalS": 1,
       "frictionModel": "colebrook",
       "propertyMode": "fixed_acoustic_variable_viscosity",
       "durationS": 900
     },
-    "contextElements": [
-      {
-        "id": "pad1",
-        "kind": "well_pad",
-        "name": "Куст-1",
-        "position": {
-          "x": 70,
-          "y": 170
-        },
-        "note": "Источник продукции: контекст, пласт и скважины не моделируются",
-        "modelLevel": "context_only"
-      },
-      {
-        "id": "pad2",
-        "kind": "well_pad",
-        "name": "Куст-2",
-        "position": {
-          "x": 70,
-          "y": 470
-        },
-        "note": "Источник продукции: контекст, пласт и скважины не моделируются",
-        "modelLevel": "context_only"
-      },
-      {
-        "id": "gl1",
-        "kind": "gas_liquid_line",
-        "name": "Нефтегазосборный трубопровод Куст-1 → С-1",
-        "polyline": [
-          {
-            "x": 95,
-            "y": 175
-          },
-          {
-            "x": 170,
-            "y": 250
-          },
-          {
-            "x": 236,
-            "y": 330
-          }
-        ],
-        "note": "Газосодержащий участок до сепарации: в M0 не рассчитывается; M1 — только акустический эксперимент",
-        "modelLevel": "M1_acoustic_experiment"
-      },
-      {
-        "id": "gl2",
-        "kind": "gas_liquid_line",
-        "name": "Нефтегазосборный трубопровод Куст-2 → С-1",
-        "polyline": [
-          {
-            "x": 95,
-            "y": 465
-          },
-          {
-            "x": 170,
-            "y": 410
-          },
-          {
-            "x": 236,
-            "y": 350
-          }
-        ],
-        "note": "Газосодержащий участок до сепарации: в M0 не рассчитывается",
-        "modelLevel": "context_only"
-      },
-      {
-        "id": "sep",
-        "kind": "separator",
-        "name": "Сепаратор С-1 (первичная сепарация)",
-        "position": {
-          "x": 250,
-          "y": 345
-        },
-        "note": "P0: граница давления с заданным разделением потоков; уровень/давление аппарата не моделируются",
-        "modelLevel": "context_only"
-      },
-      {
-        "id": "gasline",
-        "kind": "gas_line",
-        "name": "Газ С-1 → выход газа",
-        "polyline": [
-          {
-            "x": 250,
-            "y": 320
-          },
-          {
-            "x": 250,
-            "y": 200
-          },
-          {
-            "x": 290,
-            "y": 120
-          }
-        ],
-        "note": "Газовая линия: контекст",
-        "modelLevel": "context_only"
-      },
-      {
-        "id": "gasout",
-        "kind": "gas_outlet",
-        "name": "Газовый выход (ГПЗ / факел)",
-        "position": {
-          "x": 300,
-          "y": 105
-        },
-        "note": "Граничный узел, не рассчитывается",
-        "modelLevel": "context_only"
-      },
-      {
-        "id": "upnbox",
-        "kind": "treatment",
-        "name": "УПН (пункт подготовки нефти)",
-        "position": {
-          "x": 1135,
-          "y": 400
-        },
-        "note": "Граница давления; процесс подготовки не моделируется",
-        "modelLevel": "context_only"
-      },
-      {
-        "id": "kns",
-        "kind": "water_injection",
-        "name": "КНС (водный выход)",
-        "position": {
-          "x": 330,
-          "y": 700
-        },
-        "note": "Граница давления",
-        "modelLevel": "context_only"
-      }
-    ],
+    "contextElements": [],
     "map": {
       "width": 1200,
-      "height": 740
+      "height": 640
     }
   },
   "truth": {
@@ -1816,10 +931,10 @@
       {
         "kind": "leak",
         "eventId": "leak-1",
-        "edgeId": "e6",
-        "distanceM": 1500,
+        "edgeId": "s1250009587",
+        "distanceM": 120,
         "startTimeS": 480,
-        "holeDiameterM": 0.02,
+        "holeDiameterM": 0.008,
         "openingDurationS": 0,
         "dischargeCoefficient": 0.62,
         "externalPressurePa": 101325,
