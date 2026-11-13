@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState, type PointerEvent as RPointerEvent, type WheelEvent as RWheelEvent } from 'react';
+import { useEffect, useMemo, useRef, useState, type PointerEvent as RPointerEvent } from 'react';
 import type { PipeConfig, PumpConfig, ValveConfig, Diagnosis } from '@pipetwin/contracts';
 import { useApp, chartData, type Layer } from '../../state/store';
 import { closestFraction, divColor, pointAlong, seqColor, barA, degC, kgs, pct, SEQ_GRADIENT, DIV_GRADIENT, CAUSE_RU } from '../../lib/format';
@@ -18,6 +18,27 @@ interface Hover {
   text: string[];
 }
 
+interface Tf {
+  x: number;
+  y: number;
+  k: number;
+}
+
+const ZOOM_MIN = 0.6;
+const ZOOM_MAX = 6;
+/** Scale change per pixel of wheel delta. A mouse notch (~100px) is about 4%, and it eases in. */
+const WHEEL_GAIN = 0.0004;
+
+function clampZoom(k: number): number {
+  return Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, k));
+}
+
+function wheelPixels(e: WheelEvent): number {
+  if (e.deltaMode === 1) return e.deltaY * 16;
+  if (e.deltaMode === 2) return e.deltaY * 800;
+  return e.deltaY;
+}
+
 export function MapView({ placingLeak, onPlaceLeak }: { placingLeak: boolean; onPlaceLeak: (edgeId: string, distanceM: number) => void }) {
   const scenario = useApp((s) => s.scenario);
   const layout = useApp((s) => s.layout);
@@ -29,10 +50,22 @@ export function MapView({ placingLeak, onPlaceLeak }: { placingLeak: boolean; on
   const layer = useApp((s) => s.layer);
   const selectedEdge = useApp((s) => s.selectedEdge);
   const set = useApp((s) => s.set);
-  const [tf, setTf] = useState({ x: 0, y: 0, k: 1 });
+  const [tf, setTf] = useState<Tf>({ x: 0, y: 0, k: 1 });
+  const tfRef = useRef(tf);
+  const targetRef = useRef(tf);
+  const animRef = useRef<number | null>(null);
   const [hover, setHover] = useState<Hover | null>(null);
   const drag = useRef<{ x: number; y: number; tx: number; ty: number } | null>(null);
   const svgRef = useRef<SVGSVGElement>(null);
+
+  const publish = (next: Tf): void => {
+    tfRef.current = next;
+    setTf(next);
+  };
+  const stopZoom = (): void => {
+    if (animRef.current != null) cancelAnimationFrame(animRef.current);
+    animRef.current = null;
+  };
 
   const cfg = scenario?.public;
   const pipes = useMemo(() => (cfg ? (cfg.links.filter((l) => l.kind === 'pipe') as PipeConfig[]) : []), [cfg]);
@@ -56,6 +89,52 @@ export function MapView({ placingLeak, onPlaceLeak }: { placingLeak: boolean; on
     return { lo, hi };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [field?.simTimeS ? Math.floor(field.simTimeS / 5) : 0, layer, view, field === null]);
+
+  useEffect(() => {
+    const svg = svgRef.current;
+    if (!svg || !cfg) return;
+    const mapW = cfg.map.width;
+    const mapH = cfg.map.height;
+    const step = (): void => {
+      const cur = tfRef.current;
+      const tgt = targetRef.current;
+      const dk = tgt.k - cur.k;
+      const dx = tgt.x - cur.x;
+      const dy = tgt.y - cur.y;
+      if (Math.abs(dk) < 0.0005 && Math.abs(dx) < 0.2 && Math.abs(dy) < 0.2) {
+        publish(tgt);
+        animRef.current = null;
+        return;
+      }
+      publish({ k: cur.k + dk * 0.18, x: cur.x + dx * 0.18, y: cur.y + dy * 0.18 });
+      animRef.current = requestAnimationFrame(step);
+    };
+    const onWheel = (e: WheelEvent): void => {
+      e.preventDefault();
+      const delta = wheelPixels(e);
+      if (delta === 0) return;
+      const r = svg.getBoundingClientRect();
+      const vx = ((e.clientX - r.left) / r.width) * mapW;
+      const vy = ((e.clientY - r.top) / r.height) * mapH;
+      const base = targetRef.current;
+      const k2 = clampZoom(base.k * Math.exp(-delta * WHEEL_GAIN));
+      const next = { k: k2, x: vx - ((vx - base.x) * k2) / base.k, y: vy - ((vy - base.y) * k2) / base.k };
+      targetRef.current = next;
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        stopZoom();
+        publish(next);
+        return;
+      }
+      if (animRef.current == null) animRef.current = requestAnimationFrame(step);
+    };
+    svg.addEventListener('wheel', onWheel, { passive: false });
+    return () => {
+      svg.removeEventListener('wheel', onWheel);
+      stopZoom();
+    };
+    // publish and stopZoom only touch refs and setTf
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cfg]);
 
   if (!cfg) return <div className="map-empty">Загрузка сценария…</div>;
   const nodeById = new Map(cfg.nodes.map((n) => [n.id, n]));
@@ -81,7 +160,7 @@ export function MapView({ placingLeak, onPlaceLeak }: { placingLeak: boolean; on
         return 0.15;
     }
   };
-  const colorOf = (v: number): string => (layer === 'dp' ? divColor(v) : layer === 'diagnostics' ? '#9aa4b2' : seqColor(v));
+  const colorOf = (v: number): string => (layer === 'dp' ? divColor(v) : layer === 'diagnostics' ? '#b7c0d0' : seqColor(v));
 
   const dg: Diagnosis | undefined = diag ? (view === 'operator' ? diag.diagnoses.D1 : diag.diagnoses.D2) : undefined;
   const zones = dg && (dg.cause === 'leak' || dg.status === 'confirmed') ? dg.candidateEdges.filter((c) => c.method !== 'nearest_sensor' || dg.cause === 'leak') : [];
@@ -101,29 +180,32 @@ export function MapView({ placingLeak, onPlaceLeak }: { placingLeak: boolean; on
   const toLocal = (e: { clientX: number; clientY: number }): { x: number; y: number } => {
     const svg = svgRef.current!;
     const r = svg.getBoundingClientRect();
+    const view = tfRef.current;
     const vx = ((e.clientX - r.left) / r.width) * cfg.map.width;
     const vy = ((e.clientY - r.top) / r.height) * cfg.map.height;
-    return { x: (vx - tf.x) / tf.k, y: (vy - tf.y) / tf.k };
+    return { x: (vx - view.x) / view.k, y: (vy - view.y) / view.k };
   };
 
-  const onWheel = (e: RWheelEvent<SVGSVGElement>): void => {
-    const svg = svgRef.current!;
-    const r = svg.getBoundingClientRect();
-    const vx = ((e.clientX - r.left) / r.width) * cfg.map.width;
-    const vy = ((e.clientY - r.top) / r.height) * cfg.map.height;
-    const k2 = Math.min(6, Math.max(0.6, tf.k * (e.deltaY < 0 ? 1.15 : 1 / 1.15)));
-    setTf({ k: k2, x: vx - ((vx - tf.x) * k2) / tf.k, y: vy - ((vy - tf.y) * k2) / tf.k });
+  const resetView = (): void => {
+    stopZoom();
+    const next = { x: 0, y: 0, k: 1 };
+    targetRef.current = next;
+    publish(next);
   };
   const onDown = (e: RPointerEvent<SVGSVGElement>): void => {
     if ((e.target as Element).closest('[data-hit]')) return;
-    drag.current = { x: e.clientX, y: e.clientY, tx: tf.x, ty: tf.y };
+    stopZoom();
+    targetRef.current = tfRef.current;
+    drag.current = { x: e.clientX, y: e.clientY, tx: tfRef.current.x, ty: tfRef.current.y };
   };
   const onMove = (e: RPointerEvent<SVGSVGElement>): void => {
     if (!drag.current) return;
     const svg = svgRef.current!;
     const r = svg.getBoundingClientRect();
     const sx = cfg.map.width / r.width;
-    setTf({ ...tf, x: drag.current.tx + (e.clientX - drag.current.x) * sx, y: drag.current.ty + (e.clientY - drag.current.y) * sx });
+    const next = { k: tfRef.current.k, x: drag.current.tx + (e.clientX - drag.current.x) * sx, y: drag.current.ty + (e.clientY - drag.current.y) * sx };
+    targetRef.current = next;
+    publish(next);
   };
 
   return (
@@ -135,7 +217,7 @@ export function MapView({ placingLeak, onPlaceLeak }: { placingLeak: boolean; on
           </button>
         ))}
         <span className="src-badge">{view === 'operator' ? 'поле: истина (оператор)' : 'поле: наблюдатель D1'}</span>
-        <button className="ghost" onClick={() => setTf({ x: 0, y: 0, k: 1 })} title="Сбросить масштаб">
+        <button className="ghost" onClick={resetView} title="Сбросить масштаб">
           ⤢
         </button>
       </div>
@@ -143,7 +225,6 @@ export function MapView({ placingLeak, onPlaceLeak }: { placingLeak: boolean; on
         ref={svgRef}
         className={`map ${placingLeak ? 'placing' : ''}`}
         viewBox={`0 0 ${cfg.map.width} ${cfg.map.height}`}
-        onWheel={onWheel}
         onPointerDown={onDown}
         onPointerMove={onMove}
         onPointerUp={() => (drag.current = null)}
@@ -194,7 +275,7 @@ export function MapView({ placingLeak, onPlaceLeak }: { placingLeak: boolean; on
               const a = pointAlong(p.displayPolyline, f0);
               const b = pointAlong(p.displayPolyline, f1);
               const g = off + Math.round(((f0 + f1) / 2) * n);
-              const col = field && layout ? colorOf(valueAt(g)) : '#9aa4b2';
+              const col = field && layout ? colorOf(valueAt(g)) : '#b7c0d0';
               segs.push(<line key={s} x1={a.x} y1={a.y} x2={b.x} y2={b.y} stroke={col} strokeWidth={p.innerDiameterM > 0.2 ? 7 : 5} strokeLinecap="round" />);
             }
             const mid = pointAlong(p.displayPolyline, 0.5);
