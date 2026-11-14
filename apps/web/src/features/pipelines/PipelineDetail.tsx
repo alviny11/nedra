@@ -10,7 +10,7 @@ import './pipelines.css';
 
 type Tab = 'overview' | 'defects' | 'forecast' | 'simulation' | 'passport';
 const tabs: Array<[Tab, string]> = [['overview', 'Обзор'], ['defects', 'Дефекты и ВТД'], ['forecast', 'Прогноз'], ['simulation', 'Режим и утечки'], ['passport', 'Паспорт и данные']];
-const tone = (r: Row) => r.source === 'nominal_assumption' ? '#607c8a' : r.pred/r.asset.nominal < .6 ? '#f5b45f' : '#48d4bd';
+const tone = (r: Row) => r.source === 'nominal_assumption' ? 'var(--ink-3)' : r.pred/r.asset.nominal < .6 ? 'var(--warn)' : 'var(--ok)';
 
 export function PipelineDetail({ group, onBack, onOpen }: { group: Pipeline; onBack: () => void; onOpen: (id: string) => void }) {
   const [tab, setTab] = useState<Tab>('overview');
@@ -76,8 +76,8 @@ function PipePlot({ rows, selected, onPick, length, forecast, zoom }: { rows: Ro
   const click = (e: React.MouseEvent<SVGSVGElement>) => { const rect = e.currentTarget.getBoundingClientRect(); const px = (e.clientX-rect.left)/rect.width*1000; const dist = left+(px-45)/900*(right-left); const r = visible.reduce((a, b) => Math.abs(b.x-dist)<Math.abs(a.x-dist) ? b : a, visible[0]!); if (r) onPick(r); };
   return <svg className="pipe-profile" viewBox="0 0 1000 255" role="img" aria-label="Лента сегментов и профиль толщины; выберите сегмент также в таблице" onClick={click}>
     {[0, 2, 4, 6, 8, 10].filter(v => v < maxH).map(v => <g key={v}><line x1="45" x2="945" y1={y(v)} y2={y(v)} className="chart-grid"/><text x="10" y={y(v)+4}>{v}</text></g>)}<text x="10" y="65">мм</text>
-    {visible.map(r => <g key={rowKey(r)}><rect x={x(Math.max(left, r.asset.offset+r.start))} y="15" height="12" width={Math.max(1, (r.end-r.start)/(right-left)*900)} fill={forecast ? tone(r) : r.measured == null ? '#455d6a' : '#48d4bd'}/>{r.measured != null && <circle cx={x(r.x)} cy={y(r.measured)} r="2.5" fill="#48d4bd"/>}{forecast && <line x1={x(r.x)-2} x2={x(r.x)+2} y1={y(r.pred)} y2={y(r.pred)} stroke="#f5b45f" strokeWidth="2"/>}</g>)}
-    <line x1={x(selected.x)} x2={x(selected.x)} y1="8" y2="220" stroke="#e9f5f7" strokeDasharray="4 4"/>
+    {visible.map(r => <g key={rowKey(r)}><rect x={x(Math.max(left, r.asset.offset+r.start))} y="15" height="12" width={Math.max(1, (r.end-r.start)/(right-left)*900)} fill={forecast ? tone(r) : r.measured == null ? 'var(--grid)' : 'var(--ok)'}/>{r.measured != null && <circle cx={x(r.x)} cy={y(r.measured)} r="2.5" fill="var(--ok)"/>}{forecast && <line x1={x(r.x)-2} x2={x(r.x)+2} y1={y(r.pred)} y2={y(r.pred)} stroke="var(--warn)" strokeWidth="2"/>}</g>)}
+    <line x1={x(selected.x)} x2={x(selected.x)} y1="8" y2="220" stroke="var(--mark)" strokeDasharray="4 4"/>
     {[0, .25, .5, .75, 1].map(t => <text key={t} x={45+t*900} y="245" textAnchor={t === 0 ? 'start' : t === 1 ? 'end' : 'middle'}>{fmt(left+t*(right-left), 0)} м</text>)}
   </svg>;
 }
@@ -86,20 +86,20 @@ function Elevation({ group, selected }: { group: Pipeline; selected: Row }) {
   const points = group.assets.flatMap(a => a.profile.map(p => [a.offset+p[0]!, p[1]!]));
   const min = Math.min(...points.map(p => p[1]!)), max = Math.max(...points.map(p => p[1]!));
   const path = points.map((p, i) => `${i ? 'L' : 'M'}${45+p[0]!/group.length*900},${100-(p[1]!-min)/(max-min || 1)*65}`).join(' ');
-  return <div className="elevation"><h3>Профиль высот <span>из исходных данных · {fmt(min, 0)}–{fmt(max, 0)} м</span></h3><svg viewBox="0 0 1000 125" role="img" aria-label="Высотный профиль трубы"><path d={path} fill="none" stroke="#7392b7" strokeWidth="2"/><line x1={45+selected.x/group.length*900} x2={45+selected.x/group.length*900} y1="25" y2="110" stroke="#e9f5f7" strokeDasharray="3 4"/></svg></div>;
+  return <div className="elevation"><h3>Профиль высот <span>из исходных данных · {fmt(min, 0)}–{fmt(max, 0)} м</span></h3><svg viewBox="0 0 1000 125" role="img" aria-label="Высотный профиль трубы"><path d={path} fill="none" stroke="var(--accent-bright)" strokeWidth="2"/><line x1={45+selected.x/group.length*900} x2={45+selected.x/group.length*900} y1="25" y2="110" stroke="var(--mark)" strokeDasharray="3 4"/></svg></div>;
 }
 
 function CrossSection({ defect }: { defect?: Defect }) {
   const angle = defect?.[4];
   const a = (angle ?? 0)*Math.PI/180;
-  return <div className="cross-section"><svg viewBox="0 0 160 145" role="img" aria-label={angle == null ? 'Угол дефекта не измерен' : `Положение дефекта ${angle} градусов`}><circle cx="80" cy="72" r="47" fill="none" stroke="#587580" strokeWidth="6"/><path d="M80 30V114M38 72H122" stroke="#304f60" strokeDasharray="3 4"/><text x="80" y="14" textAnchor="middle">0°</text><text x="140" y="77">90°</text><text x="80" y="139" textAnchor="middle">180°</text><text x="0" y="77">270°</text>{angle != null && <circle cx={80+47*Math.sin(a)} cy={72-47*Math.cos(a)} r="6" fill="#f5b45f"/>}</svg><p>{defect ? `Дефект ${defect[0]} · ${dateLabel(defect[1])}` : 'Положение по окружности не измерено'}<br/>{defect ? `Стенка ${fmt(defect[3])} мм · угол ${fmt(angle)}°` : 'Нет зарегистрированного дефекта'}</p></div>;
+  return <div className="cross-section"><svg viewBox="0 0 160 145" role="img" aria-label={angle == null ? 'Угол дефекта не измерен' : `Положение дефекта ${angle} градусов`}><circle cx="80" cy="72" r="47" fill="none" stroke="var(--ink-3)" strokeWidth="6"/><path d="M80 30V114M38 72H122" stroke="var(--line)" strokeDasharray="3 4"/><text x="80" y="14" textAnchor="middle">0°</text><text x="140" y="77">90°</text><text x="80" y="139" textAnchor="middle">180°</text><text x="0" y="77">270°</text>{angle != null && <circle cx={80+47*Math.sin(a)} cy={72-47*Math.cos(a)} r="6" fill="var(--warn)"/>}</svg><p>{defect ? `Дефект ${defect[0]} · ${dateLabel(defect[1])}` : 'Положение по окружности не измерено'}<br/>{defect ? `Стенка ${fmt(defect[3])} мм · угол ${fmt(angle)}°` : 'Нет зарегистрированного дефекта'}</p></div>;
 }
 
 function DefectCloud({ group, date, onPick }: { group: Pipeline; date: string; onPick: (a: Asset, d: Defect) => void }) {
   const all = group.assets.flatMap(a => a.defects.filter(d => d[1] <= date).map(d => ({ a, d })));
   const step = Math.max(1, Math.ceil(all.length/1200));
   const sampled = all.filter((_, i) => i%step === 0);
-  return <div className="defect-cloud"><h3>Развёртка стенки <span>{all.length ? `${sampled.length} из ${all.length} записей до даты; равномерная выборка` : 'Нет данных ВТД'}</span></h3><svg viewBox="0 0 1000 170" aria-label="Положение дефектов по длине и окружности">{[0, 90, 180, 270, 360].map(a => <g key={a}><line x1="45" x2="945" y1={15+a/360*130} y2={15+a/360*130} className="chart-grid"/><text x="2" y={19+a/360*130}>{a}°</text></g>)}{sampled.filter(({ d }) => d[4] != null).map(({ a, d }) => <circle key={d[0]} cx={45+(a.offset+d[2])/group.length*900} cy={15+d[4]!/360*130} r="3" fill={d[5] != null && d[5] > 35 ? '#f5b45f' : '#48d4bd'} onClick={() => onPick(a, d)}><title>#{d[0]} · {dateLabel(d[1])} · {fmt(d[3])} мм</title></circle>)}</svg></div>;
+  return <div className="defect-cloud"><h3>Развёртка стенки <span>{all.length ? `${sampled.length} из ${all.length} записей до даты; равномерная выборка` : 'Нет данных ВТД'}</span></h3><svg viewBox="0 0 1000 170" aria-label="Положение дефектов по длине и окружности">{[0, 90, 180, 270, 360].map(a => <g key={a}><line x1="45" x2="945" y1={15+a/360*130} y2={15+a/360*130} className="chart-grid"/><text x="2" y={19+a/360*130}>{a}°</text></g>)}{sampled.filter(({ d }) => d[4] != null).map(({ a, d }) => <circle key={d[0]} cx={45+(a.offset+d[2])/group.length*900} cy={15+d[4]!/360*130} r="3" fill={d[5] != null && d[5] > 35 ? 'var(--warn)' : 'var(--ok)'} onClick={() => onPick(a, d)}><title>#{d[0]} · {dateLabel(d[1])} · {fmt(d[3])} мм</title></circle>)}</svg></div>;
 }
 
 function HistoryChart({ row }: { row: Row }) {
