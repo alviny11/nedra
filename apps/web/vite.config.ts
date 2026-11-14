@@ -1,8 +1,29 @@
-import { defineConfig, type Plugin } from 'vite';
+import { defineConfig, searchForWorkspaceRoot, type Plugin } from 'vite';
 import react from '@vitejs/plugin-react';
 import { spawnSync } from 'node:child_process';
-import { readFileSync } from 'node:fs';
-import { resolve } from 'node:path';
+import { createRequire } from 'node:module';
+import { readFileSync, realpathSync } from 'node:fs';
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const configDir = fileURLToPath(new URL('.', import.meta.url));
+const workspaceRoot = searchForWorkspaceRoot(configDir);
+
+/** Workspace root plus its real path. A symlinked checkout otherwise blocks hoisted node_modules/vite. */
+function devAllowDirs(): string[] {
+  const dirs = new Set<string>();
+  const add = (dir: string) => {
+    dirs.add(dir);
+    try { dirs.add(realpathSync(dir)); } catch { /* path is not on disk */ }
+  };
+  add(workspaceRoot);
+  add(searchForWorkspaceRoot(process.cwd()));
+  try {
+    const req = createRequire(fileURLToPath(new URL('./package.json', import.meta.url)));
+    add(dirname(req.resolve('vite/dist/client/env.mjs')));
+  } catch { /* the workspace entries above still cover a normal install */ }
+  return [...dirs];
+}
 
 /**
  * 'single' mode: inline the JS bundle and CSS into index.html (workers are already inlined with
@@ -34,7 +55,7 @@ function singleFile(): Plugin {
 }
 
 function catboostDevApi(): Plugin {
-  const root = resolve(__dirname, '../..');
+  const root = workspaceRoot;
   const saved = resolve(root, 'models/cb-history-d6/result.csv');
   let cache: { body: string; source: string } | null = null;
   return {
@@ -73,7 +94,7 @@ export default defineConfig(({ mode }) => ({
   resolve: {
     alias: { '@data': resolve(__dirname, '../../data') }
   },
-  server: { port: 5173, fs: { allow: [resolve(__dirname, '../..')] } },
+  server: { port: 5173, fs: { allow: devAllowDirs() } },
   build: {
     outDir: mode === 'single' ? 'dist-single' : 'dist',
     target: 'es2022',
