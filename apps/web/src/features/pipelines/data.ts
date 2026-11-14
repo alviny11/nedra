@@ -35,9 +35,3 @@ export function routePaths(group: Pipeline): string[] {
   return group.assets.map(a => a.route.map((p, i) => `${i ? 'L' : 'M'}${25+(p[0]!-minX)*scale},${110-(p[1]!-minY)*scale}`).join(' '));
 }
 
-export function exportRows(group: Pipeline, rows: Row[]): void {
-  const csv = 'id,segment_id,thickness_pred\n' + rows.map(r => `${r.asset.id},${r.sid},${r.pred.toFixed(5)}`).join('\n');
-  const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
-  const a = document.createElement('a'); a.href = url; a.download = `${group.id}-${data.forecastDate}-result.csv`; a.click();
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
-}

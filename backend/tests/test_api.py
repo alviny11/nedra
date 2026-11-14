@@ -29,6 +29,17 @@ def scenario() -> dict:
     return json.loads((FIXTURES / "valid" / "healthy_steady.scenario.json").read_text())
 
 
+def test_thickness_csv_is_catboost_or_unavailable(client):
+    r = client.get("/api/thickness/result.csv")
+    if r.status_code == 503:
+        assert r.json()["code"] == "MODEL_UNAVAILABLE"
+        return
+    assert r.status_code == 200
+    assert r.headers["x-catboost-source"] == "live"
+    assert r.text.startswith("id,segment_id,thickness_pred\n1250009490,0,5.634172484001331\n")
+    assert r.text.strip().count("\n") == 147
+
+
 def test_health_and_capabilities(client):
     h = client.get("/api/health").json()
     assert h["status"] == "ok" and h["schemaVersion"] == "1.0.0"

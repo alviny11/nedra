@@ -14,7 +14,7 @@ from typing import Union
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, PlainTextResponse
 from pydantic import TypeAdapter, ValidationError
 
 from .repositories.db import Database, dumps, now
@@ -43,6 +43,7 @@ from .schemas.domain import (
     ScenarioFile,
 )
 from .services.jobs import SAFE_ID, JobManager, list_models
+from .services.thickness import result_csv
 from .services.validation import validate_public_scenario
 from .settings import Settings, get_settings
 
@@ -64,6 +65,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         allow_origin_regex=r"^https?://(localhost|127\.0\.0\.1)(:\d+)?$",
         allow_methods=["GET", "POST"],
         allow_headers=["Content-Type"],
+        expose_headers=["X-Catboost-Source"],
     )
 
     @app.middleware("http")
@@ -102,6 +104,14 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     @app.get("/api/health", response_model=Health)
     def health() -> Health:
         return Health(status="ok", version=API_VERSION, storage=s.db_path.exists(), runner=s.runner_path.exists(), modelRegistry=s.models_dir.exists(), schemaVersion=SCHEMA_VERSION)
+
+    @app.get("/api/thickness/result.csv")
+    def thickness_result() -> PlainTextResponse:
+        try:
+            body = result_csv(s.repo_root)
+        except Exception as exc:
+            raise PipeTwinError(503, "MODEL_UNAVAILABLE", f"CatBoost недоступен: {type(exc).__name__}") from exc
+        return PlainTextResponse(body, media_type="text/csv; charset=utf-8", headers={"X-Catboost-Source": "live"})
 
     @app.get("/api/capabilities")
     def capabilities() -> dict:
