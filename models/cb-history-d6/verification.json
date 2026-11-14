@@ -1,0 +1,8 @@
+{
+  "http_post_verified": true,
+  "isolated_runtime_without_answers_verified": true,
+  "rows": 147,
+  "max_prediction_difference": 0.0,
+  "pearson_r": 0.7186762831278379,
+  "pearson_r_squared": 0.5164955999304442
+}
