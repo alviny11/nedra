@@ -42,3 +42,6 @@ typing-inspection==0.4.4
 typing_extensions==4.16.0
 uvicorn==0.54.0
 wntr==1.5.0
+
+# MAIN-2 full-length 2024 inference
+catboost==1.2.8

@@ -105,6 +105,14 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     def health() -> Health:
         return Health(status="ok", version=API_VERSION, storage=s.db_path.exists(), runner=s.runner_path.exists(), modelRegistry=s.models_dir.exists(), schemaVersion=SCHEMA_VERSION)
 
+    @app.post("/api/thickness/main-2/predict")
+    def main2_thickness_predict() -> dict:
+        from .services.main2_thickness import calculate
+        try:
+            return calculate(s.repo_root)
+        except Exception as exc:
+            raise PipeTwinError(503, "MODEL_UNAVAILABLE", f"Прогноз Main 2 недоступен: {type(exc).__name__}") from exc
+
     @app.get("/api/thickness/result.csv")
     def thickness_result() -> PlainTextResponse:
         try:

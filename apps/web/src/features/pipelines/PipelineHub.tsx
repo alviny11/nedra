@@ -11,7 +11,7 @@ export function PipelineHub({ onOpen }: { onOpen: (id: string) => void }) {
         <div className="card-title"><span className="source-chip">{observed ? 'Есть повторные ВТД' : 'Без истории ВТД'}</span><span>Открыть трубу ↗</span></div>
         <h3>{g.title}</h3><p>{g.assets.length} {g.assets.length === 1 ? 'участок' : 'участка'} · {fmt(g.length/1000)} км</p>
         <svg viewBox="0 0 400 130" aria-label="Схема трассы по координатам профиля">{routePaths(g).map((path, i) => <path key={i} d={path} fill="none" stroke="currentColor" strokeWidth="5" strokeLinecap="round"/>)}</svg>
-        <div className="card-metrics"><span><b>{fmt(Math.min(...rows.map(r => r.pred)))}</b> мм · минимум прогноза</span><span><b>{observed}/{rows.length}</b> сегментов с ВТД</span></div>
+        <div className="card-metrics"><span>{g.id === 'MAIN-2' ? <><b>580 сегментов</b> · расчёт CatBoost в карточке</> : <><b>{fmt(Math.min(...rows.map(r => r.pred)))}</b> мм · минимум прогноза</>}</span><span><b>{observed}/{rows.length}</b> сегментов с ВТД</span></div>
       </button>;
     })}</div>
     <p className="hub-footnote">Два объекта выбраны для сравнения доступности обследований. Соответствие двум конкурсным трубам ещё не подтверждено. Ниже — действующая демонстрационная сеть.</p>
