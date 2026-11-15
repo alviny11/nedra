@@ -1,8 +1,8 @@
 {
   "rows": 2000,
   "validation_section": 1250011604,
-  "pearson_r2": 0.7594,
-  "mae_mm": 0.1955,
+  "pearson_r2": 0.7598,
+  "mae_mm": 0.1957,
   "shift_start_m": 1.82,
   "shift_end_m": 7.47,
   "pos_sigma_m": 1.0,
@@ -19,9 +19,9 @@
     },
     "1250022871": {
       "n": 525,
-      "min": 4.2528,
-      "mean": 5.9401,
-      "max": 7.7405
+      "min": 4.274,
+      "mean": 5.9393,
+      "max": 7.7389
     }
   }
 }

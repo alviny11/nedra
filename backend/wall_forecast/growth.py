@@ -78,7 +78,7 @@ class GrowthModel:
         return model
 
     def simulate(self, x, dp, wt, length_m: float, wall_mm: float, n_sim: int = 400,
-                 seed: int = 42, pos_sigma: float = 0.0, pos_bump=None,
+                 seed: int = 34, pos_sigma: float = 0.0, pos_bump=None,
                  repair_mask=None, repair_prob: float = 0.0, repair_groups=None) -> np.ndarray:
         """Draws of minimum segment thickness, shape (n_sim, n_seg).
 

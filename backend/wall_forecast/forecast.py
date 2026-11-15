@@ -35,7 +35,7 @@ CASE2 = {
     "spread": 0.5,
 }
 
-SEED = 42
+SEED = 34
 
 
 def config() -> dict:

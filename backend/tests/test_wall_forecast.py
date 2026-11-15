@@ -64,16 +64,16 @@ def test_neighbor_check_matches_the_held_out_blocks(tables):
     assert list(case1["by_block"]["segments"]) == ["0–9", "10–19", "20–29", "30–39", "40–49"]
     row = case1["validation"].set_index("method").loc["growth model + 5th percentile"]
     assert row["n_segments"] == 50
-    assert abs(row["r2"] - 0.7594) < 1e-4
-    assert abs(row["mae_mm"] - 0.1955) < 1e-4
+    assert abs(row["r2"] - 0.7598) < 1e-4
+    assert abs(row["mae_mm"] - 0.1957) < 1e-4
     assert abs(case1["drift_ends"][0] - 1.82) < 0.02
     assert abs(case1["drift_ends"][1] - 7.47) < 0.02
     pred = case1["pred"]
     assert len(pred) == 525
     assert pred["thickness_pred"].between(0, 8.0).all()
-    assert abs(pred["thickness_pred"].min() - 4.2528) < 1e-3
-    assert abs(pred["thickness_pred"].mean() - 5.9401) < 1e-3
-    assert abs(pred["thickness_pred"].max() - 7.7405) < 1e-3
+    assert abs(pred["thickness_pred"].min() - 4.2740) < 1e-3
+    assert abs(pred["thickness_pred"].mean() - 5.9393) < 1e-3
+    assert abs(pred["thickness_pred"].max() - 7.7389) < 1e-3
 
 
 def test_hidden_block_does_not_enter_the_shift_or_the_growth_law(tables):
