@@ -4,6 +4,14 @@ import type { Pipeline, Row } from './data';
 
 /** Case 1: random forest in backend_bundle for this pipe. */
 export const CASE1_PIPE = 1250022871;
+/** The 2022 ILI run whose wall, after the ramp below, is the case 1 `base`. */
+export const CASE1_BASE_RUN = '2022-07-06';
+/** Passport length of pipe 1250022871. The ramp is measured along this length. */
+export const CASE1_LENGTH_M = 5248.4;
+/** Odometer added at the start of the pipe. Manifest name: ramp8. */
+export const CASE1_SHIFT_START_M = 0.06;
+/** Odometer added at the end of the pipe. */
+export const CASE1_SHIFT_END_M = 7.32;
 /** Case 2: elevation line in backend/wall_forecast for this pipe. */
 export const CASE2_PIPE = 1250009583;
 
@@ -36,6 +44,20 @@ export function applyForecast(row: Row, pack: CatboostPack = bundledForecast): R
 
 export function isScored(row: Row): boolean {
   return row.source === 'random_forest' || row.source === 'elevation';
+}
+
+/** Metres to add to a 2022 chainage on pipe 1250022871 so it sits on the forecast grid.
+ *  Straight ramp from 0.06 m at the start to 7.32 m at 5248.4 m. Re-binning that run
+ *  by `x + shift(x)` reproduces every observed `base` in predict_features.csv.
+ */
+export function case1OdometerShift(localMeters: number): number {
+  return CASE1_SHIFT_START_M + (CASE1_SHIFT_END_M - CASE1_SHIFT_START_M) * (localMeters / CASE1_LENGTH_M);
+}
+
+/** Chart chainage of a green ILI point. Only the case 1 base run moves; the orange forecast stays put. */
+export function iliChartX(row: Row): number {
+  if (row.asset.id !== CASE1_PIPE || row.measuredDate !== CASE1_BASE_RUN) return row.x;
+  return row.x + case1OdometerShift((row.start + row.end) / 2);
 }
 
 export function basisLabel(row: Row): string {

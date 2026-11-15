@@ -8,7 +8,7 @@ import { LIVE_PIPELINE_ID } from './corrosion-clock';
 import { data, dateLabel, fmt, getRows, rowKey } from './data';
 import type { Asset, Defect, Pipeline, Row } from './data';
 import { sortSegmentRows, type SegmentSort } from './segment-sort';
-import { applyForecast, basisLabel, bundledForecast, groupForecast, isScored, PIPE_FORECAST } from './thickness-forecast';
+import { applyForecast, basisLabel, bundledForecast, groupForecast, iliChartX, isScored, PIPE_FORECAST } from './thickness-forecast';
 import './pipelines.css';
 
 type Tab = 'overview' | 'simulation' | 'passport';
@@ -100,7 +100,7 @@ function PipePlot({ rows, selected, onPick, length, forecast, zoom }: { rows: Ro
   const click = (e: React.MouseEvent<SVGSVGElement>) => { const rect = e.currentTarget.getBoundingClientRect(); const px = (e.clientX-rect.left)/rect.width*1000; const dist = left+(px-45)/900*(right-left); const r = visible.reduce((a, b) => Math.abs(b.x-dist)<Math.abs(a.x-dist) ? b : a, visible[0]!); if (r) onPick(r); };
   return <svg className="pipe-profile" viewBox="0 0 1000 255" role="img" aria-label="Лента сегментов и профиль толщины; выберите сегмент также в таблице" onClick={click}>
     {[0, 2, 4, 6, 8, 10].filter(v => v < maxH).map(v => <g key={v}><line x1="45" x2="945" y1={y(v)} y2={y(v)} className="chart-grid"/><text x="10" y={y(v)+4}>{v}</text></g>)}<text x="10" y="65">мм</text>
-    {visible.map(r => <g key={rowKey(r)}><rect x={x(Math.max(left, r.asset.offset+r.start))} y="15" height="12" width={Math.max(1, (r.end-r.start)/(right-left)*900)} fill={forecast ? tone(r) : r.measured == null ? 'var(--grid)' : 'var(--ok)'}/>{r.measured != null && <circle cx={x(r.x)} cy={y(r.measured)} r="2.5" fill="var(--ok)"/>}{forecast && Number.isFinite(r.pred) && <line x1={x(r.x)-2} x2={x(r.x)+2} y1={y(r.pred)} y2={y(r.pred)} stroke="var(--warn)" strokeWidth="2"/>}</g>)}
+    {visible.map(r => <g key={rowKey(r)}><rect x={x(Math.max(left, r.asset.offset+r.start))} y="15" height="12" width={Math.max(1, (r.end-r.start)/(right-left)*900)} fill={forecast ? tone(r) : r.measured == null ? 'var(--grid)' : 'var(--ok)'}/>{r.measured != null && <circle cx={x(iliChartX(r))} cy={y(r.measured)} r="2.5" fill="var(--ok)"/>}{forecast && Number.isFinite(r.pred) && <line x1={x(r.x)-2} x2={x(r.x)+2} y1={y(r.pred)} y2={y(r.pred)} stroke="var(--warn)" strokeWidth="2"/>}</g>)}
     <line x1={x(selected.x)} x2={x(selected.x)} y1="8" y2="220" stroke="var(--mark)" strokeDasharray="4 4"/>
     {[0, .25, .5, .75, 1].map(t => <text key={t} x={45+t*900} y="245" textAnchor={t === 0 ? 'start' : t === 1 ? 'end' : 'middle'}>{fmt(left+t*(right-left), 0)} м</text>)}
   </svg>;
