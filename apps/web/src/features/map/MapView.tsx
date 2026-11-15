@@ -7,10 +7,13 @@ const LAYERS: Array<{ id: Layer; label: string }> = [
   { id: 'pressure', label: 'Давление' },
   { id: 'dp', label: 'Волны Δp' },
   { id: 'temperature', label: 'Температура' },
-  { id: 'flow', label: 'Расход' },
-  { id: 'composition', label: 'Состав' },
-  { id: 'diagnostics', label: 'Диагностика' }
+  { id: 'composition', label: 'Состав нефти' }
 ];
+
+/** Buttons for these layers are gone; keep the map on a layer that still has a button. */
+function shownLayer(layer: Layer): Layer {
+  return layer === 'flow' || layer === 'diagnostics' ? 'pressure' : layer;
+}
 
 // Navigation anchors on the existing schematic; not a hydraulic mapping of real assets.
 const REPORT_PIPES: Record<string, { id: string; label: string }> = {
@@ -53,9 +56,13 @@ export function MapView({ placingLeak, onPlaceLeak, onOpenPipeline }: { onOpenPi
   const truth = useApp((s) => s.truth);
   const observer = useApp((s) => s.observer);
   const diag = useApp((s) => s.diag);
-  const layer = useApp((s) => s.layer);
+  const storedLayer = useApp((s) => s.layer);
+  const layer = shownLayer(storedLayer);
   const selectedEdge = useApp((s) => s.selectedEdge);
   const set = useApp((s) => s.set);
+  useEffect(() => {
+    if (storedLayer !== layer) set({ layer });
+  }, [storedLayer, layer, set]);
   const [tf, setTf] = useState<Tf>({ x: 0, y: 0, k: 1 });
   const tfRef = useRef(tf);
   const targetRef = useRef(tf);

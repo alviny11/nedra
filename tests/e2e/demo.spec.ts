@@ -14,7 +14,7 @@ test('demo flow: run, operator leak injection, independent diagnosis, export to 
   });
   await page.goto('/');
   await expect(page.getByRole('button', { name: /Пуск/ })).toBeEnabled({ timeout: 30_000 });
-  await expect(page.locator('.scenario-note')).toContainText('Штатный режим');
+  await expect(page.locator('.scenario-note')).toHaveCount(0);
   await page.locator('.transport select').selectOption('30');
   await page.getByRole('button', { name: /Пуск/ }).click();
   await expect.poll(() => simTime(page), { timeout: 120_000 }).toBeGreaterThan(200);

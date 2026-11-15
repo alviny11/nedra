@@ -51,7 +51,7 @@ test('map, dossier, dates, selected segment, export and unknown measurements', a
 
 test('navigation preserves live simulation and explicit teaching leak works', async ({ page }) => {
   await page.goto('/');
-  await expect(page.locator('.scenario-note')).toContainText('Штатный режим');
+  await expect(page.locator('.scenario-note')).toHaveCount(0);
   await expect(page.getByRole('button', { name: /Пуск/ })).toBeEnabled();
   await page.locator('.transport select').selectOption('30');
   await page.getByRole('button', { name: /Пуск/ }).click();

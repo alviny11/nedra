@@ -17,9 +17,6 @@ export function App() {
   const pipeline = data.groups.find(g => g.featured && g.id === pipelineId);
   useEffect(() => { window.scrollTo({ top: 0, behavior: 'instant' }); }, [pipelineId]);
   const toasts = useApp((s) => s.toasts);
-  const scenario = useApp((s) => s.scenario);
-  const catalogEntry = useApp((s) => s.catalog.find((c) => c.id === s.scenario?.id));
-  const view = useApp((s) => s.view);
 
   useEffect(() => {
     initApp();
@@ -40,12 +37,6 @@ export function App() {
       <TopBar />
       {pipeline && <PipelineDetail key={pipeline.id} group={pipeline} onBack={() => openPipeline(null)} onOpen={openPipeline} />}
       <div style={{ display: pipeline ? 'none' : undefined }}>
-      {scenario && (
-        <div className="scenario-note small">
-          <b>{scenario.name}.</b> {scenario.description}{' '}
-          {view === 'operator' && catalogEntry ? <span className="expect">Ожидаемое физическое поведение: {catalogEntry.expectedBehavior}</span> : <span className="expect">Режим «Диагност»: скрытые события и истина не показываются.</span>}
-        </div>
-      )}
       <main className="layout">
         <div className="center">
           <MapView
