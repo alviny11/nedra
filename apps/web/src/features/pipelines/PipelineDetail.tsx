@@ -1,25 +1,23 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import type { PipeConfig } from '@pipetwin/contracts';
 import { useApp } from '../../state/store';
 import { applyHiddenEvent } from '../../state/controller';
-import { applyCatboost, bundledCatboost, CATBOOST_DATE as LEGACY_DATE, CATBOOST_MODEL_ID as LEGACY_MODEL_ID, downloadCsv, fetchLiveCatboost } from './catboost';
-import { MAIN2_DATE, MAIN2_MODEL_ID, emptyMain2Pack, fetchMain2Forecast, type ForecastPack } from './main2-forecast';
+import { downloadCsv } from './catboost';
 import { CorrosionMode } from './CorrosionMode';
 import { LIVE_PIPELINE_ID } from './corrosion-clock';
 import { data, dateLabel, fmt, getRows, rowKey } from './data';
 import type { Asset, Defect, Pipeline, Row } from './data';
+import { applyForecast, basisLabel, bundledForecast, groupForecast, isScored, PIPE_FORECAST } from './thickness-forecast';
 import './pipelines.css';
 
 type Tab = 'overview' | 'simulation' | 'passport';
 const tabs: Array<[Tab, string]> = [['overview', 'Обзор'], ['simulation', 'Режим и утечки'], ['passport', 'Паспорт и данные']];
 const PAGE_SIZE = 10;
-const tone = (r: Row) => r.source === 'catboost' && r.pred / r.asset.nominal < .6 ? 'var(--warn)' : r.source === 'catboost' ? 'var(--ok)' : 'var(--ink-3)';
+const tone = (r: Row) => !isScored(r) ? 'var(--ink-3)' : r.pred / r.asset.nominal < .6 ? 'var(--warn)' : 'var(--ok)';
 const forecastMm = (v: number) => Number.isFinite(v) ? fmt(v) : '—';
 
 export function PipelineDetail({ group, onBack, onOpen }: { group: Pipeline; onBack: () => void; onOpen: (id: string) => void }) {
-  const isMain2 = group.id === 'MAIN-2';
-  const CATBOOST_DATE = isMain2 ? MAIN2_DATE : LEGACY_DATE;
-  const CATBOOST_MODEL_ID = isMain2 ? MAIN2_MODEL_ID : LEGACY_MODEL_ID;
+  const summary = groupForecast(group);
   const [tab, setTab] = useState<Tab>('overview');
   const [date, setDate] = useState(data.forecastDate);
   const [selection, setSelection] = useState('');
@@ -30,37 +28,16 @@ export function PipelineDetail({ group, onBack, onOpen }: { group: Pipeline; onB
   const [zoom, setZoom] = useState(false);
   const dates = useMemo(() => [...new Set([data.forecastDate, ...group.assets.flatMap(a => a.history.map(h => h[1]))])].sort().reverse(), [group]);
   const rows = useMemo(() => getRows(group, date), [group, date]);
-  const [pack, setPack] = useState<ForecastPack>(() => isMain2 ? emptyMain2Pack() : bundledCatboost);
-  const [loading, setLoading] = useState(false);
-  const [forecastError, setForecastError] = useState('');
-  const [reload, setReload] = useState(0);
-  useEffect(() => {
-    let stop = false;
-    const controller = new AbortController();
-    setPack(isMain2 ? emptyMain2Pack() : bundledCatboost);
-    setForecastError('');
-    setLoading(isMain2);
-    if (isMain2) {
-      fetchMain2Forecast(controller.signal).then(next => { if (!stop) setPack(next); })
-        .catch(error => { if (!stop) setForecastError(error instanceof Error ? error.message : 'Ошибка расчёта прогноза.'); })
-        .finally(() => { if (!stop) setLoading(false); });
-    } else {
-      fetchLiveCatboost().then(next => { if (!stop && next) setPack(next); });
-    }
-    return () => { stop = true; controller.abort(); };
-  }, [isMain2, reload]);
-  const viewRows = useMemo(() => rows.map(r => {
-    const shown = applyCatboost(r, pack);
-    return isMain2 && pack.coverageByAsset ? { ...shown, coverage: pack.coverageByAsset[String(r.asset.id)] ?? 0 } : shown;
-  }), [rows, pack, isMain2]);
+  const viewRows = useMemo(() => rows.map(r => applyForecast(r, bundledForecast)), [rows]);
   const selected = viewRows.find(r => rowKey(r) === selection) ?? viewRows[0]!;
+  const selectedForecast = PIPE_FORECAST[selected.asset.id];
   const forecast = date === data.forecastDate;
   const priority = useMemo(() => {
-    const scoredRows = viewRows.filter(r => r.source === 'catboost');
+    const scoredRows = viewRows.filter(isScored);
     return new Set([...scoredRows].sort((a, b) => a.pred - b.pred).slice(0, Math.ceil(scoredRows.length * .1)).map(rowKey));
   }, [viewRows]);
-  const scoredCount = viewRows.filter(r => r.source === 'catboost').length;
-  const min = viewRows.reduce<number | null>((best, r) => r.source === 'catboost' && (best == null || r.pred < best) ? r.pred : best, null);
+  const scoredCount = viewRows.filter(isScored).length;
+  const min = viewRows.reduce<number | null>((best, r) => isScored(r) && (best == null || r.pred < best) ? r.pred : best, null);
   const filtered = viewRows.filter(r => (!query || `${r.asset.id} ${r.sid} ${r.asset.name}`.toLowerCase().includes(query.toLowerCase())) &&
     (filter === 'all' || filter === 'observed' && r.measured != null || filter === 'priority' && priority.has(rowKey(r))));
   const pages = Math.max(1, Math.ceil(filtered.length/PAGE_SIZE));
@@ -73,11 +50,10 @@ export function PipelineDetail({ group, onBack, onOpen }: { group: Pipeline; onB
   const changeDate = (value: string) => { setDate(value); setDefectId(null); setPage(0); };
   return <section className="pipe-detail" aria-label={`Карточка ${group.title}`}>
     <div className="pipe-breadcrumb"><button onClick={onBack}>← На общую карту</button><span>/</span><select aria-label="Выбранный трубопровод" value={group.id} onChange={e => onOpen(e.target.value)}>{data.groups.filter(g => g.featured).map(g => <option key={g.id} value={g.id}>{g.title}</option>)}</select><span className="source-chip">Данные обследований</span></div>
-    <header className="pipe-heading"><div><span className="eyebrow">ПАСПОРТ СОСТОЯНИЯ / {group.id}</span><h1>{group.title}</h1><p>{fmt(group.length/1000)} км · {group.assets.length} участков · {viewRows.length} сегментов по 10 м · CatBoost {CATBOOST_MODEL_ID}</p></div>
-      <div className="pipe-heading-actions"><label>Дата данных<select aria-label="Дата данных" value={date} onChange={e => changeDate(e.target.value)}>{dates.map(d => <option key={d} value={d}>{d === data.forecastDate ? `${dateLabel(CATBOOST_DATE)} · CatBoost` : `${dateLabel(d)} · ВТД`}</option>)}</select></label>{isMain2 && <button disabled={loading} onClick={() => setReload(n => n+1)}>{loading ? 'Рассчитываем…' : 'Рассчитать прогноз'}</button>}<button disabled={isMain2 && (loading || !pack.byKey.size)} onClick={() => downloadCsv('result.csv', pack.csv)}>↓ result.csv · CatBoost</button></div></header>
-    <div className="pipe-stats"><div><span>Минимум CatBoost · {dateLabel(CATBOOST_DATE)}</span><strong>{min == null ? '—' : <>{fmt(min)} <small>мм</small></>}</strong></div><div><span>Сегменты с ВТД до выбранной даты</span><strong>{measuredN} <small>/ {viewRows.length}</small></strong></div><div><span>Приоритет по толщине · нижние 10% CatBoost</span><strong>{priority.size} <small>сегментов</small></strong></div><div><span>Модель прогноза</span><strong className="stat-word">CatBoost</strong><small>{CATBOOST_MODEL_ID} · {scoredCount} из {viewRows.length} сегментов этой трубы · {isMain2 && !pack.byKey.size ? (loading ? 'расчёт выполняется' : 'нет результата') : pack.source === 'live' ? 'посчитано сейчас' : 'сохранённый запуск'}</small></div></div>
-    {isMain2 && forecastError && <div className="pipe-notice" role="alert">{forecastError} Сохранённый прогноз не подставлялся. Нажмите «Рассчитать прогноз», чтобы повторить.</div>}
-    <div className="pipe-notice">Прогноз на странице — CatBoost {CATBOOST_MODEL_ID} на {dateLabel(CATBOOST_DATE)}. Серый сегмент без отметки модель не оценивала. {isMain2 ? 'Используются история ВТД 2018–2023, геометрия и эксплуатация по 24 ноября 2024 включительно. Прогноз покрывает всю длину Main 2.' : 'Режим, давление и температура в этот прогноз не входят.'}{group.assets.some(a => a.warning) && <b> Есть ВТД раньше паспортной даты ввода: эти измерения исключены из обучения.</b>}</div>
+    <header className="pipe-heading"><div><span className="eyebrow">ПАСПОРТ СОСТОЯНИЯ / {group.id}</span><h1>{group.title}</h1><p>{fmt(group.length/1000)} км · {group.assets.length} участков · {viewRows.length} сегментов по 10 м · {summary.label}</p></div>
+      <div className="pipe-heading-actions"><label>Дата данных<select aria-label="Дата данных" value={date} onChange={e => changeDate(e.target.value)}>{dates.map(d => <option key={d} value={d}>{d === data.forecastDate ? `${summary.date ? dateLabel(summary.date) : dateLabel(d)} · ${summary.label}` : `${dateLabel(d)} · ВТД`}</option>)}</select></label><button onClick={() => downloadCsv('result.csv', bundledForecast.csv)}>↓ result.csv · {summary.label}</button></div></header>
+    <div className="pipe-stats"><div><span>Минимум {summary.label}{summary.date ? ` · ${dateLabel(summary.date)}` : ''}</span><strong>{min == null ? '—' : <>{fmt(min)} <small>мм</small></>}</strong></div><div><span>Сегменты с ВТД до выбранной даты</span><strong>{measuredN} <small>/ {viewRows.length}</small></strong></div><div><span>Приоритет по толщине · нижние 10%</span><strong>{priority.size} <small>сегментов</small></strong></div><div><span>Модель прогноза</span><strong className="stat-word">{summary.label}</strong><small>{scoredCount} из {viewRows.length} сегментов этой трубы · result.csv</small></div></div>
+    <div className="pipe-notice">Прогноз на странице — {summary.label}{summary.date ? ` на ${dateLabel(summary.date)}` : ''}. Серый сегмент в result.csv не входит. {summary.note}{group.assets.some(a => a.warning) && <b> Есть ВТД раньше паспортной даты ввода: эти измерения исключены из обучения.</b>}</div>
     <nav className="pipe-tabs" role="tablist" aria-label="Разделы трубопровода">{tabs.map(([id, label]) => <button role="tab" id={`pipe-tab-${id}`} aria-controls={`pipe-panel-${id}`} key={id} aria-selected={tab === id} className={tab === id ? 'active' : ''} onClick={() => setTab(id)}>{label}</button>)}</nav>
     <div role="tabpanel" id={`pipe-panel-${tab}`} aria-labelledby={`pipe-tab-${tab}`}>
     {tab === 'overview' && <>
@@ -85,11 +61,11 @@ export function PipelineDetail({ group, onBack, onOpen }: { group: Pipeline; onB
         <div className="pipe-charts">
           <div className="plot-heading"><h2>Труба по длине</h2><button onClick={() => setZoom(!zoom)}>{zoom ? 'Показать всю трубу' : 'Приблизить выбранный сегмент'}</button></div>
           <PipePlot rows={viewRows} selected={selected} onPick={focusTable} length={group.length} forecast={forecast} zoom={zoom}/>
-          <div className="plot-legend"><span className="legend-dot measured"/>Измерено ВТД (последнее до даты)<span className="legend-dot predicted"/>Прогноз {forecast ? dateLabel(CATBOOST_DATE) : 'скрыт для исторической даты'}<span className="legend-dot unknown"/>Нет прогноза CatBoost</div>
+          <div className="plot-legend"><span className="legend-dot measured"/>Измерено ВТД (последнее до даты)<span className="legend-dot predicted"/>Прогноз {forecast && summary.date ? dateLabel(summary.date) : 'скрыт для исторической даты'}<span className="legend-dot unknown"/>Нет прогноза</div>
         </div>
         <aside className="segment-inspector">
           <span className="eyebrow">ВЫБРАННЫЙ СЕГМЕНТ</span><h2>№ {selected.sid} <small>· {selected.asset.id}</small></h2><p>{selected.asset.name}</p>
-          <dl><dt>От начала участка</dt><dd>{fmt(selected.start, 1)}–{fmt(selected.end, 1)} м</dd><dt>Номинальная стенка</dt><dd>{fmt(selected.asset.nominal)} мм</dd><dt>Последнее ВТД до даты</dt><dd>{selected.measured == null ? 'Нет измерений' : `${fmt(selected.measured)} мм`}</dd><dt>Дата измерения</dt><dd>{selected.measuredDate ? dateLabel(selected.measuredDate) : '—'}</dd><dt>Прогноз CatBoost · {dateLabel(CATBOOST_DATE)}</dt><dd className="value-accent">{forecastMm(selected.pred)}{Number.isFinite(selected.pred) ? ' мм' : ''}</dd><dt>Основание прогноза</dt><dd>{selected.source === 'catboost' ? `CatBoost ${CATBOOST_MODEL_ID}` : 'Нет прогноза CatBoost'}</dd><dt>Дни с данными режима</dt><dd>{fmt(selected.coverage*100, 1)}%</dd></dl>
+          <dl><dt>От начала участка</dt><dd>{fmt(selected.start, 1)}–{fmt(selected.end, 1)} м</dd><dt>Номинальная стенка</dt><dd>{fmt(selected.asset.nominal)} мм</dd><dt>Последнее ВТД до даты</dt><dd>{selected.measured == null ? 'Нет измерений' : `${fmt(selected.measured)} мм`}</dd><dt>Дата измерения</dt><dd>{selected.measuredDate ? dateLabel(selected.measuredDate) : '—'}</dd><dt>Прогноз {selectedForecast ? `${selectedForecast.label} · ${dateLabel(selectedForecast.date)}` : summary.label}</dt><dd className="value-accent">{forecastMm(selected.pred)}{Number.isFinite(selected.pred) ? ' мм' : ''}</dd><dt>Основание прогноза</dt><dd>{basisLabel(selected)}</dd><dt>Дни с данными режима</dt><dd>{fmt(selected.coverage*100, 1)}%</dd></dl>
           <CrossSection defect={defect}/>
           <details className="point-measurements"><summary>УЗТ и мониторинг сегмента</summary>{selected.asset.uzt.filter(v => v[0] === selected.sid && v[1] <= date).length ? selected.asset.uzt.filter(v => v[0] === selected.sid && v[1] <= date).map((v, i) => <p key={i}>УЗТ · {dateLabel(v[1])}: {fmt(v[2])} мм, {fmt(v[3])}°. Точечное измерение.</p>) : <p>Нет точечных УЗТ до выбранной даты.</p>}{selected.asset.chemistry.filter(v => v.sid === selected.sid && v.date <= date).length ? selected.asset.chemistry.filter(v => v.sid === selected.sid && v.date <= date).slice(-6).map((v, i) => <p key={i}>{dateLabel(v.date)} · pH {fmt(v.ph)} · скорость коррозии {fmt(v.rate)} мм/год.</p>) : <p>Нет привязанных измерений химии и скорости коррозии.</p>}</details>
           <button className="pipe-primary" onClick={() => setTab('simulation')}>Перейти к эксперименту →</button>
@@ -98,14 +74,14 @@ export function PipelineDetail({ group, onBack, onOpen }: { group: Pipeline; onB
       <div className="pipe-charts pipe-supplement"><Elevation group={group} selected={selected}/></div>
       <div className="pipe-charts pipe-supplement"><DefectCloud group={group} date={date} onPick={(asset, d) => { const r = viewRows.find(r => r.asset.id === asset.id && r.sid === Math.min(Math.floor(d[2]/10), asset.segments.length-1)); if (r) { focusTable(r); setDefectId(d[0]); } }}/></div>
       <div className="pipe-insight">
-        <div className="pipe-explanation"><h2>Как получен прогноз</h2><p>Толщина на {dateLabel(CATBOOST_DATE)} посчитана моделью CatBoost {CATBOOST_MODEL_ID} {isMain2 ? 'по истории обследований 2018–2023, геометрии и эксплуатации до конца 24 ноября 2024. Бэкенд вызывает обученную модель для всех 580 сегментов Main 2. Точность на сегментах без замеров отдельно не подтверждена.' : 'по истории обследований до 2023 года, возрасту трубы и соседним сегментам. Модель покрывает 147 сегментов с зарегистрированной потерей металла. У остальных сегментов в колонке прогноза стоит прочерк.'}</p><p>Приоритет берёт только сегменты с ответом CatBoost и сортирует их по толщине. Это не вероятность аварии. {isMain2 ? 'Прогноз использует исторические режимы, а не текущие настройки синтетической симуляции.' : 'Режим перекачки в модель не входит.'}</p><HistoryChart row={selected} forecastDate={CATBOOST_DATE}/></div>
+        <div className="pipe-explanation"><h2>Как получен прогноз</h2><p>{summary.date ? `Толщина на ${dateLabel(summary.date)}. ` : ''}{summary.explain}</p><p>{summary.priority}</p><HistoryChart row={selected}/></div>
         <div className="pipe-table-wrap"><h2>Дефекты выбранного сегмента · {selectedDefects.length}</h2>{selectedDefects.length ? <><p>Показаны до 100 записей. Выберите дату ВТД, чтобы сузить историю.</p><div className="defect-scroll"><table><thead><tr><th>Дата ВТД</th><th>Расстояние, м</th><th>Стенка, мм</th><th>Угол</th><th>Глубина, %</th><th>Длина × ширина, мм</th></tr></thead><tbody>{selectedDefects.slice(0, 100).map(d => <tr key={d[0]} className={defect?.[0] === d[0] ? 'chosen' : ''}><td><button onClick={() => setDefectId(d[0])}>{dateLabel(d[1])}</button></td><td>{fmt(d[2])}</td><td>{fmt(d[3])}</td><td>{fmt(d[4])}°</td><td>{fmt(d[5])}</td><td>{fmt(d[6])} × {fmt(d[7])}</td></tr>)}</tbody></table></div></> : <p className="empty-state">Для этого сегмента до выбранной даты нет зарегистрированных дефектов. Это не подтверждение целой стенки.</p>}</div>
       </div>
       <div className="pipe-table-wrap segment-forecast"><div className="table-controls"><h2>Сегменты трубы</h2><input aria-label="Найти сегмент" placeholder="ID, сегмент или название участка" value={query} onChange={e => { setQuery(e.target.value); setPage(0); }}/><select aria-label="Фильтр сегментов" value={filter} onChange={e => { setFilter(e.target.value); setPage(0); }}><option value="all">Все сегменты</option><option value="observed">С измерениями ВТД</option><option value="priority">Нижние 10% по прогнозу</option></select></div>
-      <table><thead><tr><th>Участок / сегмент</th><th>Расстояние от начала участка</th><th>ВТД, мм</th><th>Дата ВТД</th><th>Прогноз, мм<br/><small>CatBoost {dateLabel(CATBOOST_DATE)}</small></th><th>Основание</th></tr></thead><tbody>{filtered.slice(currentPage*PAGE_SIZE, (currentPage+1)*PAGE_SIZE).map(r => <tr key={rowKey(r)} className={rowKey(r) === rowKey(selected) ? 'chosen' : ''}><td><button onClick={() => pick(r)}>{r.asset.id} / <b>{r.sid}</b></button></td><td>{fmt(r.start, 1)}–{fmt(r.end, 1)} м</td><td>{r.measured == null ? '—' : fmt(r.measured)}</td><td>{r.measuredDate ? dateLabel(r.measuredDate) : '—'}</td><td>{forecastMm(r.pred)}</td><td>{r.source === 'catboost' ? 'CatBoost' : 'Нет прогноза CatBoost'}</td></tr>)}</tbody></table>{!filtered.length && <p className="empty-state">Нет сегментов по выбранному фильтру.</p>}<div className="pagination"><span>{filtered.length} сегментов · страница {currentPage+1} из {pages}</span><button disabled={currentPage === 0} onClick={() => setPage(currentPage-1)}>← Назад</button><button disabled={currentPage+1 >= pages} onClick={() => setPage(currentPage+1)}>Далее →</button></div></div>
+      <table><thead><tr><th>Участок / сегмент</th><th>Расстояние от начала участка</th><th>ВТД, мм</th><th>Дата ВТД</th><th>Прогноз, мм<br/><small>{summary.label}{summary.date ? ` ${dateLabel(summary.date)}` : ''}</small></th><th>Основание</th></tr></thead><tbody>{filtered.slice(currentPage*PAGE_SIZE, (currentPage+1)*PAGE_SIZE).map(r => <tr key={rowKey(r)} className={rowKey(r) === rowKey(selected) ? 'chosen' : ''}><td><button onClick={() => pick(r)}>{r.asset.id} / <b>{r.sid}</b></button></td><td>{fmt(r.start, 1)}–{fmt(r.end, 1)} м</td><td>{r.measured == null ? '—' : fmt(r.measured)}</td><td>{r.measuredDate ? dateLabel(r.measuredDate) : '—'}</td><td>{forecastMm(r.pred)}</td><td>{basisLabel(r)}</td></tr>)}</tbody></table>{!filtered.length && <p className="empty-state">Нет сегментов по выбранному фильтру.</p>}<div className="pagination"><span>{filtered.length} сегментов · страница {currentPage+1} из {pages}</span><button disabled={currentPage === 0} onClick={() => setPage(currentPage-1)}>← Назад</button><button disabled={currentPage+1 >= pages} onClick={() => setPage(currentPage+1)}>Далее →</button></div></div>
     </>}
     {tab === 'simulation' && (group.id === LIVE_PIPELINE_ID ? <LivePipeModes group={group} row={selected} onBack={onBack} /> : <Simulation row={selected} onBack={onBack} />)}
-    {tab === 'passport' && <div className="passport-grid">{group.assets.map(a => <article key={a.id}><span className="eyebrow">УЧАСТОК {a.id}</span><h2>{a.name}</h2><dl><dt>Длина</dt><dd>{fmt(a.length, 1)} м</dd><dt>Наружный диаметр</dt><dd>{fmt(a.diameter)} мм</dd><dt>Номинальная стенка</dt><dd>{fmt(a.nominal)} мм</dd><dt>Марка стали</dt><dd>{a.steel ?? 'Не указана'}</dd><dt>Дата ввода по паспорту</dt><dd>{dateLabel(a.commissioned)}</dd><dt>Даты ВТД</dt><dd>{[...new Set(a.history.map(h => h[1]))].sort().map(dateLabel).join(', ') || 'Нет'}</dd><dt>Смещение в основной группе</dt><dd>{fmt(a.offset, 1)} м</dd></dl>{a.warning && <p className="pipe-notice">ВТД раньше ввода. История сохранена для просмотра, исключена из обучения.</p>}</article>)}<article className="passport-sources"><h2>Происхождение и ограничения</h2><p>Паспорт: pot_south.csv. Трасса: altitudes_south.csv. Дефекты: vtd_south_train.csv. Режим: tech_mode_for_embedings_with_length_with_temperatures_ids16.csv. Прогноз: CatBoost {CATBOOST_MODEL_ID}, result.csv на {dateLabel(CATBOOST_DATE)}. Сегмент без строки в этом файле остаётся без прогноза.</p><p>Обследования и режимы исторические. Онлайн-телеметрия не подключена. Ниже на общей карте работает отдельная синтетическая сеть. Неопределённость прогноза и дата отказа не оценены.</p></article></div>}
+    {tab === 'passport' && <div className="passport-grid">{group.assets.map(a => <article key={a.id}><span className="eyebrow">УЧАСТОК {a.id}</span><h2>{a.name}</h2><dl><dt>Длина</dt><dd>{fmt(a.length, 1)} м</dd><dt>Наружный диаметр</dt><dd>{fmt(a.diameter)} мм</dd><dt>Номинальная стенка</dt><dd>{fmt(a.nominal)} мм</dd><dt>Марка стали</dt><dd>{a.steel ?? 'Не указана'}</dd><dt>Дата ввода по паспорту</dt><dd>{dateLabel(a.commissioned)}</dd><dt>Даты ВТД</dt><dd>{[...new Set(a.history.map(h => h[1]))].sort().map(dateLabel).join(', ') || 'Нет'}</dd><dt>Смещение в основной группе</dt><dd>{fmt(a.offset, 1)} м</dd></dl>{a.warning && <p className="pipe-notice">ВТД раньше ввода. История сохранена для просмотра, исключена из обучения.</p>}</article>)}<article className="passport-sources"><h2>Происхождение и ограничения</h2><p>Паспорт: pot_south.csv. Трасса: altitudes_south.csv. Дефекты: vtd_south_train.csv. Режим: tech_mode_for_embedings_with_length_with_temperatures_ids16.csv. Прогноз: {summary.label}{summary.date ? `, result.csv на ${dateLabel(summary.date)}` : ''}. Сегмент без строки в этом файле остаётся без прогноза.</p><p>Обследования и режимы исторические. Онлайн-телеметрия не подключена. Ниже на общей карте работает отдельная синтетическая сеть. Неопределённость прогноза и дата отказа не оценены.</p></article></div>}
     </div>
   </section>;
 }
@@ -145,9 +121,10 @@ function DefectCloud({ group, date, onPick }: { group: Pipeline; date: string; o
   return <div className="defect-cloud"><h3>Развёртка стенки <span>{all.length ? `${sampled.length} из ${all.length} записей до даты; равномерная выборка` : 'Нет данных ВТД'}</span></h3><svg viewBox="0 0 1000 170" aria-label="Положение дефектов по длине и окружности">{[0, 90, 180, 270, 360].map(a => <g key={a}><line x1="45" x2="945" y1={15+a/360*130} y2={15+a/360*130} className="chart-grid"/><text x="2" y={19+a/360*130}>{a}°</text></g>)}{sampled.filter(({ d }) => d[4] != null).map(({ a, d }) => <circle key={d[0]} cx={45+(a.offset+d[2])/group.length*900} cy={15+d[4]!/360*130} r="3" fill={d[5] != null && d[5] > 35 ? 'var(--warn)' : 'var(--ok)'} onClick={() => onPick(a, d)}><title>#{d[0]} · {dateLabel(d[1])} · {fmt(d[3])} мм</title></circle>)}</svg></div>;
 }
 
-function HistoryChart({ row, forecastDate }: { row: Row; forecastDate: string }) {
+function HistoryChart({ row }: { row: Row }) {
   const h = row.asset.history.filter(h => h[0] === row.sid).sort((a, b) => a[1].localeCompare(b[1]));
-  return <div><h3>История сегмента № {row.sid}</h3>{h.length ? <div className="history-points">{h.map(v => <div key={v[1]}><span>{dateLabel(v[1])}</span><b>{fmt(v[2])} мм</b><small>{v[3] ? 'Измерено ВТД' : 'Исключено из обучения: дата'}</small></div>)}{Number.isFinite(row.pred) && <div className="forecast-point"><span>{dateLabel(forecastDate)}</span><b>{fmt(row.pred)} мм</b><small>CatBoost</small></div>}</div> : <p>Истории измерений этого сегмента нет.</p>}{Number.isFinite(row.pred) ? null : <p>Для этого сегмента CatBoost не выдал толщину.</p>}</div>;
+  const meta = PIPE_FORECAST[row.asset.id];
+  return <div><h3>История сегмента № {row.sid}</h3>{h.length ? <div className="history-points">{h.map(v => <div key={v[1]}><span>{dateLabel(v[1])}</span><b>{fmt(v[2])} мм</b><small>{v[3] ? 'Измерено ВТД' : 'Исключено из обучения: дата'}</small></div>)}{Number.isFinite(row.pred) && meta && <div className="forecast-point"><span>{dateLabel(meta.date)}</span><b>{fmt(row.pred)} мм</b><small>{basisLabel(row)}</small></div>}</div> : <p>Истории измерений этого сегмента нет.</p>}{Number.isFinite(row.pred) ? null : <p>Для этого сегмента текущая модель не выдала толщину.</p>}</div>;
 }
 
 function LivePipeModes({ group, row, onBack }: { group: Pipeline; row: Row; onBack: () => void }) {

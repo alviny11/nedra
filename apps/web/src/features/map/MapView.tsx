@@ -2,6 +2,8 @@ import { useEffect, useMemo, useRef, useState, type PointerEvent as RPointerEven
 import type { PipeConfig, PumpConfig, ValveConfig, Diagnosis } from '@pipetwin/contracts';
 import { useApp, chartData, type Layer } from '../../state/store';
 import { closestFraction, divColor, pointAlong, seqColor, barA, degC, kgs, pct, SEQ_GRADIENT, DIV_GRADIENT, CAUSE_RU } from '../../lib/format';
+import { data, fmt, getRows } from '../pipelines/data';
+import { applyForecast, basisLabel, bundledForecast, PIPE_FORECAST } from '../pipelines/thickness-forecast';
 
 const LAYERS: Array<{ id: Layer; label: string }> = [
   { id: 'pressure', label: 'Давление' },
@@ -68,6 +70,14 @@ export function MapView({ placingLeak, onPlaceLeak, onOpenPipeline }: { onOpenPi
   const targetRef = useRef(tf);
   const animRef = useRef<number | null>(null);
   const [hover, setHover] = useState<Hover | null>(null);
+  const forecastRows = useMemo(() => {
+    const rows: Record<string, ReturnType<typeof getRows>> = {};
+    for (const report of Object.values(REPORT_PIPES)) {
+      const group = data.groups.find(item => item.id === report.id);
+      if (group) rows[report.id] = getRows(group, data.forecastDate).map(row => applyForecast(row, bundledForecast));
+    }
+    return rows;
+  }, []);
   const drag = useRef<{ x: number; y: number; tx: number; ty: number } | null>(null);
   const svgRef = useRef<SVGSVGElement>(null);
 
@@ -188,7 +198,17 @@ export function MapView({ placingLeak, onPlaceLeak, onOpenPipeline }: { onOpenPi
       lines.push(view === 'operator' ? 'источник: истинная модель (оператор)' : 'источник: наблюдатель D1 (без скрытых событий)');
     }
     const report = REPORT_PIPES[p.id];
-    if (report && onOpenPipeline) lines.push(`${report.label}: нажмите на трубу, чтобы открыть обследования и прогноз`);
+    if (report) {
+      const along = forecastRows[report.id];
+      if (along?.length) {
+        const group = data.groups.find(item => item.id === report.id)!;
+        const chainage = Math.min(Math.max(f, 0), 1) * group.length;
+        const row = along.find(item => chainage >= item.asset.offset + item.start && chainage <= item.asset.offset + item.end) ?? along[along.length - 1]!;
+        const meta = PIPE_FORECAST[row.asset.id];
+        lines.push(Number.isFinite(row.pred) && meta ? `толщина ${fmt(row.pred)} мм · ${basisLabel(row)}` : 'толщина: нет прогноза');
+      }
+      if (onOpenPipeline) lines.push(`${report.label}: нажмите на трубу, чтобы открыть обследования и прогноз`);
+    }
     return lines;
   };
 

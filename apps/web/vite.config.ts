@@ -1,6 +1,6 @@
 import { defineConfig, searchForWorkspaceRoot, type Plugin } from 'vite';
 import react from '@vitejs/plugin-react';
-import { spawnSync, execFile } from 'node:child_process';
+import { execFile } from 'node:child_process';
 import { createRequire } from 'node:module';
 import { readFileSync, realpathSync, existsSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
@@ -85,43 +85,24 @@ function main2DevApi(): Plugin {
   };
 }
 
-function catboostDevApi(): Plugin {
-  const root = workspaceRoot;
-  const saved = resolve(root, 'models/cb-history-d6/result.csv');
-  let cache: { body: string; source: string } | null = null;
+function thicknessDevApi(): Plugin {
+  const file = resolve(workspaceRoot, 'data/forecasts/result.csv');
   return {
-    name: 'catboost-dev-api',
+    name: 'thickness-result-csv',
     configureServer(server) {
       server.middlewares.use((req, res, next) => {
         if (req.url?.split('?')[0] !== '/api/thickness/result.csv') return next();
-        if (!cache) {
-          const run = spawnSync('python3', ['-c', [
-            'import os, sys',
-            'from pathlib import Path',
-            'sys.path.insert(0, os.environ["PIPETWIN_BACKEND"])',
-            'from app.services.thickness import result_csv',
-            'sys.stdout.write(result_csv(Path(os.environ["PIPETWIN_ROOT"])))'
-          ].join('\n')], {
-            cwd: root,
-            encoding: 'utf-8',
-            timeout: 90_000,
-            maxBuffer: 2_000_000,
-            env: { ...process.env, PIPETWIN_ROOT: root, PIPETWIN_BACKEND: resolve(root, 'backend') }
-          });
-          cache = run.status === 0 && run.stdout.startsWith('id,segment_id,thickness_pred')
-            ? { body: run.stdout, source: 'live' }
-            : { body: readFileSync(saved, 'utf8'), source: 'saved-run' };
-        }
+        const body = readFileSync(file, 'utf8');
         res.setHeader('Content-Type', 'text/csv; charset=utf-8');
-        res.setHeader('X-Catboost-Source', cache.source);
-        res.end(cache.body);
+        res.setHeader('X-Thickness-Source', 'forecast');
+        res.end(body);
       });
     }
   };
 }
 
 export default defineConfig(({ mode }) => ({
-  plugins: [react(), main2DevApi(), catboostDevApi(), ...(mode === 'single' ? [singleFile()] : [])],
+  plugins: [react(), main2DevApi(), thicknessDevApi(), ...(mode === 'single' ? [singleFile()] : [])],
   resolve: {
     alias: { '@data': resolve(__dirname, '../../data') }
   },

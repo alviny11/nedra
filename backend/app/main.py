@@ -118,8 +118,8 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         try:
             body = result_csv(s.repo_root)
         except Exception as exc:
-            raise PipeTwinError(503, "MODEL_UNAVAILABLE", f"CatBoost недоступен: {type(exc).__name__}") from exc
-        return PlainTextResponse(body, media_type="text/csv; charset=utf-8", headers={"X-Catboost-Source": "live"})
+            raise PipeTwinError(503, "MODEL_UNAVAILABLE", f"Прогноз толщины недоступен: {type(exc).__name__}") from exc
+        return PlainTextResponse(body, media_type="text/csv; charset=utf-8", headers={"X-Thickness-Source": "forecast"})
 
     @app.get("/api/capabilities")
     def capabilities() -> dict:
