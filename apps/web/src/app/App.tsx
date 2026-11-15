@@ -34,7 +34,7 @@ export function App() {
 
   return (
     <div className="app">
-      <TopBar />
+      {!pipeline && <TopBar />}
       {pipeline && <PipelineDetail key={pipeline.id} group={pipeline} onBack={() => openPipeline(null)} onOpen={openPipeline} />}
       <div style={{ display: pipeline ? 'none' : undefined }}>
       <main className="layout">

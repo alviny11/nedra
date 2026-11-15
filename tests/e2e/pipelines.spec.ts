@@ -55,16 +55,12 @@ test('navigation preserves live simulation and explicit teaching leak works', as
   await expect(page.getByRole('button', { name: /Пуск/ })).toBeEnabled();
   await page.locator('.transport select').selectOption('30');
   await page.getByRole('button', { name: /Пуск/ }).click();
+  await page.getByRole('button', { name: /Пауза/ }).click();
+  const time = await page.locator('.clock .t').textContent();
   await page.getByRole('button', { name: 'Труба 1: открыть отчёт', exact: true }).click();
+  await expect(page.locator('.topbar')).toHaveCount(0);
   await page.getByRole('tab', { name: 'Режим и утечки' }).click();
   await expect(page.getByRole('button', { name: 'Внести учебную утечку e4', exact: true })).toBeEnabled({ timeout: 45_000 });
-  await page.getByRole('button', { name: /Пауза/ }).click();
-  await expect.poll(async () => {
-    const before = await page.locator('.clock .t').textContent();
-    await page.waitForTimeout(250);
-    return (await page.locator('.clock .t').textContent()) === before;
-  }).toBe(true);
-  const time = await page.locator('.clock .t').textContent();
   await page.getByRole('button', { name: 'Внести учебную утечку e4', exact: true }).click();
   await expect(page.getByRole('status')).toContainText('Событие передано');
   await page.getByRole('button', { name: 'На карту и к диагностике →' }).click();
