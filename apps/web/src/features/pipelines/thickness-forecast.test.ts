@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import features from '../../../../../backend_bundle/data/predict_features.csv?raw';
 import { data, fmt, getRows } from './data';
-import { applyForecast, bundledForecast, CASE1_BASE_RUN, CASE1_LENGTH_M, CASE1_PIPE, CASE1_SHIFT_END_M, CASE1_SHIFT_START_M, CASE2_PIPE, case1OdometerShift, iliChartX, isScored } from './thickness-forecast';
+import { applyForecast, bundledForecast, CASE1_BASE_RUN, CASE1_LENGTH_M, CASE1_PIPE, CASE1_SHIFT_END_M, CASE1_SHIFT_START_M, CASE2_PIPE, case1OdometerShift, case1ShiftedBases, chartGreenWall, isScored } from './thickness-forecast';
 
 function shown(pipeId: number) {
   const group = data.groups.find(item => item.assets.some(asset => asset.id === pipeId))!;
@@ -60,19 +60,31 @@ describe('Case 1 odometer shift on the pipe-length chart', () => {
     expect(Math.floor((raw + case1OdometerShift(raw)) / 10)).toBe(135);
   });
 
-  it('moves only the 2022 points of pipe 1250022871', () => {
+  it('keeps every green point on the orange segment centre and never draws it below the forecast', () => {
     const group = data.groups.find(item => item.assets.some(asset => asset.id === CASE1_PIPE))!;
-    const aligned = getRows(group, data.forecastDate).find(row => row.asset.id === CASE1_PIPE && row.sid === 0)!;
-    expect(aligned.measuredDate).toBe(CASE1_BASE_RUN);
-    expect(iliChartX(aligned)).toBeCloseTo(aligned.x + case1OdometerShift((aligned.start + aligned.end) / 2), 8);
-    const earlier = getRows(group, '2018-09-23').find(row => row.asset.id === CASE1_PIPE && row.sid === 0)!;
-    expect(earlier.measuredDate).toBe('2018-09-23');
-    expect(iliChartX(earlier)).toBe(earlier.x);
+    const asset = group.assets.find(item => item.id === CASE1_PIPE)!;
+    const bases = case1ShiftedBases(asset.defects);
+    const rows = shown(CASE1_PIPE);
+    const y = (v: number, maxH: number) => 215 - v / maxH * 145;
+    const maxH = Math.max(1, ...rows.map(row => Math.max(row.asset.nominal, chartGreenWall(row, bases) ?? 0, row.pred))) + 1;
+    let pairs = 0;
+    for (const row of rows) {
+      const green = chartGreenWall(row, bases);
+      expect(row.x).toBe(row.asset.offset + (row.start + row.end) / 2);
+      if (green == null) continue;
+      pairs += 1;
+      expect(row.pred).toBeLessThanOrEqual(green);
+      expect(y(green, maxH)).toBeLessThanOrEqual(y(row.pred, maxH));
+    }
+    expect(pairs).toBe(510);
+    expect(bases.size).toBe(510);
+    const earlier = getRows(group, '2018-09-23').filter(row => row.asset.id === CASE1_PIPE);
+    expect(earlier.every(row => chartGreenWall(row, null) === row.measured)).toBe(true);
     const neighbor = getRows(group, data.forecastDate).find(row => row.asset.id === 1250009490 && row.measured != null)!;
-    expect(iliChartX(neighbor)).toBe(neighbor.x);
+    expect(chartGreenWall(neighbor, bases)).toBe(neighbor.measured);
     const otherPipe = getRows(data.groups.find(item => item.id === 'MAIN-4')!, data.forecastDate)[0]!;
     expect(otherPipe.asset.id).toBe(CASE2_PIPE);
-    expect(iliChartX(otherPipe)).toBe(otherPipe.x);
+    expect(chartGreenWall(otherPipe, bases)).toBe(otherPipe.measured);
   });
 
   it('lands the 2022 ILI in the same segments the case 1 base used', () => {

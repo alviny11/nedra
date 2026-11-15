@@ -8,7 +8,7 @@ import { LIVE_PIPELINE_ID } from './corrosion-clock';
 import { data, dateLabel, fmt, getRows, rowKey } from './data';
 import type { Asset, Defect, Pipeline, Row } from './data';
 import { sortSegmentRows, type SegmentSort } from './segment-sort';
-import { applyForecast, basisLabel, bundledForecast, groupForecast, iliChartX, isScored, PIPE_FORECAST } from './thickness-forecast';
+import { applyForecast, basisLabel, bundledForecast, CASE1_BASE_RUN, CASE1_PIPE, case1ShiftedBases, chartGreenWall, groupForecast, isScored, PIPE_FORECAST } from './thickness-forecast';
 import './pipelines.css';
 
 type Tab = 'overview' | 'simulation' | 'passport';
@@ -52,6 +52,11 @@ export function PipelineDetail({ group, onBack, onOpen }: { group: Pipeline; onB
   const focusTable = (r: Row) => { pick(r); const index = filtered.findIndex(x => rowKey(x) === rowKey(r)); if (index >= 0) setPage(Math.floor(index/PAGE_SIZE)); };
   const selectedDefects = selected.asset.defects.filter(d => Math.min(Math.floor(d[2]/10), selected.asset.segments.length-1) === selected.sid && d[1] <= date);
   const defect = selectedDefects.find(d => d[0] === defectId) ?? [...selectedDefects].sort((a, b) => b[1].localeCompare(a[1]) || a[3]-b[3])[0];
+  const case1Bases = useMemo(() => {
+    if (date < CASE1_BASE_RUN) return null;
+    const asset = group.assets.find(item => item.id === CASE1_PIPE);
+    return asset ? case1ShiftedBases(asset.defects) : null;
+  }, [group, date]);
   const measuredN = viewRows.filter(r => r.measured != null).length;
   const changeDate = (value: string) => { setDate(value); setDefectId(null); setPage(0); };
   return <section className="pipe-detail" aria-label={`Карточка ${group.title}`}>
@@ -65,7 +70,7 @@ export function PipelineDetail({ group, onBack, onOpen }: { group: Pipeline; onB
       <div className="pipe-workspace">
         <div className="pipe-charts">
           <div className="plot-heading"><h2>Труба по длине</h2><button onClick={() => setZoom(!zoom)}>{zoom ? 'Показать всю трубу' : 'Приблизить выбранный сегмент'}</button></div>
-          <PipePlot rows={viewRows} selected={selected} onPick={focusTable} length={group.length} forecast={forecast} zoom={zoom}/>
+          <PipePlot rows={viewRows} selected={selected} onPick={focusTable} length={group.length} forecast={forecast} zoom={zoom} case1Bases={case1Bases}/>
           <div className="plot-legend"><span className="legend-dot measured"/>Измерено ВТД (последнее до даты)<span className="legend-dot predicted"/>Прогноз {forecast && summary.date ? dateLabel(summary.date) : 'скрыт для исторической даты'}<span className="legend-dot unknown"/>Нет прогноза</div>
         </div>
         <aside className="segment-inspector">
@@ -91,16 +96,17 @@ export function PipelineDetail({ group, onBack, onOpen }: { group: Pipeline; onB
   </section>;
 }
 
-function PipePlot({ rows, selected, onPick, length, forecast, zoom }: { rows: Row[]; selected: Row; onPick: (r: Row) => void; length: number; forecast: boolean; zoom: boolean }) {
+function PipePlot({ rows, selected, onPick, length, forecast, zoom, case1Bases }: { rows: Row[]; selected: Row; onPick: (r: Row) => void; length: number; forecast: boolean; zoom: boolean; case1Bases: ReadonlyMap<number, number> | null }) {
   const left = zoom ? Math.max(0, selected.x-150) : 0, right = zoom ? Math.min(length, selected.x+150) : length;
   const visible = rows.filter(r => r.x >= left && r.x <= right);
   const x = (v: number) => 45+(v-left)/(right-left)*900;
-  const maxH = Math.max(1, ...rows.map(r => Math.max(r.asset.nominal, r.measured ?? 0, Number.isFinite(r.pred) ? r.pred : 0)))+1;
+  const green = (r: Row) => chartGreenWall(r, case1Bases);
+  const maxH = Math.max(1, ...rows.map(r => Math.max(r.asset.nominal, green(r) ?? 0, Number.isFinite(r.pred) ? r.pred : 0)))+1;
   const y = (v: number) => 215-v/maxH*145;
   const click = (e: React.MouseEvent<SVGSVGElement>) => { const rect = e.currentTarget.getBoundingClientRect(); const px = (e.clientX-rect.left)/rect.width*1000; const dist = left+(px-45)/900*(right-left); const r = visible.reduce((a, b) => Math.abs(b.x-dist)<Math.abs(a.x-dist) ? b : a, visible[0]!); if (r) onPick(r); };
   return <svg className="pipe-profile" viewBox="0 0 1000 255" role="img" aria-label="Лента сегментов и профиль толщины; выберите сегмент также в таблице" onClick={click}>
     {[0, 2, 4, 6, 8, 10].filter(v => v < maxH).map(v => <g key={v}><line x1="45" x2="945" y1={y(v)} y2={y(v)} className="chart-grid"/><text x="10" y={y(v)+4}>{v}</text></g>)}<text x="10" y="65">мм</text>
-    {visible.map(r => <g key={rowKey(r)}><rect x={x(Math.max(left, r.asset.offset+r.start))} y="15" height="12" width={Math.max(1, (r.end-r.start)/(right-left)*900)} fill={forecast ? tone(r) : r.measured == null ? 'var(--grid)' : 'var(--ok)'}/>{r.measured != null && <circle cx={x(iliChartX(r))} cy={y(r.measured)} r="2.5" fill="var(--ok)"/>}{forecast && Number.isFinite(r.pred) && <line x1={x(r.x)-2} x2={x(r.x)+2} y1={y(r.pred)} y2={y(r.pred)} stroke="var(--warn)" strokeWidth="2"/>}</g>)}
+    {visible.map(r => { const wall = green(r); return <g key={rowKey(r)}><rect x={x(Math.max(left, r.asset.offset+r.start))} y="15" height="12" width={Math.max(1, (r.end-r.start)/(right-left)*900)} fill={forecast ? tone(r) : r.measured == null ? 'var(--grid)' : 'var(--ok)'}/>{wall != null && <circle cx={x(r.x)} cy={y(wall)} r="2.5" fill="var(--ok)"/>}{forecast && Number.isFinite(r.pred) && <line x1={x(r.x)-2} x2={x(r.x)+2} y1={y(r.pred)} y2={y(r.pred)} stroke="var(--warn)" strokeWidth="2"/>}</g>; })}
     <line x1={x(selected.x)} x2={x(selected.x)} y1="8" y2="220" stroke="var(--mark)" strokeDasharray="4 4"/>
     {[0, .25, .5, .75, 1].map(t => <text key={t} x={45+t*900} y="245" textAnchor={t === 0 ? 'start' : t === 1 ? 'end' : 'middle'}>{fmt(left+t*(right-left), 0)} м</text>)}
   </svg>;

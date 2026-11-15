@@ -1,6 +1,6 @@
 import bundledCsv from '../../../../../data/forecasts/result.csv?raw';
 import { packFromCsv, type CatboostPack } from './catboost';
-import type { Pipeline, Row } from './data';
+import type { Defect, Pipeline, Row } from './data';
 
 /** Case 1: random forest in backend_bundle for this pipe. */
 export const CASE1_PIPE = 1250022871;
@@ -54,10 +54,26 @@ export function case1OdometerShift(localMeters: number): number {
   return CASE1_SHIFT_START_M + (CASE1_SHIFT_END_M - CASE1_SHIFT_START_M) * (localMeters / CASE1_LENGTH_M);
 }
 
-/** Chart chainage of a green ILI point. Only the case 1 base run moves; the orange forecast stays put. */
-export function iliChartX(row: Row): number {
-  if (row.asset.id !== CASE1_PIPE || row.measuredDate !== CASE1_BASE_RUN) return row.x;
-  return row.x + case1OdometerShift((row.start + row.end) / 2);
+/** Segment minimum of the 2022 run after the case 1 ramp. Empty segments have no green point. */
+export function case1ShiftedBases(defects: readonly Defect[]): Map<number, number> {
+  const mins = new Map<number, number>();
+  const segments = PIPE_FORECAST[CASE1_PIPE].segments;
+  for (const defect of defects) {
+    if (defect[1] !== CASE1_BASE_RUN) continue;
+    const moved = defect[2] + case1OdometerShift(defect[2]);
+    if (moved < 0 || moved >= CASE1_LENGTH_M) continue;
+    const sid = Math.floor(moved / 10);
+    if (sid < 0 || sid >= segments) continue;
+    const prev = mins.get(sid);
+    if (prev == null || defect[3] < prev) mins.set(sid, defect[3]);
+  }
+  return mins;
+}
+
+/** Green-point thickness. Both colours stay on the segment centre. Only pipe 1250022871 on the 2022 run uses the re-binned base. */
+export function chartGreenWall(row: Row, bases: ReadonlyMap<number, number> | null): number | null {
+  if (bases && row.asset.id === CASE1_PIPE) return bases.get(row.sid) ?? null;
+  return row.measured;
 }
 
 export function basisLabel(row: Row): string {
