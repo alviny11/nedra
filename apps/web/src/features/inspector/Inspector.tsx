@@ -4,7 +4,7 @@ import { useApp } from '../../state/store';
 import { applyHiddenEvent, applyPublicCommand } from '../../state/controller';
 import { barA, degC, kgs, pct, m3h, sensorValueText } from '../../lib/format';
 
-type Tab = 'state' | 'sensors' | 'model' | 'actions';
+type Tab = 'state' | 'sensors' | 'actions';
 
 export function Inspector({ leakDraft, setLeakDraft, placingLeak, setPlacingLeak }: {
   leakDraft: { edgeId: string; distanceM: number } | null;
@@ -19,19 +19,16 @@ export function Inspector({ leakDraft, setLeakDraft, placingLeak, setPlacingLeak
   const view = useApp((s) => s.view);
   const truth = useApp((s) => s.truth);
   const observer = useApp((s) => s.observer);
-  const diag = useApp((s) => s.diag);
   if (!scenario) return null;
   const cfg = scenario.public;
   const pipe = cfg.links.find((l) => l.id === edgeId && l.kind === 'pipe') as PipeConfig | undefined;
   const field = view === 'operator' ? truth : observer;
   const j = pipe && layout ? layout.pipeIds.indexOf(pipe.id) : -1;
   const sensorsHere = cfg.sensors.filter((s) => (pipe ? s.edgeId === pipe.id || s.nodeId === pipe.fromNodeId || s.nodeId === pipe.toNodeId : true));
-  const fluid = pipe ? cfg.fluidProfiles.find((f) => f.id === pipe.fluidProfileId) : cfg.fluidProfiles[0];
 
   const tabs: Array<[Tab, string]> = [
     ['state', 'Состояние и параметры'],
     ['sensors', 'Датчики'],
-    ['model', 'Модель'],
     ['actions', view === 'operator' ? 'Эксперимент' : 'Управление']
   ];
 
@@ -91,45 +88,6 @@ export function Inspector({ leakDraft, setLeakDraft, placingLeak, setPlacingLeak
           </div>
         )}
         {tab === 'sensors' && <SensorsTab sensors={sensorsHere} />}
-        {tab === 'model' && fluid && (
-          <div className="model-tab">
-            <p>
-              <b>{fluid.name}</b> ({fluid.provenance === 'synthetic' ? 'синтетика' : fluid.provenance === 'correlation' ? 'корреляция' : 'измерено'})
-            </p>
-            <p className="small">{fluid.description}</p>
-            <dl className="kv">
-              <dt>Область T</dt>
-              <dd>
-                {degC(fluid.validTemperatureK[0])}…{degC(fluid.validTemperatureK[1])} °C
-              </dd>
-              <dt>Состав</dt>
-              <dd>
-                {fluid.compositionDefinition}; Y_w ∈ [{fluid.compositionBounds.waterMassFraction.join(', ')}]
-              </dd>
-              <dt>Граница фаз</dt>
-              <dd>
-                p ≥ {barA(fluid.phaseBoundaryModel.minPressurePa)} бар а — {fluid.phaseBoundaryModel.note}
-              </dd>
-              <dt>Вязкость смеси</dt>
-              <dd>{fluid.mixtureViscosityModel.kind === 'wo_emulsion_power' ? `μ_oil(T)·(1−α_w)^−${fluid.mixtureViscosityModel.exponent}, α_w ≤ ${fluid.mixtureViscosityModel.maxWaterVolumeFraction} (не откалибровано)` : 'однофазная'}</dd>
-            </dl>
-            <h4>Ограничения модели</h4>
-            <ul className="small">
-              <li>M0: полностью заполненная труба, без кавитации/выделения газа; ниже границы фаз расчёт останавливается.</li>
-              <li>Фиксированные опорные ρ и c по трубе (режим 1); вязкость следует переносимым T и Y_w.</li>
-              <li>Трение квазистационарное; нестационарное трение и вязкоупругость стенки не учитываются.</li>
-              <li>Сепаратор — граница давления; волна через аппарат не передаётся.</li>
-              <li>Газосодержащий участок до сепарации — контекст (M1 только как акустический эксперимент).</li>
-            </ul>
-            <h4>Детекторы</h4>
-            <ul className="small">
-              <li>D0 — наблюдатель с фиксированными свойствами + порог |z| на время.</li>
-              <li>D1 — наблюдатель с измеренными T/обводнённостью, CUSUM, интегральный баланс, локализация по волне и подбор по невязкам.</li>
-              <li>D2 — D1 + классификатор причин (логистическая регрессия), не подавляет сильную физическую тревогу.</li>
-            </ul>
-            {diag && <p className="small">Состояние диагностики: {diag.status} {diag.statusMessage}</p>}
-          </div>
-        )}
         {tab === 'actions' && (
           <Actions pipe={pipe} leakDraft={leakDraft} setLeakDraft={setLeakDraft} placingLeak={placingLeak} setPlacingLeak={setPlacingLeak} />
         )}
