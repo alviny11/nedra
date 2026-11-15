@@ -1,8 +1,7 @@
 import type { Row } from './data';
-import { basisLabel } from './thickness-forecast';
 
 /** Column order for the pipe segment table. `distance` is the order the rows already have. */
-export type SegmentSort = 'segment' | 'distance' | 'vtd' | 'date' | 'forecast' | 'basis';
+export type SegmentSort = 'segment' | 'distance' | 'vtd' | 'date' | 'forecast';
 
 const textOrder = new Intl.Collator('ru', { numeric: true, sensitivity: 'base' });
 
@@ -28,8 +27,6 @@ export function compareSegmentRows(a: Row, b: Row, sort: SegmentSort, assetIndex
       return missingLast(a.measuredDate, b.measuredDate);
     case 'forecast':
       return missingLast(Number.isFinite(a.pred) ? a.pred : null, Number.isFinite(b.pred) ? b.pred : null);
-    case 'basis':
-      return textOrder.compare(basisLabel(a), basisLabel(b));
   }
 }
 

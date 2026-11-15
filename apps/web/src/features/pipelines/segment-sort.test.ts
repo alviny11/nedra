@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { data, getRows, rowKey } from './data';
 import { sortSegmentRows, type SegmentSort } from './segment-sort';
-import { applyForecast, basisLabel } from './thickness-forecast';
+import { applyForecast } from './thickness-forecast';
 
 const textOrder = new Intl.Collator('ru', { numeric: true, sensitivity: 'base' });
 
@@ -66,8 +66,7 @@ describe('pipe segment table sort', () => {
     expect(rowKey(forecast[0]!)).not.toBe(rowKey(rows[0]!));
 
     const checks: Array<[SegmentSort, (row: (typeof rows)[number]) => string]> = [
-      ['segment', row => `${row.asset.id} / ${row.sid}`],
-      ['basis', row => basisLabel(row)]
+      ['segment', row => `${row.asset.id} / ${row.sid}`]
     ];
     for (const [sort, label] of checks) {
       const sorted = sortSegmentRows(rows, sort, assetIndex);
