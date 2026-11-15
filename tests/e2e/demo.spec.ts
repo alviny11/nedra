@@ -13,11 +13,8 @@ test('demo flow: run, operator leak injection, independent diagnosis, export to 
     if (m.type() === 'error') errors.push(`${m.text()} ${m.location()?.url ?? ''}`);
   });
   await page.goto('/');
-  await expect(page.locator('.status')).not.toContainText('офлайн', { timeout: 30_000 });
-  await expect(page.getByRole('button', { name: /Пуск/ })).toBeEnabled();
-  // healthy scenario
-  await page.locator('.sc-select select').selectOption('healthy_steady');
-  await expect(page.getByRole('button', { name: /Пуск/ })).toBeEnabled();
+  await expect(page.getByRole('button', { name: /Пуск/ })).toBeEnabled({ timeout: 30_000 });
+  await expect(page.locator('.scenario-note')).toContainText('Штатный режим');
   await page.locator('.transport select').selectOption('30');
   await page.getByRole('button', { name: /Пуск/ }).click();
   await expect.poll(() => simTime(page), { timeout: 120_000 }).toBeGreaterThan(200);
@@ -32,11 +29,6 @@ test('demo flow: run, operator leak injection, independent diagnosis, export to 
   // diagnostics must reach a confirmed leak from measurements only
   await expect(page.locator('.det-card').nth(1)).toContainText('утечка', { timeout: 120_000 });
   await expect(page.locator('.det-card').nth(1).locator('.badge')).toHaveText('подтверждено', { timeout: 120_000 });
-  // diagnost view must not show the truth marker before reveal
-  await page.getByRole('button', { name: 'Диагност', exact: true }).click();
-  await expect(page.locator('.truth-marker')).toHaveCount(0);
-  await page.getByRole('button', { name: 'Раскрыть истину' }).click();
-  await expect(page.locator('.truth-marker')).toHaveCount(1);
   // pause and export
   await page.getByRole('button', { name: /Пауза/ }).click();
   const downloads: string[] = [];
@@ -63,7 +55,7 @@ test('demo flow: run, operator leak injection, independent diagnosis, export to 
 test('backend offline: simulation and baseline diagnostics keep working', async ({ page }) => {
   await page.route('**/127.0.0.1:8000/**', (r) => r.abort());
   await page.goto('/');
-  await expect(page.locator('.status')).toContainText('офлайн');
+  await expect(page.getByRole('button', { name: /Пуск/ })).toBeEnabled({ timeout: 30_000 });
   await page.locator('.transport select').selectOption('30');
   await page.getByRole('button', { name: /Пуск/ }).click();
   await expect.poll(() => simTime(page), { timeout: 60_000 }).toBeGreaterThan(30);

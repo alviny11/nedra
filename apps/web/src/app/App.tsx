@@ -6,15 +6,12 @@ import { MapView } from '../features/map/MapView';
 import { Inspector } from '../features/inspector/Inspector';
 import { Charts } from '../features/charts/Charts';
 import { DiagnosticsPanel } from '../features/diagnostics/DiagnosticsPanel';
-import { TrialsPanel } from '../features/benchmarks/TrialsPanel';
-import { M1Panel } from './M1Panel';
 import { PipelineDetail } from '../features/pipelines/PipelineDetail';
 import { data } from '../features/pipelines/data';
 
 export function App() {
   const [placingLeak, setPlacingLeak] = useState(false);
   const [leakDraft, setLeakDraft] = useState<{ edgeId: string; distanceM: number } | null>(null);
-  const [m1, setM1] = useState(false);
   const [pipelineId, setPipelineId] = useState<string | null>(null);
   const openPipeline = (id: string | null) => { setPipelineId(id); window.scrollTo({ top: 0, behavior: 'instant' }); };
   const pipeline = data.groups.find(g => g.featured && g.id === pipelineId);
@@ -40,7 +37,7 @@ export function App() {
 
   return (
     <div className="app">
-      <TopBar onM1={() => setM1(true)} />
+      <TopBar />
       {pipeline && <PipelineDetail key={pipeline.id} group={pipeline} onBack={() => openPipeline(null)} onOpen={openPipeline} />}
       <div style={{ display: pipeline ? 'none' : undefined }}>
       {scenario && (
@@ -67,8 +64,6 @@ export function App() {
         </div>
       </main>
       </div>
-      <TrialsPanel />
-      {m1 && <M1Panel onClose={() => setM1(false)} />}
       <div className="toasts" aria-live="assertive">
         {toasts.map((t) => (
           <div key={t.id} className={`toast ${t.kind}`}>

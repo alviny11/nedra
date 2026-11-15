@@ -51,8 +51,9 @@ export function initApp(): void {
   st.set({ catalog: cat, model: bm.model, modelSource: bm.source });
   void pollBackend();
   setInterval(() => void pollBackend(), 5000);
-  const first = cat.find((c) => c.id === 'leak_abrupt_e4') ?? cat[0];
-  if (first) loadScenario(first.scenario);
+  const steady = cat.find((c) => c.id === 'healthy_steady');
+  if (steady) loadScenario(steady.scenario);
+  else st.toast('error', 'Сценарий «Штатный режим» не найден.');
 }
 
 async function pollBackend(): Promise<void> {
