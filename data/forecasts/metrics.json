@@ -1,0 +1,27 @@
+{
+  "rows": 2000,
+  "validation_section": 1250011604,
+  "pearson_r2": 0.7594,
+  "mae_mm": 0.1955,
+  "shift_start_m": 1.82,
+  "shift_end_m": 7.47,
+  "pos_sigma_m": 1.0,
+  "repair_prob": 0.8,
+  "matched_pairs": 2772,
+  "case2_mean_loss": 0.207,
+  "case2_p90_loss": 0.389,
+  "pipes": {
+    "1250009583": {
+      "n": 1475,
+      "min": 3.042,
+      "mean": 3.5691,
+      "max": 4.427
+    },
+    "1250022871": {
+      "n": 525,
+      "min": 4.2528,
+      "mean": 5.9401,
+      "max": 7.7405
+    }
+  }
+}
