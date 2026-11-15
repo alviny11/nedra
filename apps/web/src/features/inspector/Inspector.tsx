@@ -4,7 +4,7 @@ import { useApp } from '../../state/store';
 import { applyHiddenEvent, applyPublicCommand } from '../../state/controller';
 import { barA, degC, kgs, pct, m3h, sensorValueText } from '../../lib/format';
 
-type Tab = 'state' | 'params' | 'sensors' | 'model' | 'actions';
+type Tab = 'state' | 'sensors' | 'model' | 'actions';
 
 export function Inspector({ leakDraft, setLeakDraft, placingLeak, setPlacingLeak }: {
   leakDraft: { edgeId: string; distanceM: number } | null;
@@ -29,8 +29,7 @@ export function Inspector({ leakDraft, setLeakDraft, placingLeak, setPlacingLeak
   const fluid = pipe ? cfg.fluidProfiles.find((f) => f.id === pipe.fluidProfileId) : cfg.fluidProfiles[0];
 
   const tabs: Array<[Tab, string]> = [
-    ['state', 'Состояние'],
-    ['params', 'Параметры'],
+    ['state', 'Состояние и параметры'],
     ['sensors', 'Датчики'],
     ['model', 'Модель'],
     ['actions', view === 'operator' ? 'Эксперимент' : 'Управление']
@@ -51,43 +50,45 @@ export function Inspector({ leakDraft, setLeakDraft, placingLeak, setPlacingLeak
       </div>
       <div className="tab-body">
         {tab === 'state' && (
-          <StateTab pipe={pipe} j={j} field={field} layoutReaches={layout?.pipeReaches[j] ?? 0} offset={layout?.pipeOffsets[j] ?? 0} source={view === 'operator' ? 'истинная модель' : 'наблюдатель D1'} />
-        )}
-        {tab === 'params' && pipe && (
-          <dl className="kv">
-            <dt>Длина (физическая)</dt>
-            <dd>{pipe.lengthM.toFixed(0)} м</dd>
-            <dt>Внутр. диаметр / стенка</dt>
-            <dd>
-              {(pipe.innerDiameterM * 1000).toFixed(0)} / {(pipe.wallThicknessM * 1000).toFixed(1)} мм
-            </dd>
-            <dt>Шероховатость</dt>
-            <dd>{(pipe.roughnessM * 1000).toFixed(3)} мм</dd>
-            <dt>E стенки, ν, закрепление</dt>
-            <dd>
-              {(pipe.youngModulusPa / 1e9).toFixed(0)} ГПа, {pipe.poissonRatio}, {pipe.restraintModel}
-            </dd>
-            <dt>Рельеф</dt>
-            <dd>{pipe.elevationProfile.map((p) => `${p.distanceM.toFixed(0)}:${p.elevationM.toFixed(0)}`).join(' → ')} м</dd>
-            <dt>Теплообмен</dt>
-            <dd>
-              U = {pipe.thermal.overallHeatTransferWm2K} Вт/(м²·K) на D_o = {(pipe.thermal.referenceOuterDiameterM * 1000).toFixed(0)} мм, T∞ = {degC(pipe.thermal.ambientTemperatureK)} °C ({pipe.thermal.insulation})
-            </dd>
-            {j >= 0 && layout && (
-              <>
-                <dt>Сетка</dt>
+          <div className="state-and-params">
+            <StateTab pipe={pipe} j={j} field={field} layoutReaches={layout?.pipeReaches[j] ?? 0} offset={layout?.pipeOffsets[j] ?? 0} source={view === 'operator' ? 'истинная модель' : 'наблюдатель D1'} />
+            {pipe && (
+              <dl className="kv">
+                <dt>Длина (физическая)</dt>
+                <dd>{pipe.lengthM.toFixed(0)} м</dd>
+                <dt>Внутр. диаметр / стенка</dt>
                 <dd>
-                  {layout.pipeReaches[j]} участков по {layout.pipeDx[j]!.toFixed(1)} м, Cr = {layout.pipeCourant[j]!.toFixed(3)}, dt = {(layout.dt * 1000).toFixed(2)} мс
+                  {(pipe.innerDiameterM * 1000).toFixed(0)} / {(pipe.wallThicknessM * 1000).toFixed(1)} мм
                 </dd>
-                <dt>Опорные ρ, c (фикс.)</dt>
+                <dt>Шероховатость</dt>
+                <dd>{(pipe.roughnessM * 1000).toFixed(3)} мм</dd>
+                <dt>E стенки, ν, закрепление</dt>
                 <dd>
-                  {layout.pipeRho[j]!.toFixed(1)} кг/м³, {layout.pipeWaveSpeed[j]!.toFixed(0)} м/с
+                  {(pipe.youngModulusPa / 1e9).toFixed(0)} ГПа, {pipe.poissonRatio}, {pipe.restraintModel}
                 </dd>
-              </>
+                <dt>Рельеф</dt>
+                <dd>{pipe.elevationProfile.map((p) => `${p.distanceM.toFixed(0)}:${p.elevationM.toFixed(0)}`).join(' → ')} м</dd>
+                <dt>Теплообмен</dt>
+                <dd>
+                  U = {pipe.thermal.overallHeatTransferWm2K} Вт/(м²·K) на D_o = {(pipe.thermal.referenceOuterDiameterM * 1000).toFixed(0)} мм, T∞ = {degC(pipe.thermal.ambientTemperatureK)} °C ({pipe.thermal.insulation})
+                </dd>
+                {j >= 0 && layout && (
+                  <>
+                    <dt>Сетка</dt>
+                    <dd>
+                      {layout.pipeReaches[j]} участков по {layout.pipeDx[j]!.toFixed(1)} м, Cr = {layout.pipeCourant[j]!.toFixed(3)}, dt = {(layout.dt * 1000).toFixed(2)} мс
+                    </dd>
+                    <dt>Опорные ρ, c (фикс.)</dt>
+                    <dd>
+                      {layout.pipeRho[j]!.toFixed(1)} кг/м³, {layout.pipeWaveSpeed[j]!.toFixed(0)} м/с
+                    </dd>
+                  </>
+                )}
+                <dt>Происхождение параметров</dt>
+                <dd>синтетический демонстрационный объект; изменение геометрии требует переинициализации (не во время шага)</dd>
+              </dl>
             )}
-            <dt>Происхождение параметров</dt>
-            <dd>синтетический демонстрационный объект; изменение геометрии требует переинициализации (не во время шага)</dd>
-          </dl>
+          </div>
         )}
         {tab === 'sensors' && <SensorsTab sensors={sensorsHere} />}
         {tab === 'model' && fluid && (
