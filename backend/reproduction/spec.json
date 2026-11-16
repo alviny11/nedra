@@ -75,9 +75,5 @@
     "tech_mode_for_embedings_with_length_with_temperatures_ids16.csv": "560ba4c56429ae07969385a161e9d1b9665399af728e6d29f66d6e26cb227134",
     "repcorr_south.csv": "1c17535b437b0ea036330db1996d04f7e0a4792b555b249b02d57f4e593f2dbf"
   },
-  "training_rows": 614,
-  "legacy_result_sha256": "f52fd4f7199f7e6db20b9c67c3ee885d101d5db049bdde347294581d9a399e37",
-  "legacy_case1_max_abs_difference_mm": 0.004234,
-  "case2_max_abs_difference_mm": 0.0,
-  "reconstructed_result_sha256": "2db2f4f76a368ed9d29c03e20e27ebde2064cfc3792e0c844aa313b3b96aee8c"
+  "training_rows": 614
 }

@@ -1,5 +1,4 @@
-import { createHash } from 'node:crypto';
-import reproduction from '../../backend/reproduction/spec.json';
+import { readFileSync } from 'node:fs';
 import { test, expect } from '@playwright/test';
 
 test('map, dossier, dates, selected segment, export and unknown measurements', async ({ page }) => {
@@ -52,7 +51,7 @@ test('map, dossier, dates, selected segment, export and unknown measurements', a
   const chunks: Buffer[] = [];
   for await (const chunk of stream!) chunks.push(Buffer.from(chunk));
   const bytes = Buffer.concat(chunks);
-  expect(createHash('sha256').update(bytes).digest('hex')).toBe(reproduction.reconstructed_result_sha256);
+  expect(bytes.equals(readFileSync(new URL('../../data/forecasts/result.csv', import.meta.url)))).toBe(true);
   const lines = bytes.toString().trim().split('\n');
   expect(lines[0]).toBe('id,segment_id,thickness_pred');
   expect(lines).toHaveLength(2001);

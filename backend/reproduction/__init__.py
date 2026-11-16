@@ -1,1 +1,1 @@
-"""Source-only reconstruction and training, isolated from the application."""
+"""Data preparation, model training and forecast generation from source CSVs."""

@@ -11,7 +11,7 @@ def publish(repo: Path = REPO) -> Path:
     runs = repo / "output" / "reproduction-runs"
     runs.mkdir(parents=True, exist_ok=True)
     run = Path(tempfile.mkdtemp(prefix="run-", dir=runs)) / "artifacts"
-    # No live file is touched unless source checks, training and output checksum pass.
+    # No live file is touched unless source checks, training and output validation pass.
     reproduce(repo / "data" / "ili", run)
     destination = repo / "data" / "forecasts" / "result.csv"
     destination.parent.mkdir(parents=True, exist_ok=True)

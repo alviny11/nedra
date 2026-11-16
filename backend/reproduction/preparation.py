@@ -1,7 +1,7 @@
-"""Reconstruct the 614 between-inspection rows from the source exports.
+"""Prepare between-inspection training rows from the source exports.
 
-The recipe preserves the historical model's coordinate correction, missing-value
-policy and time windows. It does not read master_segments or training_between.
+Apply coordinate correction, missing-value rules and temporal aggregation
+before constructing features and targets.
 """
 from pathlib import Path
 
@@ -38,7 +38,7 @@ def _slope(group: pd.DataFrame) -> float:
     x, z = group.total_distance.to_numpy(), group.z.to_numpy()
     if len(x) < 2 or np.std(x) == 0:
         return 0.0
-    # Keep historical polyfit semantics, including numerical noise on flat spans.
+    # Fit a linear slope within each segment.
     return float(np.polyfit(x, z, 1)[0])
 
 

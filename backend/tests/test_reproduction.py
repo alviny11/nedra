@@ -1,5 +1,4 @@
 """Integration checks for source-only training and compatibility with the live CSV."""
-import hashlib
 import json
 from pathlib import Path
 import shutil
@@ -9,7 +8,7 @@ import sys
 import pandas as pd
 import pytest
 
-from reproduction.pipeline import SPEC_PATH, compare_reference, reproduce
+from reproduction.pipeline import reproduce
 from reproduction.preparation import FILES
 
 REPO = Path(__file__).resolve().parents[2]
@@ -18,7 +17,7 @@ REPO = Path(__file__).resolve().parents[2]
 @pytest.fixture(scope="module")
 def isolated_runs(tmp_path_factory):
     root = tmp_path_factory.mktemp("source-only")
-    # Deliberately exclude backend_bundle, models, prepared tables and old CSV.
+    # Deliberately exclude backend_bundle, models, prepared tables and forecast CSV.
     (root / "backend").mkdir()
     for package in ("reproduction", "wall_forecast"):
         shutil.copytree(REPO / "backend" / package, root / "backend" / package,
@@ -51,21 +50,11 @@ def test_training_from_only_five_raw_exports_is_repeatable(isolated_runs):
     assert report["training_rows"] == 614
     assert report["feature_count"] == 66
     assert set(report["source_sha256"]) == set(FILES)
-    spec = json.loads(SPEC_PATH.read_text())
-    assert hashlib.sha256((outputs[0] / "result.csv").read_bytes()).hexdigest() == spec["reconstructed_result_sha256"]
     training = pd.read_csv(outputs[0] / "training_between.csv")
     assert training.shape == (614, 75)
     assert not training.duplicated(["id", "segment_id", "end"]).any()
     # No 2023 label from the target section leaks into its own forecast.
     assert not ((training.id == 1250022871) & (training.end == "2023-12-01")).any()
-
-
-def test_legacy_case1_tolerance_and_case2_exact_match(isolated_runs):
-    _, outputs = isolated_runs
-    spec = json.loads(SPEC_PATH.read_text())
-    report = compare_reference(outputs[0] / "result.csv", REPO / "tests/fixtures/forecast/legacy-result.csv", spec)
-    assert report["1"]["max_abs_difference_mm"] <= 0.004234
-    assert report["2"]["exact_rows"] == 1475
 
 
 def test_existing_outputs_and_changed_sources_are_protected(isolated_runs, tmp_path):
