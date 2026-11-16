@@ -2,7 +2,7 @@ import bundledCsv from '../../../../../data/forecasts/result.csv?raw';
 import { packFromCsv, type ForecastPack } from './forecast-csv';
 import type { Defect, Pipeline, Row } from './data';
 
-/** Case 1: random forest in backend_bundle for this pipe. */
+/** Case 1: random forest trained from source CSVs for this pipe. */
 export const CASE1_PIPE = 1250022871;
 /** The 2022 ILI run whose wall, after the ramp below, is the case 1 `base`. */
 export const CASE1_BASE_RUN = '2022-07-06';
@@ -97,7 +97,7 @@ export function groupForecast(group: Pipeline): GroupForecast {
       label: pipe.label,
       date: pipe.date,
       note: `Участок ${pipe.id}: случайный лес, ${pipe.segments} сегментов. Другие участки этой группы в result.csv не входят.`,
-      explain: `Толщина участка ${pipe.id} посчитана случайным лесом из backend_bundle. В признаки входят прошлая стенка, геометрия, высотный профиль и режим до даты прогноза. Ответ не выше прошлой толщины и номинала.`,
+      explain: `Толщина участка ${pipe.id} посчитана случайным лесом, обученным на подготовленных исходных данных. В признаки входят прошлая стенка, геометрия, высотный профиль и режим до даты прогноза. Ответ не выше прошлой толщины и номинала.`,
       priority: 'Приоритет берёт сегменты с ответом этой модели и сортирует их по толщине. Это не вероятность аварии.'
     };
   }

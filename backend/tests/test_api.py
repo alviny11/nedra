@@ -1,3 +1,4 @@
+import hashlib
 import json
 import time
 
@@ -34,6 +35,8 @@ def test_thickness_csv_is_the_current_forecast(client):
     assert r.status_code == 200
     expected = (get_settings().repo_root / "data/forecasts/result.csv").read_text()
     assert r.text == expected
+    spec = json.loads((get_settings().repo_root / "backend/reproduction/spec.json").read_text())
+    assert hashlib.sha256(r.content).hexdigest() == spec["reconstructed_result_sha256"]
     assert len(r.text.strip().splitlines()) == 2001
     assert r.headers["x-thickness-source"] == "forecast"
     assert r.text.startswith("id,segment_id,thickness_pred\n1250022871,0,5.926620\n")

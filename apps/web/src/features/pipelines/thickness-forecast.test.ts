@@ -21,6 +21,7 @@ describe('Current thickness forecast on the pipe card', () => {
     expect(case1.every(isScored)).toBe(true);
     expect(case2.every(row => row.source === 'elevation')).toBe(true);
     expect(case1[0]?.pred).toBe(5.92662);
+    expect(case1.find(row => row.sid === 1)?.pred).toBe(6.537313);
     expect(case1.find(row => row.sid === 135)?.pred).toBe(3.394037);
     expect(case2[0]?.pred).toBe(4.2615);
     const main2 = data.groups.find(item => item.id === 'MAIN-2')!;
@@ -37,8 +38,8 @@ describe('Current thickness forecast on the pipe card', () => {
     const forest = stats(shown(CASE1_PIPE).map(row => row.pred));
     const elevation = stats(shown(CASE2_PIPE).map(row => row.pred));
     expect(forest.min).toBe(3.394037);
-    expect(forest.max).toBe(6.708687);
-    expect(forest.mean).toBeCloseTo(5.900046830476191, 12);
+    expect(forest.max).toBe(6.706299);
+    expect(forest.mean).toBeCloseTo(5.898507413333333, 12);
     expect(elevation.min).toBe(3.042);
     expect(elevation.max).toBe(4.427);
     expect(elevation.mean).toBeCloseTo(3.569143525423729, 12);

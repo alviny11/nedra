@@ -15,3 +15,9 @@ playwright-report/
 
 # EPANET scratch files
 backend/temp.*
+
+# Isolated source-only forecast reproduction
+.venv-reproduction/
+output/reproduction/
+
+output/reproduction-runs/

@@ -1,3 +1,5 @@
+import { createHash } from 'node:crypto';
+import reproduction from '../../backend/reproduction/spec.json';
 import { test, expect } from '@playwright/test';
 
 test('map, dossier, dates, selected segment, export and unknown measurements', async ({ page }) => {
@@ -29,7 +31,16 @@ test('map, dossier, dates, selected segment, export and unknown measurements', a
   await expect(page.getByRole('heading', { name: 'Как получен прогноз', exact: true })).toBeVisible();
   await page.getByLabel('Дата данных', { exact: true }).selectOption('2018-09-23');
   await expect(page.locator('.plot-legend')).toContainText('скрыт для исторической даты');
-  await page.getByLabel('Дата данных', { exact: true }).selectOption('2024-11-24');
+  await page.getByLabel('Найти сегмент').fill('1250022871');
+  await page.locator('.segment-forecast tbody button').first().click();
+  await expect(page.locator('.segment-inspector .value-accent')).toHaveText('—');
+  await expect(page.locator('.segment-forecast tbody tr').first().locator('td').nth(4)).toHaveText('—');
+  await expect(page.locator('.pipe-stats > div').first().locator('strong')).toHaveText('—');
+  await expect(page.locator('.forecast-point')).toHaveCount(0);
+  await expect(page.locator('.history-points')).not.toContainText('06.07.2022');
+
+  await page.getByLabel('Дата данных', { exact: true }).selectOption('forecast');
+  await expect(page.locator('.segment-inspector .value-accent')).toHaveText(/5,93/);
   await page.getByLabel('Найти сегмент').fill('');
   await expect(page.locator('.segment-forecast tbody tr')).toHaveCount(10);
   await page.screenshot({ path: 'test-results/pipelines-detail.png', fullPage: true });
@@ -40,10 +51,13 @@ test('map, dossier, dates, selected segment, export and unknown measurements', a
   const stream = await download.createReadStream();
   const chunks: Buffer[] = [];
   for await (const chunk of stream!) chunks.push(Buffer.from(chunk));
-  const lines = Buffer.concat(chunks).toString().trim().split('\n');
+  const bytes = Buffer.concat(chunks);
+  expect(createHash('sha256').update(bytes).digest('hex')).toBe(reproduction.reconstructed_result_sha256);
+  const lines = bytes.toString().trim().split('\n');
   expect(lines[0]).toBe('id,segment_id,thickness_pred');
   expect(lines).toHaveLength(2001);
   expect(lines[1]).toBe('1250022871,0,5.926620');
+  expect(lines[2]).toBe('1250022871,1,6.537313');
   expect(lines[526]).toBe('1250009583,0,4.2615');
   await page.getByLabel('Выбранный трубопровод').selectOption('MAIN-4');
   await expect(page.locator('.segment-inspector')).toContainText('Нет измерений');
