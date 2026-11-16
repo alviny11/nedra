@@ -1,8 +1,7 @@
 import { defineConfig, searchForWorkspaceRoot, type Plugin } from 'vite';
 import react from '@vitejs/plugin-react';
-import { execFile } from 'node:child_process';
 import { createRequire } from 'node:module';
-import { readFileSync, realpathSync, existsSync } from 'node:fs';
+import { readFileSync, realpathSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -54,37 +53,6 @@ function singleFile(): Plugin {
   };
 }
 
-function main2DevApi(): Plugin {
-  const root = workspaceRoot;
-  return {
-    name: 'main2-live-forecast',
-    configureServer(server) {
-      server.middlewares.use((req, res, next) => {
-        if (req.url?.split('?')[0] !== '/api/thickness/main-2/predict') return next();
-        if (req.method !== 'POST') { res.statusCode = 405; res.end('Method not allowed'); return; }
-        const localPython = resolve(root, 'backend/.venv/bin/python');
-        const python = process.env.PIPETWIN_PYTHON ?? (existsSync(localPython) ? localPython : 'python3');
-        execFile(python, ['-c', [
-          'import os, sys, json',
-          'from pathlib import Path',
-          'sys.path.insert(0, os.environ["PIPETWIN_BACKEND"])',
-          'from app.services.main2_thickness import calculate',
-          'print(json.dumps(calculate(Path(os.environ["PIPETWIN_ROOT"])), allow_nan=False))'
-        ].join('\n')], {
-          cwd: root, encoding: 'utf8', timeout: 90_000, maxBuffer: 2_000_000,
-          env: { ...process.env, PIPETWIN_ROOT: root, PIPETWIN_BACKEND: resolve(root, 'backend') }
-        }, (error, stdout) => {
-          res.setHeader('Content-Type', 'application/json; charset=utf-8');
-          res.setHeader('Cache-Control', 'no-store');
-          if (error) { res.statusCode = 503; res.end(JSON.stringify({ error: 'MAIN2_MODEL_UNAVAILABLE' })); return; }
-          try { JSON.parse(stdout); res.end(stdout); }
-          catch { res.statusCode = 503; res.end(JSON.stringify({ error: 'MAIN2_INVALID_RESPONSE' })); }
-        });
-      });
-    }
-  };
-}
-
 function thicknessDevApi(): Plugin {
   const file = resolve(workspaceRoot, 'data/forecasts/result.csv');
   return {
@@ -102,7 +70,7 @@ function thicknessDevApi(): Plugin {
 }
 
 export default defineConfig(({ mode }) => ({
-  plugins: [react(), main2DevApi(), thicknessDevApi(), ...(mode === 'single' ? [singleFile()] : [])],
+  plugins: [react(), thicknessDevApi(), ...(mode === 'single' ? [singleFile()] : [])],
   resolve: {
     alias: { '@data': resolve(__dirname, '../../data') }
   },

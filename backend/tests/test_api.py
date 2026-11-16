@@ -31,10 +31,10 @@ def scenario() -> dict:
 
 def test_thickness_csv_is_the_current_forecast(client):
     r = client.get("/api/thickness/result.csv")
-    if r.status_code == 503:
-        assert r.json()["code"] == "MODEL_UNAVAILABLE"
-        return
     assert r.status_code == 200
+    expected = (get_settings().repo_root / "data/forecasts/result.csv").read_text()
+    assert r.text == expected
+    assert len(r.text.strip().splitlines()) == 2001
     assert r.headers["x-thickness-source"] == "forecast"
     assert r.text.startswith("id,segment_id,thickness_pred\n1250022871,0,5.926620\n")
     assert "\n1250009583,0,4.2615\n" in r.text

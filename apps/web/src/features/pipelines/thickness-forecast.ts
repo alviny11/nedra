@@ -1,5 +1,5 @@
 import bundledCsv from '../../../../../data/forecasts/result.csv?raw';
-import { packFromCsv, type CatboostPack } from './catboost';
+import { packFromCsv, type ForecastPack } from './forecast-csv';
 import type { Defect, Pipeline, Row } from './data';
 
 /** Case 1: random forest in backend_bundle for this pipe. */
@@ -28,14 +28,14 @@ export const PIPE_FORECAST: Record<number, PipeForecast> = {
   [CASE2_PIPE]: { id: CASE2_PIPE, label: 'Высотный профиль', date: '2022-07-01', source: 'elevation', segments: 1475 }
 };
 
-export const bundledForecast: CatboostPack = (() => {
+export const bundledForecast: ForecastPack = (() => {
   const pack = packFromCsv(bundledCsv, 'saved');
   if (!pack) throw new Error('data/forecasts/result.csv is empty');
   return pack;
 })();
 
 /** Forecast column only. Does not write back into the snapshot used by the corrosion clock. */
-export function applyForecast(row: Row, pack: CatboostPack = bundledForecast): Row {
+export function applyForecast(row: Row, pack: ForecastPack = bundledForecast): Row {
   const meta = PIPE_FORECAST[row.asset.id];
   const pred = meta ? pack.byKey.get(`${row.asset.id}:${row.sid}`) : undefined;
   if (meta == null || pred == null) return { ...row, pred: Number.NaN, source: 'no_forecast' };

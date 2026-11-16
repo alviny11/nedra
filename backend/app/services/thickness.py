@@ -1,7 +1,7 @@
 """Serve the thickness forecast written by forecast.py.
 
 Case 1 is the random forest for pipe 1250022871. Case 2 is the elevation
-line for pipe 1250009583. The previous CatBoost packages are not read.
+line for pipe 1250009583.
 """
 from __future__ import annotations
 

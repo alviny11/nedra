@@ -65,7 +65,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         allow_origin_regex=r"^https?://(localhost|127\.0\.0\.1)(:\d+)?$",
         allow_methods=["GET", "POST"],
         allow_headers=["Content-Type"],
-        expose_headers=["X-Catboost-Source"],
+        expose_headers=["X-Thickness-Source"],
     )
 
     @app.middleware("http")
@@ -104,14 +104,6 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     @app.get("/api/health", response_model=Health)
     def health() -> Health:
         return Health(status="ok", version=API_VERSION, storage=s.db_path.exists(), runner=s.runner_path.exists(), modelRegistry=s.models_dir.exists(), schemaVersion=SCHEMA_VERSION)
-
-    @app.post("/api/thickness/main-2/predict")
-    def main2_thickness_predict() -> dict:
-        from .services.main2_thickness import calculate
-        try:
-            return calculate(s.repo_root)
-        except Exception as exc:
-            raise PipeTwinError(503, "MODEL_UNAVAILABLE", f"Прогноз Main 2 недоступен: {type(exc).__name__}") from exc
 
     @app.get("/api/thickness/result.csv")
     def thickness_result() -> PlainTextResponse:
